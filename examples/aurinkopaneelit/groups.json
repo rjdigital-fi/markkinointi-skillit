@@ -1,0 +1,116 @@
+{
+  "topic": "aurinkopaneelit",
+  "main": "aurinkopaneeli",
+  "market": "Suomi, suomi",
+  "currency": "USD",
+  "lang": "fi",
+  "groups": [
+    {
+      "name": "Yleinen",
+      "intent": "Tiedonhaku",
+      "weight": 0,
+      "page": "Opas",
+      "channel": "SEO ja tekoälynäkyvyys",
+      "keywords": [
+        "aurinkopaneeli|aurinkopaneelin",
+        "aurinkopaneelit",
+        "aurinkosähkö",
+        "aurinkovoima",
+        "aurinkokenno"
+      ]
+    },
+    {
+      "name": "Hinta",
+      "intent": "Osto",
+      "weight": 0.5,
+      "page": "Hintasivu",
+      "channel": "Google Ads ja SEO",
+      "keywords": [
+        "aurinkopaneeli hinta|aurinkopaneelit hinta|aurinkokennot hinta",
+        "aurinkopaneeli hinta asennettuna|aurinkopaneelit hinta asennettuna|aurinkopaneelin hinta asennettuna|aurinkopaneelien hinta asennettuna",
+        "aurinkopaneelit omakotitaloon hinta|aurinkopaneeli omakotitalo hinta",
+        "aurinkopaneelien hinta|aurinkokennojen hinta",
+        "10 kw aurinkosähköjärjestelmä hinta",
+        "aurinkopaneelijärjestelmä hinta"
+      ]
+    },
+    {
+      "name": "Tarjous ja paketit",
+      "intent": "Osto",
+      "weight": 1,
+      "page": "Palvelusivu ja tarjouslomake",
+      "channel": "Google Ads",
+      "keywords": [
+        "aurinkopaneeli tarjous|aurinkopaneelit tarjous",
+        "aurinkopaneeli paketti|aurinkopaneelipaketti",
+        "aurinkopaneeli paketti tarjous",
+        "aurinkopaneelit asennettuna"
+      ]
+    },
+    {
+      "name": "Asennus",
+      "intent": "Osto",
+      "weight": 1,
+      "page": "Asennuspalvelun sivu",
+      "channel": "Google Ads ja SEO",
+      "keywords": [
+        "aurinkopaneelien asennus|aurinkopaneelin asennus",
+        "aurinkopaneeli asennus",
+        "aurinkopaneeli asennus hinta"
+      ]
+    },
+    {
+      "name": "Järjestelmät ja akut",
+      "intent": "Vertailu",
+      "weight": 0.5,
+      "page": "Tuoteryhmän sivu",
+      "channel": "SEO",
+      "keywords": [
+        "aurinkopaneelijärjestelmä",
+        "aurinkosähköjärjestelmä",
+        "aurinkovoimala",
+        "aurinkopaneeli akku|aurinkopaneelin akku",
+        "aurinkopaneelit ja akku|aurinkopaneelit ja akut",
+        "aurinkopaneeli invertteri|aurinkopaneelit invertteri"
+      ]
+    },
+    {
+      "name": "Käyttökohde",
+      "intent": "Vertailu",
+      "weight": 0.5,
+      "page": "Sivu per käyttökohde",
+      "channel": "SEO",
+      "keywords": [
+        "aurinkopaneelit omakotitaloon",
+        "aurinkopaneelit mökille|aurinkopaneeli mökille",
+        "aurinkosähköjärjestelmä mökille",
+        "aurinkosähkö mökille"
+      ]
+    },
+    {
+      "name": "Paikkakunta",
+      "intent": "Paikallinen osto",
+      "weight": 1,
+      "page": "Paikkakuntasivu",
+      "channel": "Google Ads ja paikallinen SEO",
+      "keywords": [
+        "aurinkopaneelit turku",
+        "aurinkopaneelit tampere",
+        "aurinkopaneelit oulu",
+        "aurinkopaneelit helsinki"
+      ]
+    },
+    {
+      "name": "Vertailu ja valinta",
+      "intent": "Vertailu",
+      "weight": 0.5,
+      "page": "Vertailuartikkeli",
+      "channel": "SEO ja tekoälynäkyvyys",
+      "keywords": [
+        "paras aurinkopaneeli",
+        "tehokkain aurinkopaneeli",
+        "longi aurinkopaneeli|longi aurinkopaneelit"
+      ]
+    }
+  ]
+}
