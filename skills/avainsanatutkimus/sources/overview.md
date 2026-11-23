@@ -56,6 +56,19 @@ output every time.
 A common mix: volumes from the SEO tool the user already pays for (Semrush, Ahrefs, SE Ranking), AI answers
 from Cloro, SearchApi or HasData.
 
+## The site's own data (optional)
+
+Separate from the five kinds above: the user's own site in Google Search Console or Bing Webmaster Tools.
+It answers a different question, where the site already shows up, and it is used only in step 5.
+
+| Source | What it gives | How | Tested with this skill |
+| --- | --- | --- | --- |
+| Google Search Console | the site's queries in Google: clicks, impressions, average position, page | MCP, API or CSV export, then `scripts/import.mjs --site` | sample files: export, API and MCP layout |
+| Bing Webmaster Tools | the same for Bing | API or CSV export, then `scripts/import.mjs --site` | sample files: export and API layout |
+
+These numbers go to `site.json`, never to `keywords.json`: impressions of one site are not market search
+volumes.
+
 ## How to choose with the user
 
 1. List what is connected in this session and what each covers, in the user's language, as a short table.
@@ -161,3 +174,23 @@ Reads the organic results, the People also ask questions and the result types fr
 DataForSEO, SerpApi, SearchApi, HasData, Serper and tools with the same layout.
 
 Use the mobile result page when the tool lets you choose. Most searches are made on phones.
+
+### site.json (optional)
+
+```json
+[{ "query": "aurinkopaneelit hinta", "clicks": 12, "impressions": 340, "position": 8.4,
+   "page": "https://example.fi/hinta", "source": "Search Console", "period": "1.8.-31.10.2026" }]
+```
+
+```
+node scripts/import.mjs --site --dir <folder> --file <Queries.csv|answer.json> --source "Search Console" --period "<dates>" --match "<regex>"
+```
+
+One row per query and source. Rows of the same query (one per page or per day) are added together: clicks and
+impressions are summed, the position is weighted by impressions, and the page is the one with the most
+impressions. A new import replaces the earlier rows of the same `--source`.
+
+Reads the Search Console export (Queries.csv), Search Console API rows (`keys`, `clicks`, `impressions`,
+`position`), MCP answers with `query` and `page` fields, and the Bing Webmaster Tools export and API
+(`Query`, `Impressions`, `Clicks`, `AvgImpressionPosition`). Headers in another language: `--map
+"keyword=<header>,clicks=<header>,impressions=<header>,position=<header>,page=<header>"`.

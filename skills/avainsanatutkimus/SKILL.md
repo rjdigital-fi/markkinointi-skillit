@@ -1,6 +1,6 @@
 ---
 name: avainsanatutkimus
-description: Keyword research with real data, step by step - topic map, search volumes and click prices, keyword grouping by intent, the questions people ask AI, and a budget split. The user picks the data source - any connected MCP or API (Semrush, Ahrefs, SE Ranking, DataForSEO, SearchApi, HasData, Cloro, ...) or a CSV export. Use when the user asks for keyword research, avainsanatutkimus, hakusanatutkimus, hakusanat, search volumes, hakumäärät, a keyword list for SEO or Google Ads, or which pages to build for a topic.
+description: Keyword research with real data, step by step - topic map, search volumes and click prices, keyword grouping by intent, the questions people ask AI, a budget split, and optionally where the user's own site already shows up (Google Search Console, Bing Webmaster Tools). The user picks the data source - any connected MCP or API (Semrush, Ahrefs, SE Ranking, DataForSEO, SearchApi, HasData, Cloro, ...) or a CSV export. Use when the user asks for keyword research, avainsanatutkimus, hakusanatutkimus, hakusanat, search volumes, hakumäärät, a keyword list for SEO or Google Ads, or which pages to build for a topic.
 ---
 
 # Avainsanatutkimus (keyword research)
@@ -35,12 +35,14 @@ Work in one folder per research, by default `avainsanatutkimus/<topic-slug>/` in
 | `groups.json` | your grouping, intents, weights, pages and channels |
 | `chatgpt.json` | AI answers: the question, the searches the AI ran, sources, brands named |
 | `serp-<keyword>.json` | Google result page: result types, People also ask, top results |
+| `site.json` | optional: the site's own queries from Search Console or Bing Webmaster Tools, with clicks, impressions, position and page |
 | `report.md`, `keywords.csv` | the result |
 
 Scripts are in `scripts/` next to this file. They need Node 18 or newer and nothing else.
 
 - `scripts/import.mjs` puts keyword rows from any source into `keywords.json` (CSV, TSV or JSON, as exported
-  or as the MCP or API returned it).
+  or as the MCP or API returned it). With `--site` it puts the site's own Search Console or Bing Webmaster
+  Tools rows into `site.json` instead.
 - `scripts/answers.mjs` puts an AI answer or a Google result page from any source into `chatgpt.json` or
   `serp-<keyword>.json`.
 - `scripts/report.mjs` builds `report.md` and `keywords.csv`. It makes no network calls.
@@ -66,7 +68,10 @@ this research uses and which sources give which. In short:
    source for everything is fine, and so is a mix, for example volumes from Semrush and AI answers from Cloro.
 3. If nothing is connected, offer the choices: connect an MCP, set an API key, or export a CSV from Google
    Keyword Planner (free with a Google Ads account) or their SEO tool. `sources/csv.md` tells the user how.
-4. Write the choice at the top of your notes for this research and name it in the report.
+4. Ask whether the site's own search data can be used: Google Search Console or Bing Webmaster Tools, through
+   an MCP, an API or a CSV export. It is optional. With it the report shows where the site already shows up
+   (step 5). Ask now, so the user can make the export while you work on steps 1 to 4.
+5. Write the choice at the top of your notes for this research and name it in the report.
 
 Parts that no chosen source covers are skipped. Say which, and what would be needed to add them.
 
@@ -151,11 +156,40 @@ If a chosen source covers it:
 Save each answer as JSON and import it with `scripts/answers.mjs`. Format of `chatgpt.json` and
 `serp-*.json`: `sources/overview.md`.
 
-## Step 5: the site's own data
+## Step 5: the site's own data (optional)
 
-If the user has the site in Google Search Console or Bing Webmaster Tools and can give access or an export,
-compare: which groups the site already gets impressions for, at which position, and which groups have no page.
-Skip this step without that data and say so. Do not guess a site's rankings.
+Only with the Search Console or Bing Webmaster Tools data asked for in step 0. Without it, skip this step, say
+so, and do not guess the site's rankings.
+
+1. Get the site's queries with clicks, impressions and average position, and the page when the source gives
+   it. Use the last three months and the market's country. How, per source: `sources/mcp-and-apis.md`
+   (MCP or API) or `sources/csv.md` (export).
+2. Import them into their own file:
+
+   ```
+   node scripts/import.mjs --site --dir <folder> --file <Queries.csv|answer.json> --source "Search Console" --period "<dates>" --match "<regex>"
+   ```
+
+   Use the same `--match` as in step 2, so only this topic's queries come in. Read the output: it lists the
+   columns found and the largest rows. Bing data is imported the same way with its own `--source`, and both
+   can be in the file.
+3. These are the site's own numbers. They never go into `keywords.json`, and impressions are never used as a
+   search volume. They stay in the user's folder: do not send them to any outside service.
+
+`report.mjs` adds the section when `site.json` exists: per group how many of its keywords the site shows up
+for, impressions, clicks, average position and the page that gets them; the grouped keywords at positions 5 to
+15; the groups with no visibility; and the site's other queries that are in no group.
+
+Read it before you write the summary:
+
+- Queries are matched to the grouped keywords by exact text. If few match, look at the list of other queries.
+  A query there that belongs to the topic is a gap in the research: fetch its volume from the market source and
+  add it to a group.
+- A group with no visibility does not prove the page is missing. Look at the site (its pages or sitemap)
+  before you say a page needs to be built. A page can exist and not rank.
+- Positions are averages over the period, all devices and all result types. Give them as such.
+- Keywords at positions 5 to 15 with buying intent are the nearest gains: the page exists and Google already
+  shows it.
 
 ## Step 6: the report
 
@@ -164,14 +198,17 @@ node scripts/report.mjs --dir <folder> --budget <monthly budget> --lang fi
 ```
 
 `report.md` holds the topic map (a Mermaid mind map), the keyword tables by group, the seasonality of the main
-keyword, the budget split, the AI answers, the result page notes and the largest ungrouped keywords. Read the
+keyword, the budget split, the AI answers, the result page notes, the site's own visibility (when `site.json` exists)
+and the largest ungrouped keywords. Read the
 ungrouped list: a large keyword left there is either off-topic or a gap in your groups. Fix `groups.json` and
 build again. The script lists keywords in `groups.json` that are missing from the data: fix every one.
 
 Then tell the user, in a few short paragraphs and in their language:
 
 1. What was found: the number of keywords, the biggest groups, the season.
-2. What to do first: the 3 to 5 groups where buying intent, volume and a missing or weak page meet.
+2. What to do first: the 3 to 5 groups where buying intent, volume and a missing or weak page meet. With the
+   site's own data, name the groups where the site is not visible and the keywords at positions 5 to 15.
+   Without it, say that the pages were not checked against search data.
 3. The budget split and what it rests on. It is a starting point from volume and click price. Real campaign
    data replaces it after the first weeks.
 4. The source and date of the data, what was skipped, and what the fetching cost.

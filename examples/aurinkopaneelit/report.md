@@ -1,4 +1,4 @@
-> Esimerkkiraportti. Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 1 000 dollarin budjetti kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle: **Kuvitteellinen esimerkki.**
+> Esimerkkiraportti. Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 1 000 dollarin budjetti kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja osion "Oma sivusto hakutuloksissa" Search Console -luvut on keksitty: **Kuvitteellinen esimerkki.**
 
 # Avainsanatutkimus: aurinkopaneelit
 
@@ -216,6 +216,44 @@ Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminna
   - 7. a-maailma.fi: ☀️ Aurinkopaneelien hinta – mistä hinta muodostuu
   - 8. aurinkopaneelikauppa.fi: Aurinkovoimalat
   - 9. is.fi: Aurinkosähkö kallistui yllättäen
+
+## Oma sivusto hakutuloksissa
+
+Luvut kertovat sivuston omasta näkyvyydestä. Markkinan hakumäärät ovat yllä olevissa taulukoissa.
+
+### Search Console (kuvitteellinen esimerkki) · 1.8.–31.10.2026
+
+| Ryhmä | Hakusanoja näkyvissä | Näyttökerrat | Klikkaukset | Keskisijainti | Sivu |
+| --- | ---: | ---: | ---: | ---: | --- |
+| Yleinen | 1/5 | 1 400 | 9 | 18,2 | /aurinkopaneelit |
+| Hinta | 3/6 | 980 | 27 | 10,7 | /aurinkopaneelit/hinta |
+| Tarjous ja paketit | 0/4 | – | – | – | – |
+| Asennus | 2/3 | 460 | 26 | 7,1 | /asennus |
+| Järjestelmät ja akut | 0/6 | – | – | – | – |
+| Käyttökohde | 1/4 | 130 | 6 | 9,7 | /aurinkopaneelit |
+| Paikkakunta | 2/4 | 175 | 15 | 8,5 | /tampere |
+| Vertailu ja valinta | 0/3 | – | – | – | – |
+
+Ryhmät, joissa sivusto ei vielä näy: Tarjous ja paketit, Järjestelmät ja akut, Vertailu ja valinta.
+
+#### Lähellä kärkeä: sijat 5–15
+
+| Hakusana | Ryhmä | Haut/kk | Näyttökerrat | Keskisijainti | Sivu |
+| --- | --- | ---: | ---: | ---: | --- |
+| aurinkopaneeli hinta | Hinta | 1 300 | 620 | 11,3 | /aurinkopaneelit/hinta |
+| aurinkopaneelit omakotitaloon | Käyttökohde | 720 | 130 | 9,7 | /aurinkopaneelit |
+| aurinkopaneeli hinta asennettuna | Hinta | 390 | 210 | 7,8 | /aurinkopaneelit/hinta |
+| aurinkopaneelien hinta | Hinta | 260 | 150 | 12,6 | /aurinkopaneelit/hinta |
+| aurinkopaneelien asennus | Asennus | 260 | 340 | 6,4 | /asennus |
+| aurinkopaneeli asennus | Asennus | 210 | 120 | 8,9 | /asennus |
+| aurinkopaneelit turku | Paikkakunta | 140 | 80 | 13,5 | /turku |
+
+#### Muut haut, joilla sivusto näkyy
+
+| Hakusana | Näyttökerrat | Klikkaukset | Keskisijainti | Sivu |
+| --- | ---: | ---: | ---: | --- |
+| aurinkopaneelien kiinnitys peltikattoon | 70 | 5 | 6,1 | /blogi/kiinnitys-peltikattoon |
+| aurinkopaneelien takuu | 45 | 2 | 9,0 | /blogi/takuu |
 
 ## Suurimmat ryhmittelemättömät hakusanat
 

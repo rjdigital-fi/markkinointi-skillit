@@ -48,6 +48,26 @@ open the first lines of the file, find the right header and use `--map`.
 Keyword Planner gives a bid range (low and high top of page bid) and no single click price. The report uses
 the midpoint of the range as the click price and shows the range in its own column.
 
+## The site's own data (step 5, optional)
+
+**Google Search Console**: Performance, Search results. Set the date range to the last three months and the
+country to the market. Add a query filter with the topic's main word when the site has many topics, because
+the export holds only the top rows of the table. Then Export, CSV. The download is a zip file: the file needed
+is `Queries.csv`.
+
+**Bing Webmaster Tools**: Search Performance, the Keywords table, export as CSV.
+
+```
+node scripts/import.mjs --site --dir <folder> --file Queries.csv --source "Search Console" --period "<dates>" --match "<regex>"
+```
+
+The rows go to `site.json`, not to `keywords.json`. The query export has no page column, so the report shows
+positions without pages. If the user wants the pages too, the data has to come through an MCP or the API with
+the page dimension.
+
+Headers in the interface language are recognised for English and Finnish. For other languages use `--map
+"keyword=<header>,clicks=<header>,impressions=<header>,position=<header>"`.
+
 The import is tested with sample files built in the export layout of each tool named above (`tests/run.mjs`),
 not with every tool's real export. Vendors rename columns. When a file does not import cleanly, look at its
 header row and map it.

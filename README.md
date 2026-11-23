@@ -16,6 +16,7 @@ Raportissa on:
 - ehdotus budjetin jaosta ryhmien kesken
 - mitä tekoäly vastaa ostajan kysymyksiin, mitä hakuja se tekee ja mihin lähteisiin se nojaa
 - mitä Googlen tulossivulla näkyy: tekoälykatsaus, "Muut kysyvät myös" ja kärkitulokset
+- oman sivustonne tilanne, jos annatte Search Consolen tai Bing Webmaster Toolsin datan: missä ryhmissä sivusto jo näkyy, missä ei vielä ja mitkä hakusanat ovat sijoilla 5–15
 
 Menetelmä on sama kuin oppaassani [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus). Valmis esimerkki: [examples/aurinkopaneelit/report.md](examples/aurinkopaneelit/report.md).
 
@@ -30,11 +31,14 @@ Skilli ei ole sidottu yhteen työkaluun. Käyttäkää sitä, mikä teillä on j
 | Mainosalustat: Google Keyword Planner, Google Ads -rajapinta, Microsoft Advertising | hakusanat, hakumäärät, hintahaarukka tai hintaehdotus | CSV-vienti, rajapinta tai MCP |
 | Tulossivurajapinnat: SearchApi, SerpApi, HasData, Serper, Bright Data | Googlen tulossivut ja Googlen tekoälyvastaukset | MCP tai rajapinta |
 | Tekoälynäkyvyyden työkalut: Cloro, Peec AI, Profound, Otterly, LLM Pulse, Nightwatch ja muut | tekoälyjen vastaukset lähteineen ja mainittuine brändeineen | MCP, rajapinta tai vienti |
+| Oman sivuston data: Google Search Console, Bing Webmaster Tools (valinnainen) | millä hakusanoilla sivusto jo näkyy, millä sijalla ja millä sivulla | MCP, rajapinta tai CSV-vienti |
 | Jokin muu | sen mukaan, mitä työkalu antaa | agentti lukee työkalun kuvauksen ja sovittaa kentät |
 
 Pakollisia ovat vain hakusanat ja hakumäärät. Jos lähteestä ei saa tekoälyn vastauksia tai tulossivuja, ne osat jäävät raportista pois ja agentti sanoo sen.
 
-Mitä on testattu: DataForSEO kokonaan oikealla ajolla marraskuussa 2026. Muiden työkalujen tuonti on testattu mallitiedostoilla, jotka on rakennettu kunkin työkalun sarakkeiden ja kenttien nimillä. Testit ovat mukana, ja ne voi ajaa komennolla `node tests/run.mjs`. Jokaista työkalua en ole ajanut oikealla tilillä. Työkalut myös muuttavat vientejään, joten tuonti tulostaa aina, mitkä kentät se löysi ja mitkä jäivät löytymättä. Kertokaa [issuessa](https://github.com/rjdigital-fi/skills/issues), jos jokin ei toimi.
+Search Console ja Bing Webmaster Tools ovat valinnaisia. Agentti kysyy niistä alussa. Niiden luvut ovat sivuston omia lukuja, joten ne pidetään erillään markkinan hakumääristä ja näytetään raportissa omassa osiossaan.
+
+Mitä on testattu: DataForSEO kokonaan oikealla ajolla marraskuussa 2026. Muiden työkalujen tuonti on testattu mallitiedostoilla, jotka on rakennettu kunkin työkalun sarakkeiden ja kenttien nimillä. Testit ovat mukana, ja ne voi ajaa komennolla `node tests/run.mjs`. Search Consolen ja Bing Webmaster Toolsin tuonti on testattu samalla tavalla mallitiedostoilla. Jokaista työkalua en ole ajanut oikealla tilillä. Työkalut myös muuttavat vientejään, joten tuonti tulostaa aina, mitkä kentät se löysi ja mitkä jäivät löytymättä. Kertokaa [issuessa](https://github.com/rjdigital-fi/skills/issues), jos jokin ei toimi.
 
 ### Asennus
 
@@ -59,7 +63,7 @@ Tee avainsanatutkimus aiheesta aurinkopaneelit. Asennamme paneeleita omakotitalo
 
 Tai kutsukaa suoraan: `/rjdigital:avainsanatutkimus`.
 
-Agentti käy läpi kuusi vaihetta: lähteen valinta, aihekartta, hakumäärät ja hinnat, ryhmittely ja hakuaikomus, tekoälyn kysymykset ja lopuksi raportti. Se kysyy teiltä ne asiat, jotka vain te tiedätte: mitä myytte, mitä ette myy ja millä alueella.
+Agentti käy työn läpi vaiheittain: lähteen valinta, aihekartta, hakumäärät ja hinnat, ryhmittely ja hakuaikomus, tekoälyn kysymykset, oman sivuston tilanne ja lopuksi raportti. Se kysyy teiltä ne asiat, jotka vain te tiedätte: mitä myytte, mitä ette myy ja millä alueella.
 
 Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.md` on raportti ja `keywords.csv` koko hakusanalista taulukkolaskentaan.
 

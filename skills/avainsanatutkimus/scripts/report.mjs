@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Builds the report from keywords.json + groups.json (+ chatgpt.json and serp-*.json when they exist).
+// Builds the report from keywords.json + groups.json (+ chatgpt.json, serp-*.json and site.json when they exist).
 // Writes report.md and keywords.csv into the work folder. Node 18+, no dependencies. Makes no network calls.
 //
 //   node report.mjs [--dir .] [--budget 1000] [--lang fi|en]
@@ -34,8 +34,8 @@ const keywords = read("keywords.json");
 const cfg = read("groups.json");
 const lang = args.lang ?? cfg.lang ?? "fi";
 const T = {
-  fi: { title: "Avainsanatutkimus", data: "Data", market: "Markkina", fetched: "Raportti tehty", found: "hakusanaa löytyi", grouped: "valittu ryhmiin", map: "Aihekartta", perMonth: "hakua/kk", table: "Hakusanat ryhmittäin", kw: "Hakusana", vol: "Haut/kk", cpc: "Klikkaushinta", bid: "Sivun yläosan hinta", comp: "Kilpailu", ai: "Tekoälyhaut/kk", intent: "Hakuaikomus", page: "Sivu", channel: "Kanava", season: "Kausivaihtelu", month: "Kuukausi", peak: "huippu", budget: "Budjetin jako", group: "Ryhmä", weight: "Paino", share: "Osuus", perMonthMoney: "kk", budgetNote: "Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.", noCpc: "Hakusanat ilman klikkaushintaa eivät vaikuta jakoon", aiq: "Tekoälyn vastaukset", searches: "Tekoälyn tekemät haut", sources: "Lähteet", brands: "Mainitut yritykset ja merkit", serp: "Googlen tulossivu", types: "Tulostyypit", paa: "Muut kysyvät myös", top: "Kärkitulokset", rest: "Suurimmat ryhmittelemättömät hakusanat", missing: "Ryhmissä on hakusanoja, joita datassa ei ole", total: "Yhteensä", variant: "myös", noData: "ei dataa" },
-  en: { title: "Keyword research", data: "Data", market: "Market", fetched: "Report built", found: "keywords found", grouped: "picked into groups", map: "Topic map", perMonth: "searches/mo", table: "Keywords by group", kw: "Keyword", vol: "Searches/mo", cpc: "CPC", bid: "Top of page bid", comp: "Competition", ai: "AI searches/mo", intent: "Intent", page: "Page", channel: "Channel", season: "Seasonality", month: "Month", peak: "peak", budget: "Budget split", group: "Group", weight: "Weight", share: "Share", perMonthMoney: "mo", budgetNote: "Share = the group's (searches × CPC) × intent weight × business weight. The split is a starting point that real ad data refines.", noCpc: "Keywords without a CPC do not affect the split", aiq: "AI answers", searches: "Searches the AI ran", sources: "Sources", brands: "Companies and brands named", serp: "Google result page", types: "Result types", paa: "People also ask", top: "Top results", rest: "Largest ungrouped keywords", missing: "Groups name keywords that are not in the data", total: "Total", variant: "also", noData: "no data" },
+  fi: { site: "Oma sivusto hakutuloksissa", siteNote: "Luvut kertovat sivuston omasta näkyvyydestä. Markkinan hakumäärät ovat yllä olevissa taulukoissa.", siteKw: "Hakusanoja näkyvissä", imp: "Näyttökerrat", clicks: "Klikkaukset", pos: "Keskisijainti", near: "Lähellä kärkeä: sijat 5–15", nearNone: "Ryhmien hakusanoista yksikään ei ole sijoilla 5–15.", siteNone: "Ryhmät, joissa sivusto ei vielä näy", siteOther: "Muut haut, joilla sivusto näkyy", title: "Avainsanatutkimus", data: "Data", market: "Markkina", fetched: "Raportti tehty", found: "hakusanaa löytyi", grouped: "valittu ryhmiin", map: "Aihekartta", perMonth: "hakua/kk", table: "Hakusanat ryhmittäin", kw: "Hakusana", vol: "Haut/kk", cpc: "Klikkaushinta", bid: "Sivun yläosan hinta", comp: "Kilpailu", ai: "Tekoälyhaut/kk", intent: "Hakuaikomus", page: "Sivu", channel: "Kanava", season: "Kausivaihtelu", month: "Kuukausi", peak: "huippu", budget: "Budjetin jako", group: "Ryhmä", weight: "Paino", share: "Osuus", perMonthMoney: "kk", budgetNote: "Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.", noCpc: "Hakusanat ilman klikkaushintaa eivät vaikuta jakoon", aiq: "Tekoälyn vastaukset", searches: "Tekoälyn tekemät haut", sources: "Lähteet", brands: "Mainitut yritykset ja merkit", serp: "Googlen tulossivu", types: "Tulostyypit", paa: "Muut kysyvät myös", top: "Kärkitulokset", rest: "Suurimmat ryhmittelemättömät hakusanat", missing: "Ryhmissä on hakusanoja, joita datassa ei ole", total: "Yhteensä", variant: "myös", noData: "ei dataa" },
+  en: { site: "Your site in search results", siteNote: "These numbers show the site's own visibility. Market search volumes are in the tables above.", siteKw: "Keywords visible", imp: "Impressions", clicks: "Clicks", pos: "Avg. position", near: "Close to the top: positions 5–15", nearNone: "None of the grouped keywords is at positions 5–15.", siteNone: "Groups where the site is not visible yet", siteOther: "Other searches the site is visible for", title: "Keyword research", data: "Data", market: "Market", fetched: "Report built", found: "keywords found", grouped: "picked into groups", map: "Topic map", perMonth: "searches/mo", table: "Keywords by group", kw: "Keyword", vol: "Searches/mo", cpc: "CPC", bid: "Top of page bid", comp: "Competition", ai: "AI searches/mo", intent: "Intent", page: "Page", channel: "Channel", season: "Seasonality", month: "Month", peak: "peak", budget: "Budget split", group: "Group", weight: "Weight", share: "Share", perMonthMoney: "mo", budgetNote: "Share = the group's (searches × CPC) × intent weight × business weight. The split is a starting point that real ad data refines.", noCpc: "Keywords without a CPC do not affect the split", aiq: "AI answers", searches: "Searches the AI ran", sources: "Sources", brands: "Companies and brands named", serp: "Google result page", types: "Result types", paa: "People also ask", top: "Top results", rest: "Largest ungrouped keywords", missing: "Groups name keywords that are not in the data", total: "Total", variant: "also", noData: "no data" },
 }[lang === "en" ? "en" : "fi"];
 const loc = lang === "en" ? "en-US" : "fi-FI";
 const cur = cfg.currency ?? keywords.find((k) => k.currency)?.currency ?? "USD";
@@ -146,6 +146,62 @@ if (serps.length) {
   }
 }
 
+// The site's own visibility (Search Console, Bing Webmaster Tools), matched to the groups by exact keyword.
+let siteLog = "";
+if (has("site.json")) {
+  const site = read("site.json");
+  const pos = (v) => (v == null ? "–" : v.toLocaleString(loc, { minimumFractionDigits: 1, maximumFractionDigits: 1 }));
+  const pagePath = (p) => {
+    if (!p) return "–";
+    try {
+      const u = new URL(p);
+      return u.pathname + u.search;
+    } catch {
+      return p;
+    }
+  };
+  const grouped = new Set(groups.flatMap((g) => g.rows.flatMap((r) => [r.keyword, ...r.variants])));
+  out.push(`## ${T.site}`, "", T.siteNote, "");
+  for (const source of [...new Set(site.map((s) => s.source ?? ""))]) {
+    const rows = site.filter((s) => (s.source ?? "") === source);
+    const byQ = new Map(rows.map((s) => [String(s.query).toLowerCase(), s]));
+    // One hit per keyword row: the form (main or variant) with the most impressions.
+    const hitOf = (r) => [r.keyword, ...r.variants].map((f) => byQ.get(f)).filter(Boolean).sort((a, b) => (b.impressions ?? 0) - (a.impressions ?? 0))[0];
+    out.push(`### ${[source, rows.find((s) => s.period)?.period].filter(Boolean).join(" · ") || T.site}`, "");
+    out.push(`| ${[T.group, T.siteKw, T.imp, T.clicks, T.pos, T.page].join(" | ")} |`, "| --- | ---: | ---: | ---: | ---: | --- |");
+    const none = [];
+    const near = [];
+    let matched = 0;
+    for (const g of groups) {
+      const hits = g.rows.map((r) => [r, hitOf(r)]).filter(([, h]) => h);
+      matched += hits.length;
+      if (!hits.length) none.push(g.name);
+      const imp = hits.reduce((s, [, h]) => s + (h.impressions ?? 0), 0);
+      const withPos = hits.filter(([, h]) => h.position != null);
+      const weight = withPos.reduce((s, [, h]) => s + (h.impressions || 1), 0);
+      const avg = withPos.length ? withPos.reduce((s, [, h]) => s + h.position * (h.impressions || 1), 0) / weight : null;
+      const top = [...hits].sort((a, b) => (b[1].impressions ?? 0) - (a[1].impressions ?? 0)).find(([, h]) => h.page)?.[1].page;
+      out.push(`| ${[cell(g.name), `${hits.length}/${g.rows.length}`, hits.length ? n(imp) : "–", hits.length ? n(hits.reduce((s, [, h]) => s + (h.clicks ?? 0), 0)) : "–", pos(avg), cell(pagePath(top))].join(" | ")} |`);
+      for (const [r, h] of hits) if (h.position >= 5 && h.position <= 15) near.push({ r, h, g });
+    }
+    out.push("");
+    if (none.length) out.push(`${T.siteNone}: ${none.join(", ")}.`, "");
+    out.push(`#### ${T.near}`, "");
+    if (near.length) {
+      out.push(`| ${[T.kw, T.group, T.vol, T.imp, T.pos, T.page].join(" | ")} |`, "| --- | --- | ---: | ---: | ---: | --- |");
+      for (const { r, h, g } of near.sort((a, b) => (b.r.volume ?? 0) - (a.r.volume ?? 0))) out.push(`| ${[cell(r.keyword), cell(g.name), n(r.volume), n(h.impressions), pos(h.position), cell(pagePath(h.page))].join(" | ")} |`);
+    } else out.push(T.nearNone);
+    out.push("");
+    const other = rows.filter((s) => !grouped.has(String(s.query).toLowerCase())).sort((a, b) => (b.impressions ?? 0) - (a.impressions ?? 0)).slice(0, 15);
+    if (other.length) {
+      out.push(`#### ${T.siteOther}`, "", `| ${[T.kw, T.imp, T.clicks, T.pos, T.page].join(" | ")} |`, "| --- | ---: | ---: | ---: | --- |");
+      for (const s of other) out.push(`| ${[cell(s.query), n(s.impressions), n(s.clicks), pos(s.position), cell(pagePath(s.page))].join(" | ")} |`);
+      out.push("");
+    }
+    siteLog += `site.json (${source}): ${rows.length} queries, ${matched} match a grouped keyword, ${near.length} at positions 5-15\n`;
+  }
+}
+
 const used = new Set(groups.flatMap((g) => (g.keywords ?? []).flatMap((e) => e.split("|").map((f) => f.trim().toLowerCase()))));
 const restRows = keywords.filter((k) => !used.has(k.keyword.toLowerCase())).sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0)).slice(0, 25);
 if (restRows.length) {
@@ -168,4 +224,5 @@ fs.writeFileSync(path.join(dir, "keywords.csv"), "﻿" + csv.join("\n") + "\n");
 
 console.log(`report.md and keywords.csv written to ${dir}`);
 console.log(groups.map((g) => `${g.name}: ${g.rows.length} keywords, ${n(g.volume)} ${T.perMonth}, ${totalScore ? ((g.score / totalScore) * 100).toFixed(1) : 0} %`).join("\n"));
+if (siteLog) console.log(siteLog.trim());
 if (missing.length) console.log(`MISSING from data: ${[...new Set(missing)].join(", ")}`);

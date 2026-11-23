@@ -10,6 +10,14 @@
 // JSON input: the answer as the tool returned it. The keyword rows are found wherever they sit in the JSON, and
 // nested fields ("keyword_info.search_volume") are read too. Field names are matched the same way as CSV headers.
 // Rows are merged by keyword: new values win, an empty new value never erases an old one.
+//
+// The site's own search data (Google Search Console, Bing Webmaster Tools) goes to its own file, site.json:
+//
+//   node import.mjs --site --file Queries.csv --source "Search Console" [--period "1.8.-31.10.2026"] [--match "regex"]
+//   node import.mjs --site --file rows.json   --source "Bing Webmaster Tools"
+//
+// site.json rows: query, clicks, impressions, position, page. Rows of the same query (one per page or per day)
+// are added together, the position is weighted by impressions. These numbers never go into keywords.json.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -30,6 +38,7 @@ if (/\.(xlsx?|numbers|ods)$/i.test(args.file)) {
 }
 const dir = path.resolve(args.dir ?? ".");
 const kwFile = path.join(dir, "keywords.json");
+const siteFile = path.join(dir, "site.json");
 
 // Header patterns per field, first match wins. Checked against the normalised header: lower case,
 // "search_volume" and "searchVolume" read as "search volume", "keyword_info.search_volume" as "search volume".
@@ -53,6 +62,17 @@ const NOT = {
   difficulty: /paid|ppc/,
   cpc: /trend|history/,
 };
+// --site: the columns of a Search Console or Bing Webmaster Tools export or API answer.
+const SITE = {
+  page: [/^(top |landing )?pages?( url)?$/, /^url$/, /^suosituimmat sivut/, /^sivu/, /^laskeutumissivu/],
+  clicks: [/^clicks?$/, /^klikkaukset/, /^napsautukset/, /^klikit/],
+  impressions: [/^impressions?$/, /^näyttökerrat/, /^näytöt/],
+  position: [/^(avg\.?|average) position$/, /^position$/, /impression position/, /position/, /sijainti/, /^sija$/],
+};
+if (args.site) {
+  PATTERNS.keyword.push(/^top queries$/, /^queries$/, /^suosituimmat (kyselyt|haut)/, /^kysely/, /^keys$/);
+  Object.assign(PATTERNS, SITE);
+}
 const norm = (h) => String(h).split(".").pop().replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/[_\-]+/g, " ").replace(/\s+/g, " ").trim().toLowerCase();
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12, tammi: 1, helmi: 2, maalis: 3, huhti: 4, touko: 5, kesä: 6, heinä: 7, elo: 8, syys: 9, loka: 10, marras: 11, joulu: 12 };
 
@@ -192,9 +212,73 @@ function tableFromFile(file) {
   return { headers: all[Math.max(h, 0)], rows: all.slice(Math.max(h, 0) + 1) };
 }
 
+/** --site: Search Console or Bing Webmaster Tools rows into site.json, one row per query. */
+function importSite(headers, rows, manual) {
+  const col = Object.fromEntries(["keyword", ...Object.keys(SITE)].map((f) => [f, findField(headers, f, manual)]));
+  if (col.keyword === -1) throw new Error(`No query column. Headers: ${headers.join(" | ")}`);
+  const match = args.match ? new RegExp(args.match, "i") : null;
+  const source = args.source ?? path.basename(args.file);
+  const isUrl = (v) => typeof v === "string" && /^https?:\/\//.test(v);
+  const agg = new Map();
+  let kept = 0;
+  for (const r of rows) {
+    const get = (f) => (col[f] > -1 ? r[col[f]] : null);
+    let q = r[col.keyword];
+    let page = get("page");
+    // Search Console API rows: keys = the dimensions asked for, for example ["query", "https://site/page"].
+    if (Array.isArray(q)) {
+      page = page ?? q.find(isUrl);
+      q = q.find((x) => typeof x === "string" && !isUrl(x) && !/^\d{4}-\d\d-\d\d$/.test(x));
+    }
+    const query = String(q ?? "").trim().toLowerCase();
+    if (!query || isUrl(query) || (match && !match.test(query))) continue;
+    const clicks = num(get("clicks"));
+    const impressions = num(get("impressions"));
+    const position = num(get("position"));
+    const a = agg.get(query) ?? { query, clicks: 0, impressions: 0, posSum: 0, posWeight: 0, pages: new Map() };
+    a.clicks += clicks ?? 0;
+    a.impressions += impressions ?? 0;
+    if (position != null && position > 0) {
+      const w = impressions || 1;
+      a.posSum += position * w;
+      a.posWeight += w;
+    }
+    if (isUrl(page) || (typeof page === "string" && page.startsWith("/"))) a.pages.set(page, (a.pages.get(page) ?? 0) + (impressions ?? 1));
+    agg.set(query, a);
+    kept++;
+  }
+  const fresh = [...agg.values()].map((a) => ({
+    query: a.query,
+    clicks: col.clicks > -1 ? a.clicks : null,
+    impressions: col.impressions > -1 ? a.impressions : null,
+    position: a.posWeight ? Math.round((a.posSum / a.posWeight) * 10) / 10 : null,
+    page: [...a.pages.entries()].sort((x, y) => y[1] - x[1])[0]?.[0] ?? null,
+    source,
+    period: args.period ?? null,
+  }));
+  // A new import replaces the earlier rows of the same source; other sources stay.
+  const old = (fs.existsSync(siteFile) ? JSON.parse(fs.readFileSync(siteFile, "utf8")) : []).filter((r) => r.source !== source);
+  const all = [...old, ...fresh].sort((a, b) => (b.impressions ?? 0) - (a.impressions ?? 0));
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(siteFile, JSON.stringify(all, null, 1));
+  const found = Object.entries(col).filter(([, i]) => i > -1).map(([f, i]) => `${f === "keyword" ? "query" : f}="${headers[i]}"`);
+  const pageFromKeys = col.page === -1 && fresh.some((r) => r.page);
+  if (pageFromKeys) found.push(`page=from "${headers[col.keyword]}"`);
+  console.log(`columns: ${found.join(", ")}`);
+  console.log(`not found: ${Object.entries(col).filter(([f, i]) => i === -1 && !(f === "page" && pageFromKeys)).map(([f]) => f).join(", ") || "-"}`);
+  console.log(`imported ${kept} of ${rows.length} rows as ${fresh.length} queries from "${source}"; site.json now has ${all.length} rows`);
+  if (fresh.length && col.position === -1) console.log("WARNING: no position column was recognised. Look at the headers and use --map.");
+  if (fresh.length && col.impressions === -1) console.log("WARNING: no impressions column was recognised. Look at the headers and use --map.");
+  console.log(fresh.sort((a, b) => (b.impressions ?? 0) - (a.impressions ?? 0)).slice(0, 10).map((r) => `${r.impressions ?? "-"}\t${r.position ?? "-"}\t${r.query}`).join("\n"));
+}
+
 try {
   const manual = manualMap();
   const { headers, rows } = tableFromFile(args.file);
+  if (args.site) {
+    importSite(headers, rows, manual);
+    process.exit(0);
+  }
   const col = Object.fromEntries(Object.keys(PATTERNS).map((f) => [f, findField(headers, f, manual)]));
   if (col.keyword === -1) throw new Error(`No keyword column. Headers: ${headers.join(" | ")}`);
   const monthCols = headers.map((h, i) => [monthKey(String(h)), i]).filter(([k]) => k);
@@ -256,5 +340,6 @@ try {
   console.log(all.slice(0, 10).map((r) => `${r.volume ?? "-"}\t${r.cpc ?? "-"}\t${r.keyword}`).join("\n"));
 } catch (e) {
   console.error(e.message);
+  if (args.site && /header row|keyword rows/.test(e.message)) console.error("For --site the file needs a query column: in Search Console export the Queries table (Queries.csv), not Pages or Dates.");
   process.exit(1);
 }

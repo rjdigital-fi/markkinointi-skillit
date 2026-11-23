@@ -128,8 +128,17 @@ connection in front of you offers is the truth.
 - For step 5, the site's own data. Search Console: queries with impressions, clicks and position. Bing
   Webmaster Tools: the same for Bing, and its AI Performance report shows a sample of the queries with which
   AI fetched the site's content.
-- These are the user's own numbers. Keep them out of `keywords.json` (they are not market volumes) and report
-  them in their own section.
+- These are the user's own numbers. Keep them out of `keywords.json` (they are not market volumes). They go to
+  `site.json` and get their own section in the report.
+- Search Console through an MCP or the API (Search Analytics query): ask for the dimensions `query` and `page`
+  in that order, the last three months, the market's country as a filter, and a row limit high enough to cover
+  the topic. A query filter with the topic's main word keeps the answer small. Save the answer as JSON, as it
+  came.
+- Bing Webmaster Tools through its API: the query statistics of the site. Save the answer as JSON.
+- Import: `node scripts/import.mjs --site --dir <folder> --file <answer.json> --source "Search Console"
+  --period "<dates>" --match "<regex>"`. Read the output. If the position or the impressions are not found, look
+  at the field names in the answer and use `--map`.
+- Do not send these numbers to any other service.
 
 ### Something else
 

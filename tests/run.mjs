@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Checks that import.mjs and answers.mjs read the export and answer layouts of the common tools.
+// Checks that import.mjs and answers.mjs read the export and answer layouts of the common tools,
+// and that the site's own search data (Search Console, Bing Webmaster Tools) lands in site.json and in the report.
 // The sample files are built here from each tool's column and field names. They are not real exports.
 //   node tests/run.mjs
 import { execFileSync } from "node:child_process";
@@ -117,6 +118,51 @@ const serp = ["--keyword", "solar panels price"];
 answersCase("Result page: SerpApi, SearchApi, HasData layout", "serp", { search_metadata: {}, ai_overview: { text_blocks: [{ snippet: "x" }] }, organic_results: [{ position: 1, title: "A", link: "https://www.example.com/a", source: "Example" }, { position: 2, title: "B", link: "https://other.org/b" }], related_questions: [{ question: "What do solar panels cost?" }, { question: "Are solar panels worth it?" }], local_results: { places: [{ title: "P" }] } }, serp, serpCheck(["ai_overview", "organic", "people_also_ask", "local_pack"]));
 answersCase("Result page: Serper layout", "serp", { organic: [{ position: 1, title: "A", link: "https://example.com/a" }, { position: 2, title: "B", link: "https://other.org/b" }], peopleAlsoAsk: [{ question: "What do solar panels cost?" }, { question: "Are solar panels worth it?" }], relatedSearches: [{ query: "x" }] }, serp, serpCheck(["organic", "people_also_ask", "related_searches"]));
 answersCase("Result page: DataForSEO layout (typed items, mobile redirect links)", "serp", { tasks: [{ result: [{ item_types: ["ai_overview", "organic", "people_also_ask"], items: [{ type: "organic", rank_group: 1, domain: "www.google.com", url: "https://www.google.com/goto?url=abc", breadcrumb: "https://example.com › prices", title: "A" }, { type: "people_also_ask", items: [{ title: "What do solar panels cost?" }, { title: "Are solar panels worth it?" }] }, { type: "organic", rank_group: 2, domain: "other.org", url: "https://other.org/b", title: "B" }] }] }] }, serp, serpCheck(["ai_overview", "organic", "people_also_ask"]));
+
+// --- The site's own search data: import.mjs --site -> site.json, and the report section ---
+function siteCase(name, file, content, expect, extra = []) {
+  const dir = path.join(tmp, `case-${++n}`);
+  fs.mkdirSync(dir);
+  const f = path.join(dir, file);
+  fs.writeFileSync(f, content);
+  let problems = [];
+  try {
+    execFileSync("node", [path.join(scripts, "import.mjs"), "--site", "--dir", dir, "--file", f, "--source", "Search Console", ...extra], { encoding: "utf8" });
+    if (fs.existsSync(path.join(dir, "keywords.json"))) problems.push("keywords.json was written");
+    const rows = JSON.parse(fs.readFileSync(path.join(dir, "site.json"), "utf8"));
+    const row = rows.find((r) => r.query === "solar panels");
+    if (!row) problems.push("row 'solar panels' missing");
+    else for (const [k, v] of Object.entries(expect)) if (row[k] !== v) problems.push(`${k}: expected ${v}, got ${JSON.stringify(row[k])}`);
+  } catch (e) {
+    problems = [String(e.stderr || e.message).trim()];
+  }
+  console.log(`${problems.length ? "FAIL" : "ok  "} ${name}${problems.length ? `: ${problems.join("; ")}` : ""}`);
+  if (problems.length) failed++;
+  return dir;
+}
+siteCase("Site data: Search Console export (Queries.csv)", "Queries.csv", "Top queries,Clicks,Impressions,CTR,Position\nsolar panels,12,340,3.53%,8.4\nsolar panels price,3,90,3.33%,12.1\n", { clicks: 12, impressions: 340, position: 8.4, page: null });
+siteCase("Site data: Search Console export, Finnish headers", "Kyselyt.csv", "Suosituimmat kyselyt,Klikkaukset,Näyttökerrat,Napsautussuhde,Sijainti\nsolar panels,12,1 340,\"0,9 %\",\"8,4\"\n", { clicks: 12, impressions: 1340, position: 8.4 });
+siteCase("Site data: Search Console API (keys = query, page; two pages added together)", "gsc.json", JSON.stringify({ rows: [{ keys: ["solar panels", "https://example.com/a"], clicks: 10, impressions: 300, ctr: 0.033, position: 8 }, { keys: ["solar panels", "https://example.com/b"], clicks: 2, impressions: 100, ctr: 0.02, position: 12 }] }), { clicks: 12, impressions: 400, position: 9, page: "https://example.com/a" });
+siteCase("Site data: query and page as fields (MCP layout)", "mcp.json", JSON.stringify([{ query: "Solar Panels", page: "https://example.com/a", clicks: 12, impressions: 340, ctr: 0.035, position: 8.4 }]), { clicks: 12, impressions: 340, position: 8.4, page: "https://example.com/a" });
+siteCase("Site data: Bing Webmaster Tools export", "bing.csv", '"Keyword","Impressions","Clicks","CTR","Avg. Position"\n"solar panels","340","12","3.53%","8.4"\n', { clicks: 12, impressions: 340, position: 8.4 });
+siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stringify({ d: [{ Query: "solar panels", Impressions: 340, Clicks: 12, AvgImpressionPosition: 8.4, AvgClickPosition: 3.1, Date: "/Date(1763856000000)/" }] }), { clicks: 12, impressions: 340, position: 8.4 });
+{
+  // Report: the own-site section shows the group with visibility, the group without, and the keyword at 5-15.
+  const dir = siteCase("Site data: --match keeps only the topic", "Queries.csv", "Top queries,Clicks,Impressions,CTR,Position\nsolar panels,12,340,3.53%,8.4\nheat pump,50,900,5.5%,2.0\n", { impressions: 340 }, ["--match", "solar"]);
+  let problems = [];
+  n++;
+  try {
+    fs.writeFileSync(path.join(dir, "keywords.json"), JSON.stringify([{ keyword: "solar panels", volume: 1000, cpc: 1, source: "test" }, { keyword: "solar panels price", volume: 500, cpc: 2, source: "test" }]));
+    fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify({ topic: "solar panels", lang: "en", groups: [{ name: "General", weight: 0.5, keywords: ["solar panels"] }, { name: "Price", weight: 0.5, keywords: ["solar panels price"] }] }));
+    const log = execFileSync("node", [path.join(scripts, "report.mjs"), "--dir", dir], { encoding: "utf8" });
+    const md = fs.readFileSync(path.join(dir, "report.md"), "utf8");
+    problems = [...want(/## Your site in search results/.test(md), "section missing"), ...want(/\| General \| 1\/1 \| 340 \| 12 \| 8\.4 \|/.test(md), "group row"), ...want(/not visible yet: Price\./.test(md), "group without visibility"), ...want(/\| solar panels \| General \| 1,000 \| 340 \| 8\.4 \|/.test(md), "near-top row"), ...want(!/heat pump/.test(md), "--match did not filter"), ...want(/1 match a grouped keyword, 1 at positions 5-15/.test(log), "log line")];
+  } catch (e) {
+    problems = [String(e.stderr || e.message).trim()];
+  }
+  console.log(`${problems.length ? "FAIL" : "ok  "} Report: own-site section${problems.length ? `: ${problems.join("; ")}` : ""}`);
+  if (problems.length) failed++;
+}
 
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(failed ? `\n${failed} of ${n} failed` : `\nall ${n} passed`);
