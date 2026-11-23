@@ -2,16 +2,22 @@
 // Builds the report from keywords.json + groups.json (+ chatgpt.json, serp-*.json and site.json when they exist).
 // Writes report.md and keywords.csv into the work folder. Node 18+, no dependencies. Makes no network calls.
 //
-//   node report.mjs [--dir .] [--budget 1000] [--lang fi|en]
+//   node report.mjs [--dir .] [--budget 1000-2000] [--lang fi|en]
 //
 // groups.json:
 // { "topic": "ilmalämpöpumppu", "market": "Suomi, suomi", "currency": "USD", "main": "ilmalämpöpumppu",
+//   "report_currency": "EUR", "budget": { "low": 1000, "high": 2000 },
+//   "rate": { "value": 0.91, "date": "2026-11-20", "source": "Euroopan keskuspankki" },
 //   "groups": [{ "name": "Hinta", "intent": "Osto", "weight": 0.5, "business": 1, "page": "Hintasivu",
 //                "channel": "Google Ads + SEO", "keywords": ["ilmalämpöpumppu hinta|ilmalämpöpumpun hinta", "..."] }] }
 // "a|b" = main form | close variant. Google usually reports the same volume for both, so only the main form's
 // volume is counted; the variant is shown in the table and its AI volume is used when it is larger.
 // A keyword without a CPC (Keyword Planner exports have only bids) uses the midpoint of its low and high bid.
 // Budget share of a group = sum(volume x cpc) x weight x business, as a share of all groups.
+// Money is shown in report_currency (EUR by default). The budget is a monthly range in that currency, from
+// groups.json or --budget "low-high" (one number is fine too). When the source's prices are in another currency,
+// "rate" (one unit of the source currency in report_currency, written by rate.mjs) converts them. Without a
+// rate the prices stay in the source currency and the report says so.
 import fs from "node:fs";
 import path from "node:path";
 
@@ -34,11 +40,18 @@ const keywords = read("keywords.json");
 const cfg = read("groups.json");
 const lang = args.lang ?? cfg.lang ?? "fi";
 const T = {
-  fi: { site: "Oma sivusto hakutuloksissa", siteNote: "Luvut kertovat sivuston omasta näkyvyydestä. Markkinan hakumäärät ovat yllä olevissa taulukoissa.", siteKw: "Hakusanoja näkyvissä", imp: "Näyttökerrat", clicks: "Klikkaukset", pos: "Keskisijainti", near: "Lähellä kärkeä: sijat 5–15", nearNone: "Ryhmien hakusanoista yksikään ei ole sijoilla 5–15.", siteNone: "Ryhmät, joissa sivusto ei vielä näy", siteOther: "Muut haut, joilla sivusto näkyy", title: "Avainsanatutkimus", data: "Data", market: "Markkina", fetched: "Raportti tehty", found: "hakusanaa löytyi", grouped: "valittu ryhmiin", map: "Aihekartta", perMonth: "hakua/kk", table: "Hakusanat ryhmittäin", kw: "Hakusana", vol: "Haut/kk", cpc: "Klikkaushinta", bid: "Sivun yläosan hinta", comp: "Kilpailu", ai: "Tekoälyhaut/kk", intent: "Hakuaikomus", page: "Sivu", channel: "Kanava", season: "Kausivaihtelu", month: "Kuukausi", peak: "huippu", budget: "Budjetin jako", group: "Ryhmä", weight: "Paino", share: "Osuus", perMonthMoney: "kk", budgetNote: "Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.", noCpc: "Hakusanat ilman klikkaushintaa eivät vaikuta jakoon", aiq: "Tekoälyn vastaukset", searches: "Tekoälyn tekemät haut", sources: "Lähteet", brands: "Mainitut yritykset ja merkit", serp: "Googlen tulossivu", types: "Tulostyypit", paa: "Muut kysyvät myös", top: "Kärkitulokset", rest: "Suurimmat ryhmittelemättömät hakusanat", missing: "Ryhmissä on hakusanoja, joita datassa ei ole", total: "Yhteensä", variant: "myös", noData: "ei dataa" },
-  en: { site: "Your site in search results", siteNote: "These numbers show the site's own visibility. Market search volumes are in the tables above.", siteKw: "Keywords visible", imp: "Impressions", clicks: "Clicks", pos: "Avg. position", near: "Close to the top: positions 5–15", nearNone: "None of the grouped keywords is at positions 5–15.", siteNone: "Groups where the site is not visible yet", siteOther: "Other searches the site is visible for", title: "Keyword research", data: "Data", market: "Market", fetched: "Report built", found: "keywords found", grouped: "picked into groups", map: "Topic map", perMonth: "searches/mo", table: "Keywords by group", kw: "Keyword", vol: "Searches/mo", cpc: "CPC", bid: "Top of page bid", comp: "Competition", ai: "AI searches/mo", intent: "Intent", page: "Page", channel: "Channel", season: "Seasonality", month: "Month", peak: "peak", budget: "Budget split", group: "Group", weight: "Weight", share: "Share", perMonthMoney: "mo", budgetNote: "Share = the group's (searches × CPC) × intent weight × business weight. The split is a starting point that real ad data refines.", noCpc: "Keywords without a CPC do not affect the split", aiq: "AI answers", searches: "Searches the AI ran", sources: "Sources", brands: "Companies and brands named", serp: "Google result page", types: "Result types", paa: "People also ask", top: "Top results", rest: "Largest ungrouped keywords", missing: "Groups name keywords that are not in the data", total: "Total", variant: "also", noData: "no data" },
+  fi: { site: "Oma sivusto hakutuloksissa", siteNote: "Luvut kertovat sivuston omasta näkyvyydestä. Markkinan hakumäärät ovat yllä olevissa taulukoissa.", siteKw: "Hakusanoja näkyvissä", imp: "Näyttökerrat", clicks: "Klikkaukset", pos: "Keskisijainti", near: "Lähellä kärkeä: sijat 5–15", nearNone: "Ryhmien hakusanoista yksikään ei ole sijoilla 5–15.", siteNone: "Ryhmät, joissa sivusto ei vielä näy", siteOther: "Muut haut, joilla sivusto näkyy", title: "Avainsanatutkimus", data: "Data", market: "Markkina", fetched: "Raportti tehty", found: "hakusanaa löytyi", grouped: "valittu ryhmiin", map: "Aihekartta", perMonth: "hakua/kk", table: "Hakusanat ryhmittäin", kw: "Hakusana", vol: "Haut/kk", cpc: "Klikkaushinta", bid: "Sivun yläosan hinta", comp: "Kilpailu", ai: "Tekoälyhaut/kk", intent: "Hakuaikomus", page: "Sivu", channel: "Kanava", season: "Kausivaihtelu", month: "Kuukausi", peak: "huippu", budget: "Budjetin jako", group: "Ryhmä", weight: "Paino", share: "Osuus", perMonthMoney: "kk", budgetRange: "Alustava budjetti", rateNote: (from, to, r) => `Klikkaushinnat on muunnettu valuutasta ${from} valuuttaan ${to} kurssilla ${r.value.toLocaleString("fi-FI", { maximumFractionDigits: 4 })}${r.source || r.date ? ` (${[r.source, r.date].filter(Boolean).join(", ")})` : ""}.`, noRate: (from, to) => `Klikkaushinnat ovat lähteen valuutassa ${from}, koska vaihtokurssia valuuttaan ${to} ei ole annettu. Budjetin osuudet eivät riipu valuutasta.`, budgetNote: "Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.", noCpc: "Hakusanat ilman klikkaushintaa eivät vaikuta jakoon", aiq: "Tekoälyn vastaukset", searches: "Tekoälyn tekemät haut", sources: "Lähteet", brands: "Mainitut yritykset ja merkit", serp: "Googlen tulossivu", types: "Tulostyypit", paa: "Muut kysyvät myös", top: "Kärkitulokset", rest: "Suurimmat ryhmittelemättömät hakusanat", missing: "Ryhmissä on hakusanoja, joita datassa ei ole", total: "Yhteensä", variant: "myös", noData: "ei dataa" },
+  en: { site: "Your site in search results", siteNote: "These numbers show the site's own visibility. Market search volumes are in the tables above.", siteKw: "Keywords visible", imp: "Impressions", clicks: "Clicks", pos: "Avg. position", near: "Close to the top: positions 5–15", nearNone: "None of the grouped keywords is at positions 5–15.", siteNone: "Groups where the site is not visible yet", siteOther: "Other searches the site is visible for", title: "Keyword research", data: "Data", market: "Market", fetched: "Report built", found: "keywords found", grouped: "picked into groups", map: "Topic map", perMonth: "searches/mo", table: "Keywords by group", kw: "Keyword", vol: "Searches/mo", cpc: "CPC", bid: "Top of page bid", comp: "Competition", ai: "AI searches/mo", intent: "Intent", page: "Page", channel: "Channel", season: "Seasonality", month: "Month", peak: "peak", budget: "Budget split", group: "Group", weight: "Weight", share: "Share", perMonthMoney: "mo", budgetRange: "Preliminary budget", rateNote: (from, to, r) => `Click prices are converted from ${from} to ${to} at ${r.value.toLocaleString("en-US", { maximumFractionDigits: 4 })}${r.source || r.date ? ` (${[r.source, r.date].filter(Boolean).join(", ")})` : ""}.`, noRate: (from, to) => `Click prices are in the source currency ${from}, because no exchange rate to ${to} was given. The budget shares do not depend on the currency.`, budgetNote: "Share = the group's (searches × CPC) × intent weight × business weight. The split is a starting point that real ad data refines.", noCpc: "Keywords without a CPC do not affect the split", aiq: "AI answers", searches: "Searches the AI ran", sources: "Sources", brands: "Companies and brands named", serp: "Google result page", types: "Result types", paa: "People also ask", top: "Top results", rest: "Largest ungrouped keywords", missing: "Groups name keywords that are not in the data", total: "Total", variant: "also", noData: "no data" },
 }[lang === "en" ? "en" : "fi"];
 const loc = lang === "en" ? "en-US" : "fi-FI";
-const cur = cfg.currency ?? keywords.find((k) => k.currency)?.currency ?? "USD";
+const srcCur = String(cfg.currency ?? keywords.find((k) => k.currency)?.currency ?? "USD").toUpperCase();
+const outCur = String(cfg.report_currency ?? "EUR").toUpperCase();
+const rate = srcCur !== outCur && Number(cfg.rate?.value) > 0 ? { ...cfg.rate, value: Number(cfg.rate.value) } : null;
+const fx = rate ? rate.value : 1;
+const priceCur = srcCur === outCur || rate ? outCur : srcCur; // the currency the click prices are shown in
+const sym = (c) => ({ EUR: "€", USD: "$", GBP: "£" })[c] ?? c;
+const cur = sym(priceCur);
+const conv = (v) => (v == null ? null : v * fx);
 const n = (v) => (v == null ? "–" : Math.round(v).toLocaleString(loc));
 const money = (v) => (v == null ? "–" : v.toLocaleString(loc, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + " " + cur);
 const cell = (s) => String(s ?? "").replace(/\|/g, "/").replace(/\n/g, " ");
@@ -52,7 +65,7 @@ const groups = (cfg.groups ?? []).map((g) => {
     forms.filter((f) => !byKw.has(f)).forEach((f) => missing.push(f));
     const k = found[0] ?? {};
     const ai = found.map((f) => f.ai_volume).filter((v) => v != null);
-    return { keyword: forms[0], variants: forms.slice(1), volume: k.volume ?? null, cpc: k.cpc ?? (k.bid_low != null && k.bid_high != null ? (k.bid_low + k.bid_high) / 2 : null), bid_low: k.bid_low ?? null, bid_high: k.bid_high ?? null, competition: k.competition ?? null, ai_volume: ai.length ? Math.max(...ai) : null };
+    return { keyword: forms[0], variants: forms.slice(1), volume: k.volume ?? null, cpc: conv(k.cpc ?? (k.bid_low != null && k.bid_high != null ? (k.bid_low + k.bid_high) / 2 : null)), bid_low: conv(k.bid_low ?? null), bid_high: conv(k.bid_high ?? null), competition: k.competition ?? null, ai_volume: ai.length ? Math.max(...ai) : null };
   });
   rows.sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0));
   const volume = rows.reduce((s, r) => s + (r.volume ?? 0), 0);
@@ -62,7 +75,16 @@ const groups = (cfg.groups ?? []).map((g) => {
   return { ...g, rows, volume, spend, weight, business, score: spend * weight * business };
 });
 const totalScore = groups.reduce((s, g) => s + g.score, 0);
-const budget = args.budget ? Number(args.budget) : null;
+// Budget: a monthly range in the report currency. "1000-2000", "1000" or { low, high } in groups.json.
+const num = (v) => Number(String(v).replace(/[\s\u00a0]/g, "").replace(",", "."));
+const parseBudget = (b) => {
+  if (b == null || b === "" || b === "true") return null;
+  const parts = typeof b === "object" ? [b.low ?? b.min ?? b.high, b.high ?? b.max ?? b.low] : String(b).split(/\s*[-–]\s*/).slice(0, 2);
+  const v = parts.map(num).filter((x) => x > 0).sort((a, b) => a - b);
+  return v.length ? { low: v[0], high: v[v.length - 1] } : null;
+};
+const budget = parseBudget(args.budget) ?? parseBudget(cfg.budget);
+const range = (lo, hi) => (Math.round(lo) === Math.round(hi) ? n(lo) : `${n(lo)}–${n(hi)}`);
 const anyAi = groups.some((g) => g.rows.some((r) => r.ai_volume != null));
 const anyBid = groups.some((g) => g.rows.some((r) => r.bid_low != null || r.bid_high != null));
 const sources = [...new Set(keywords.map((k) => k.source).filter(Boolean))];
@@ -109,15 +131,18 @@ if (main?.months?.length) {
 }
 
 out.push(`## ${T.budget}`, "");
-const bHead = [T.group, T.intent, T.weight, T.share, ...(budget ? [`${cur}/${T.perMonthMoney}`] : [])];
+if (budget) out.push(`${T.budgetRange}: ${range(budget.low, budget.high)} ${sym(outCur)}/${T.perMonthMoney}`, "");
+const bHead = [T.group, T.intent, T.weight, T.share, ...(budget ? [`${sym(outCur)}/${T.perMonthMoney}`] : [])];
 out.push(`| ${bHead.join(" | ")} |`, `| --- | --- |${bHead.slice(2).map(() => " ---: ").join("|")}|`);
 for (const g of [...groups].sort((a, b) => b.score - a.score)) {
   const share = totalScore ? g.score / totalScore : 0;
   const w = (g.weight * g.business).toLocaleString(loc, { maximumFractionDigits: 2 });
-  out.push(`| ${[cell(g.name), cell(g.intent ?? "–"), w, (share * 100).toLocaleString(loc, { maximumFractionDigits: 1 }) + " %", ...(budget ? [n(share * budget)] : [])].join(" | ")} |`);
+  out.push(`| ${[cell(g.name), cell(g.intent ?? "–"), w, (share * 100).toLocaleString(loc, { maximumFractionDigits: 1 }) + " %", ...(budget ? [range(share * budget.low, share * budget.high)] : [])].join(" | ")} |`);
 }
-if (budget) out.push(`| **${T.total}** | | | 100 % | **${n(budget)}** |`);
+if (budget) out.push(`| **${T.total}** | | | 100 % | **${range(budget.low, budget.high)}** |`);
 out.push("", T.budgetNote);
+if (rate) out.push("", T.rateNote(srcCur, outCur, rate));
+else if (srcCur !== outCur) out.push("", T.noRate(srcCur, outCur));
 const noCpc = groups.flatMap((g) => g.rows).filter((r) => r.cpc == null).length;
 if (noCpc) out.push("", `${T.noCpc}: ${noCpc}.`);
 out.push("");
@@ -206,7 +231,7 @@ const used = new Set(groups.flatMap((g) => (g.keywords ?? []).flatMap((e) => e.s
 const restRows = keywords.filter((k) => !used.has(k.keyword.toLowerCase())).sort((a, b) => (b.volume ?? 0) - (a.volume ?? 0)).slice(0, 25);
 if (restRows.length) {
   out.push(`## ${T.rest}`, "", `| ${T.kw} | ${T.vol} | ${T.cpc} |`, "| --- | ---: | ---: |");
-  for (const r of restRows) out.push(`| ${cell(r.keyword)} | ${n(r.volume)} | ${money(r.cpc)} |`);
+  for (const r of restRows) out.push(`| ${cell(r.keyword)} | ${n(r.volume)} | ${money(conv(r.cpc))} |`);
   out.push("");
 }
 if (missing.length) out.push(`> ${T.missing}: ${[...new Set(missing)].join(", ")}`, "");
@@ -215,10 +240,11 @@ fs.writeFileSync(path.join(dir, "report.md"), out.join("\n"));
 
 const groupOf = new Map(groups.flatMap((g) => g.rows.flatMap((r) => [r.keyword, ...r.variants].map((f) => [f, g]))));
 const q = (v) => (v == null ? "" : /[",\n;]/.test(String(v)) ? `"${String(v).replace(/"/g, '""')}"` : String(v));
-const csv = [["keyword", "group", "intent", "volume", "cpc", "bid_low", "bid_high", "competition", "ai_volume", "source"].join(",")];
+const csv = [["keyword", "group", "intent", "volume", "cpc", "bid_low", "bid_high", "currency", "competition", "ai_volume", "source"].join(",")];
+const c2 = (v) => (v == null ? v : Math.round(v * fx * 100) / 100);
 for (const k of keywords) {
   const g = groupOf.get(k.keyword.toLowerCase());
-  csv.push([k.keyword, g?.name, g?.intent, k.volume, k.cpc, k.bid_low, k.bid_high, k.competition, k.ai_volume, k.source].map(q).join(","));
+  csv.push([k.keyword, g?.name, g?.intent, k.volume, c2(k.cpc), c2(k.bid_low), c2(k.bid_high), priceCur, k.competition, k.ai_volume, k.source].map(q).join(","));
 }
 fs.writeFileSync(path.join(dir, "keywords.csv"), "﻿" + csv.join("\n") + "\n");
 

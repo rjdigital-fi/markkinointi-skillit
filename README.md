@@ -13,12 +13,12 @@ Raportissa on:
 - aihekartta, josta näkee aiheen haarat yhdellä silmäyksellä
 - hakusanat ryhmiteltyinä: hakumäärä, klikkaushinta, kilpailu ja hakuaikomus
 - pääsanan kausivaihtelu 12 kuukaudelta
-- ehdotus budjetin jaosta ryhmien kesken
+- ehdotus budjetin jaosta ryhmien kesken, euroina antamanne budjettihaarukan mukaan
 - mitä tekoäly vastaa ostajan kysymyksiin, mitä hakuja se tekee ja mihin lähteisiin se nojaa
 - mitä Googlen tulossivulla näkyy: tekoälykatsaus, "Muut kysyvät myös" ja kärkitulokset
 - oman sivustonne tilanne, jos annatte Search Consolen tai Bing Webmaster Toolsin datan: missä ryhmissä sivusto jo näkyy, missä ei vielä ja mitkä hakusanat ovat sijoilla 5–15
 
-Menetelmä on sama kuin oppaassani [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus). Valmis esimerkki: [examples/aurinkopaneelit/report.md](examples/aurinkopaneelit/report.md).
+Menetelmä on sama kuin oppaassani [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus). Valmis esimerkki dioina: [examples/aurinkopaneelit](examples/aurinkopaneelit/).
 
 ### Valitkaa datalähde itse
 
@@ -58,14 +58,14 @@ Skriptit tarvitsevat Node.js-version 18 tai uudemman. Muita asennuksia ei tarvit
 Kirjoittakaa Claude Codessa esimerkiksi:
 
 ```
-Tee avainsanatutkimus aiheesta aurinkopaneelit. Asennamme paneeleita omakotitaloihin Tampereella ja Turussa. Budjetti on 1 000 euroa kuukaudessa.
+Tee avainsanatutkimus aiheesta aurinkopaneelit. Asennamme paneeleita omakotitaloihin Tampereella ja Turussa. Budjetti on 1 000–2 000 euroa kuukaudessa.
 ```
 
 Tai kutsukaa suoraan: `/rjdigital:avainsanatutkimus`.
 
 Agentti käy työn läpi vaiheittain: lähteen valinta, aihekartta, hakumäärät ja hinnat, ryhmittely ja hakuaikomus, tekoälyn kysymykset, oman sivuston tilanne ja lopuksi raportti. Se kysyy teiltä ne asiat, jotka vain te tiedätte: mitä myytte, mitä ette myy ja millä alueella.
 
-Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.md` on raportti ja `keywords.csv` koko hakusanalista taulukkolaskentaan.
+Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.html` on raportti dioina (avautuu selaimessa ja tulostuu PDF:ksi), `report.md` sama raportti tekstinä ja `keywords.csv` koko hakusanalista taulukkolaskentaan.
 
 ### Hyvä tietää
 
@@ -73,6 +73,7 @@ Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.md` on raportti ja
 - Maksullisissa lähteissä haut kuluttavat krediittejä tai rahaa. Agentti kertoo arvion ennen ensimmäistä hakua ja toteutuneen kulun lopuksi. Esimerkkiraportin haut maksoivat DataForSEO:ssa yhteensä noin 0,15 dollaria.
 - Rajapinnan avaimet pidetään ympäristömuuttujissa tai MCP-yhteydessä. Niitä ei kirjoiteta keskusteluun eikä tiedostoihin.
 - Budjetin jako on lähtökohta, joka lasketaan hakumääristä, klikkaushinnoista ja hakuaikomuksesta. Oikea mainosdata tarkentaa sen ensimmäisten viikkojen jälkeen.
+- Agentti kysyy aina alustavan budjettihaarukan. Raportti on euroissa: jos lähteen klikkaushinnat ovat dollareissa, ne muunnetaan Euroopan keskuspankin viitekurssilla, ja kurssi päivämäärineen näkyy raportissa.
 
 ## Tekijä
 

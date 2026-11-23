@@ -162,6 +162,43 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
   }
   console.log(`${problems.length ? "FAIL" : "ok  "} Report: own-site section${problems.length ? `: ${problems.join("; ")}` : ""}`);
   if (problems.length) failed++;
+
+  // Report: budget range in euros, click prices converted with the given rate.
+  n++;
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(dir, "groups.json"), "utf8"));
+    fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify({ ...cfg, currency: "USD", budget: { low: 1000, high: 2000 }, rate: { value: 0.5, date: "2026-01-02", source: "test" } }));
+    execFileSync("node", [path.join(scripts, "report.mjs"), "--dir", dir], { encoding: "utf8" });
+    const md = fs.readFileSync(path.join(dir, "report.md"), "utf8");
+    const csv = fs.readFileSync(path.join(dir, "keywords.csv"), "utf8");
+    problems = [...want(/Preliminary budget: 1,000–2,000 €\/mo/.test(md), "range line"), ...want(/\| Price \| – \| 0\.5 \| 50 % \| 500–1,000 \|/.test(md), "group range"), ...want(/\| solar panels price \| 500 \| 1\.00 € \|/.test(md), "converted price"), ...want(/converted from USD to EUR at 0\.5 \(test, 2026-01-02\)/.test(md), "rate note"), ...want(/solar panels price,Price,,500,1,,,EUR/.test(csv), "csv currency")];
+    fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify({ ...cfg, currency: "USD" }));
+    execFileSync("node", [path.join(scripts, "report.mjs"), "--dir", dir, "--budget", "1500"], { encoding: "utf8" });
+    const md2 = fs.readFileSync(path.join(dir, "report.md"), "utf8");
+    problems.push(...want(/\*\*1,500\*\* \|/.test(md2), "single budget"), ...want(/2\.00 \$/.test(md2) && /no exchange rate to EUR/.test(md2), "no rate keeps source currency"));
+  } catch (e) {
+    problems = [String(e.stderr || e.message).trim()];
+  }
+  console.log(`${problems.length ? "FAIL" : "ok  "} Report: budget range and currency${problems.length ? `: ${problems.join("; ")}` : ""}`);
+  if (problems.length) failed++;
+
+  // Slide report: same data as report.md, in both languages.
+  n++;
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(dir, "groups.json"), "utf8"));
+    fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify({ ...cfg, currency: "USD", budget: { low: 1000, high: 2000 }, rate: { value: 0.5, date: "2026-01-02", source: "test" } }));
+    const out = execFileSync("node", [path.join(scripts, "report-html.mjs"), "--dir", dir, "--note", "Test <note>", "--brand", "ACME"], { encoding: "utf8" });
+    const en = fs.readFileSync(path.join(dir, "report.html"), "utf8");
+    problems = [...want(/report\.html: \d+ slides/.test(out), "prints the slide count"), ...want(/<html lang="en">/.test(en), "lang en"), ...want(/How 1,000–2,000 € a month splits/.test(en), "budget title"), ...want(/converted from USD to EUR at 0\.5 \(test, 2026-01-02\)/.test(en), "rate note"), ...want(/Test &lt;note&gt;/.test(en), "escaped note"), ...want(/class="brand">ACME</.test(en), "brand"), ...want(!/<script/i.test(en), "no scripts"), ...want(/solar panels price/.test(en), "keyword row")];
+    execFileSync("node", [path.join(scripts, "report-html.mjs"), "--dir", dir, "--lang", "fi", "--out", path.join(dir, "fi.html")], { encoding: "utf8" });
+    const fi = fs.readFileSync(path.join(dir, "fi.html"), "utf8");
+    problems.push(...want(/<html lang="fi">/.test(fi), "lang fi"), ...want(/Näin 1.000–2.000 € kuukaudessa jakautuu ryhmille/.test(fi), "fi budget title"), ...want(!/class="brand"/.test(fi), "no brand by default"));
+    fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify(cfg));
+  } catch (e) {
+    problems = [String(e.stderr || e.message).trim()];
+  }
+  console.log(`${problems.length ? "FAIL" : "ok  "} Slide report: both languages, budget range and currency${problems.length ? `: ${problems.join("; ")}` : ""}`);
+  if (problems.length) failed++;
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });

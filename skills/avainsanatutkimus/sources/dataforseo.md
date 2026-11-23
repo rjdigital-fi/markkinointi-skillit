@@ -48,8 +48,8 @@ The current ones are on dataforseo.com. Tell the user the cost the script prints
 
 Notes on the data:
 
-- Volumes, click prices and bids come from Google Ads data. Prices are in US dollars unless the account says
-  otherwise. Set `"currency"` in `groups.json` to match.
+- Volumes, click prices and bids come from Google Ads data. Prices are always in US dollars: the
+  request takes no currency. Set `"currency": "USD"` in `groups.json` and run `rate.mjs` so the report shows euros.
 - `--match` keeps only keywords that fit the regex. Use the stem of the topic, for example `aurinko`.
 - AI search volume is DataForSEO's own estimate and does not exist for every language and country. When the
   call returns nothing, leave the column out.

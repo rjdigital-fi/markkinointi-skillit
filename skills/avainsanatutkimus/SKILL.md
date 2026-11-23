@@ -36,7 +36,7 @@ Work in one folder per research, by default `avainsanatutkimus/<topic-slug>/` in
 | `chatgpt.json` | AI answers: the question, the searches the AI ran, sources, brands named |
 | `serp-<keyword>.json` | Google result page: result types, People also ask, top results |
 | `site.json` | optional: the site's own queries from Search Console or Bing Webmaster Tools, with clicks, impressions, position and page |
-| `report.md`, `keywords.csv` | the result |
+| `report.html`, `report.md`, `keywords.csv` | the result |
 
 Scripts are in `scripts/` next to this file. They need Node 18 or newer and nothing else.
 
@@ -46,6 +46,9 @@ Scripts are in `scripts/` next to this file. They need Node 18 or newer and noth
 - `scripts/answers.mjs` puts an AI answer or a Google result page from any source into `chatgpt.json` or
   `serp-<keyword>.json`.
 - `scripts/report.mjs` builds `report.md` and `keywords.csv`. It makes no network calls.
+- `scripts/report-html.mjs` builds `report.html`, the same report as slides in one HTML file. It makes no
+  network calls.
+- `scripts/rate.mjs` fetches the exchange rate for the report when the source's prices are in another currency.
 - `scripts/dataforseo.mjs` is a ready-made fetcher for one source, DataForSEO. Other sources go through their
   own MCP or API and the two importers.
 
@@ -55,7 +58,11 @@ Ask only what you cannot see from the conversation or the project:
 
 1. The topic (product or service) and what the business sells: installs, sells online, sells to businesses.
 2. The market: country and language. Local business: which towns.
-3. A monthly ad budget, if a budget split is wanted.
+3. A preliminary monthly ad budget as a range, for example 1 000 to 2 000 euros a month. Always ask this,
+   also when the user gave no budget or gave one number: with one number, ask for the low and the high end
+   they could consider. The range is a starting point, and the user does not need to commit to it. If the user
+   does not want to give one, build the report without it: the split is then shown as shares only.
+4. The currency of the report. Use euros unless the user asks for another currency.
 
 Then choose the data source with the user. Read `sources/overview.md` first. It lists the five kinds of data
 this research uses and which sources give which. In short:
@@ -115,6 +122,8 @@ searches that one page can answer.
   "main": "aurinkopaneeli",
   "market": "Suomi, suomi",
   "currency": "USD",
+  "report_currency": "EUR",
+  "budget": { "low": 1000, "high": 2000 },
   "lang": "fi",
   "groups": [
     { "name": "Hinta", "intent": "Osto", "weight": 0.5, "business": 1,
@@ -138,7 +147,15 @@ searches that one page can answer.
   does not sell. Ask the user. Do not guess margins.
 - `page`: the page type that answers the group (service page, price page, town page, comparison, guide).
 - `channel`: where the group is worth working on: Google Ads, SEO, local SEO, AI visibility, or several.
-- `currency`: the currency of the prices in the source. Check it. Do not convert.
+- `currency`: the currency of the prices in the source. Check it. Do not convert the numbers in
+  `keywords.json` yourself.
+- `report_currency`: the currency of the report, from step 0. Euros (`EUR`) by default.
+- `budget`: the monthly range from step 0, in the report currency. Leave it out when the user gave none.
+- When `currency` differs from `report_currency` (DataForSEO, for example, gives US dollars), run
+  `node scripts/rate.mjs --dir <folder>`. It fetches the European Central Bank's reference rate and writes it
+  into `groups.json` as `rate` with its date. The report converts the click prices with it and names the rate.
+  Never use a rate from memory. If the fetch fails, ask the user for a rate and its source, or leave `rate`
+  out: the report then keeps the prices in the source currency and says so.
 - `main`: the keyword whose twelve months are shown as the seasonality table.
 
 ## Step 4: what people ask AI
@@ -194,10 +211,18 @@ Read it before you write the summary:
 ## Step 6: the report
 
 ```
-node scripts/report.mjs --dir <folder> --budget <monthly budget> --lang fi
+node scripts/report.mjs --dir <folder> --lang fi
+node scripts/report-html.mjs --dir <folder> --lang fi
 ```
 
-`report.md` holds the topic map (a Mermaid mind map), the keyword tables by group, the seasonality of the main
+Always run both. The budget range and the currency come from `groups.json`. `--budget 1000-2000` overrides
+the range.
+
+`report.html` is the report the user reads: slides in one file that opens in any browser and prints to PDF
+one slide per page. `--note "..."` adds a line to the cover, for example what the numbers are based on.
+`--brand "NAME"` puts the user's company name at the top of the cover: use it only when the user asks.
+
+Both reports hold the topic map (a Mermaid mind map in `report.md`), the keyword tables by group, the seasonality of the main
 keyword, the budget split, the AI answers, the result page notes, the site's own visibility (when `site.json` exists)
 and the largest ungrouped keywords. Read the
 ungrouped list: a large keyword left there is either off-topic or a gap in your groups. Fix `groups.json` and
@@ -209,8 +234,8 @@ Then tell the user, in a few short paragraphs and in their language:
 2. What to do first: the 3 to 5 groups where buying intent, volume and a missing or weak page meet. With the
    site's own data, name the groups where the site is not visible and the keywords at positions 5 to 15.
    Without it, say that the pages were not checked against search data.
-3. The budget split and what it rests on. It is a starting point from volume and click price. Real campaign
-   data replaces it after the first weeks.
+3. The budget split for the low and the high end of the range, and what it rests on. It is a starting point
+   from volume and click price. Real campaign data replaces it after the first weeks.
 4. The source and date of the data, what was skipped, and what the fetching cost.
 
 Do not promise rankings, traffic or sales.

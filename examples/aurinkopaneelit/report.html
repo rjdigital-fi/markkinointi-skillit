@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Avainsanatutkimus: aurinkopaneelit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#fff;--soft:#f3f3f3;--soft-2:#e8e8e8;--ink:#141414;--muted:#6b6b6b;--line:#e2e2e2;--accent:#ff5a1f;--night:#000;--font:"Hanken Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--soft);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.deck{width:min(1280px,100% - 32px);margin:32px auto;display:grid;gap:28px}
+.slide{background:var(--paper);border-radius:20px;padding:48px 56px 28px;min-height:720px;display:flex;flex-direction:column;min-width:0}
+.kicker{margin:0 0 14px;font-size:14px;font-weight:500;color:var(--muted)}
+h1,h2,h3,p{margin:0}
+h2{font-size:38px;font-weight:500;line-height:1.15;letter-spacing:-0.02em;max-width:22em}
+.sub{margin-top:12px;color:var(--muted);max-width:52em}
+.body{margin-top:32px;flex:1;min-width:0}
+.foot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted)}
+.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.note{margin-top:16px;font-size:14px;color:var(--muted)}
+.note b{color:var(--ink);font-weight:500}
+/* cover */
+.cover{background:var(--night) radial-gradient(900px circle at 100% 0%,rgba(255,255,255,.13),transparent 60%);color:#fff;padding-bottom:48px}
+.brand{font-size:14px;font-weight:600;letter-spacing:.32em}
+.cover-main{margin-top:auto}
+.cover .kicker{color:rgba(255,255,255,.64);font-size:16px}
+h1{font-size:104px;font-weight:500;line-height:1;letter-spacing:-0.035em;overflow-wrap:anywhere}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:48px 0 0}
+.stats div{border-top:1px solid rgba(255,255,255,.28);padding-top:14px;display:flex;flex-direction:column-reverse;gap:2px}
+.stats dd{margin:0;font-size:40px;font-weight:500;letter-spacing:-0.02em;line-height:1.1}
+.stats dt{font-size:14px;color:rgba(255,255,255,.64)}
+.cover-meta{margin-top:40px;display:flex;flex-wrap:wrap;gap:6px 32px;font-size:14px;color:rgba(255,255,255,.64)}
+.cover-meta b{color:#fff;font-weight:500;margin-right:6px}
+.cover-note{flex-basis:100%;margin-top:10px;max-width:70em}
+/* pills */
+.pills{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.pills li{background:var(--soft);border-radius:999px;padding:4px 12px;font-size:14px;font-weight:500}
+.pills-s li{font-size:12px;padding:2px 10px;color:var(--muted)}
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:14px;line-height:1.35}
+th{text-align:left;font-size:12px;font-weight:500;color:var(--muted);padding:0 0 8px;border-bottom:1px solid var(--ink)}
+th.num{padding-left:14px}
+td{padding:7px 0;border-bottom:1px solid var(--line);vertical-align:top}
+td.num{padding-left:14px}
+td small{display:block;font-size:12px;color:var(--muted)}
+tr.zero td{color:var(--muted)}
+tr.sum td{font-weight:600;border-bottom:0;border-top:1px solid var(--ink)}
+td.path{padding-left:18px;color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+th:last-child:not(.num){padding-left:18px}
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 56px;align-items:start}
+.cols-wide{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr)}
+.h{font-size:15px;font-weight:600;margin:0 0 12px}
+.cols div>.h:not(:first-child){margin-top:28px}
+/* keyword groups */
+.kw-group+.kw-group{margin-top:30px}
+.kw-group h3{font-size:20px;font-weight:500;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.kw-group h3 span{font-size:14px;color:var(--muted);font-weight:400;white-space:nowrap}
+.kw-group .pills{margin:8px 0 14px}
+/* topic map */
+.map{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.map-lines{display:none}
+.map-center{grid-column:1/-1;background:var(--night);color:#fff;border-radius:14px;padding:22px 20px;text-align:center;display:flex;flex-direction:column;justify-content:center;gap:4px;line-height:1.3}
+.map-center b{font-size:24px;font-weight:600;letter-spacing:-0.01em}
+.map-center span{font-size:14px;color:rgba(255,255,255,.72)}
+.map-card{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:14px 16px 0;font-size:14px;line-height:1.4}
+.map-card h3{margin:0 0 8px;font-size:15px;font-weight:600;line-height:20px;display:flex;justify-content:space-between;align-items:center;gap:8px;white-space:nowrap}
+.map-card h3 span{font-size:11px;font-weight:500;color:var(--muted);background:var(--soft);border-radius:999px;padding:1px 8px}
+.map-card ul{list-style:none;margin:0;padding:0}
+.map-card li{display:flex;justify-content:space-between;gap:10px;height:28px;align-items:center;border-top:1px solid var(--line)}
+.map-card li span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.map-card .n{font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--muted)}
+.map-card p{height:26px;display:flex;align-items:center;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
+.map-extra{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px;margin-top:16px}
+@media (min-width:1312px){
+.map{display:block;position:relative;height:var(--mh)}
+.map-lines{display:block;position:absolute;inset:0;width:100%;height:100%}
+.map-lines path{fill:none;stroke:var(--accent);stroke-width:1.5;opacity:.55}
+.map-center{position:absolute;left:var(--x);top:var(--y);width:260px;height:110px;padding:0 16px}
+.map .map-card{position:absolute;left:var(--x);top:var(--y);width:270px;height:var(--h)}
+}
+/* months */
+.season{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:56px;align-items:end}
+.months{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(12,1fr);gap:10px;height:400px}
+.months li{height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:8px;font-size:13px;line-height:1.15;color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}
+.months b{font-weight:500;color:var(--ink)}
+.months i{display:block;width:100%;background:var(--soft-2);border-radius:4px 4px 0 0}
+.months .peak i{background:var(--accent)}
+.months small{display:block;font-size:11px}
+.tiles{display:grid;gap:12px}
+.tile{background:var(--soft);border-radius:14px;padding:18px 20px;display:flex;flex-direction:column}
+.tile span,.tile em{font-size:13px;color:var(--muted);font-style:normal}
+.tile b{font-size:34px;font-weight:500;letter-spacing:-0.02em;line-height:1.2}
+/* budget */
+.budget{display:grid;grid-template-columns:320px minmax(0,1fr);gap:64px;align-items:center}
+.ring{width:100%;height:auto}
+.ring-total{font-size:22px;font-weight:600;fill:var(--ink)}
+.ring-unit{font-size:11px;fill:var(--muted)}
+.budget td{padding:10px 0}
+.budget td.num{padding-left:14px}
+.budget i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:10px}
+/* AI answers */
+.ai{background:var(--soft);border-radius:14px;padding:24px}
+.ai-q{font-size:22px;font-weight:500;line-height:1.3;letter-spacing:-0.01em}
+.ai-q span{display:block;font-size:13px;font-weight:500;color:var(--muted);letter-spacing:0;margin-bottom:8px}
+.ai h3{font-size:13px;font-weight:500;color:var(--muted);margin:22px 0 8px}
+.ai .pills li{background:var(--paper)}
+/* SERP */
+.lines{list-style:none;margin:0;padding:0;border-top:1px solid var(--line);font-size:14px}
+.lines li{padding:7px 0;border-bottom:1px solid var(--line)}
+.serp{list-style:none;margin:0;padding:0;border-top:1px solid var(--ink);font-size:14px}
+.serp li{display:grid;grid-template-columns:24px minmax(0,auto) minmax(0,1fr);gap:10px;padding:8px 0;border-bottom:1px solid var(--line);align-items:baseline}
+.serp .n{color:var(--muted);font-variant-numeric:tabular-nums}
+.serp b{font-weight:600}
+.serp .t{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media (max-width:1311px){
+.slide{padding:32px 24px 20px;min-height:0}
+h1{font-size:clamp(44px,11vw,104px)}
+h2{font-size:clamp(26px,5vw,38px)}
+.cover{min-height:560px}
+.stats{grid-template-columns:repeat(2,1fr)}
+.stats dd{font-size:30px}
+}
+@media (max-width:860px){
+.cols,.cols-wide,.season,.budget{grid-template-columns:1fr;gap:28px}
+.ring{max-width:260px;margin-inline:auto}
+.months{gap:4px;height:240px}
+.months li{font-size:10px}
+.months b{font-size:9px}
+.body{overflow-x:auto}
+.foot span:nth-child(2){display:none}
+}
+@media print{
+@page{size:1280px 800px;margin:0}
+body{background:#fff}
+.deck{width:1280px;margin:0;gap:0}
+.slide{border-radius:0;break-after:page;break-inside:avoid;min-height:800px}
+.cover,.months i,.pills li,.tile,.ai,.map-center,.budget i{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+}</style></head>
+<body><main class="deck">
+<section class="slide cover"><p class="brand">RJ DIGITAL.</p><div class="cover-main"><p class="kicker">Avainsanatutkimus</p><h1>Aurinkopaneelit</h1>
+<dl class="stats"><div><dt>hakusanaa löytyi</dt><dd>1 228</dd></div><div><dt>valittu ryhmiin</dt><dd>35</dd></div><div><dt>ryhmää</dt><dd>8</dd></div><div><dt>hakua/kk ryhmissä yhteensä</dt><dd>38 390</dd></div></dl></div>
+<div class="cover-meta"><p><b>Data</b> DataForSEO (Google Ads), DataForSEO MCP</p><p><b>Markkina</b> Suomi, suomi</p><p><b>Raportti tehty</b> 23.11.2026</p><p class="cover-note">Esimerkkiraportti. Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 1 000–2 000 euron budjettihaarukka kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja Search Console -luvut on keksitty: Kuvitteellinen esimerkki.</p></div></section>
+<section class="slide "><header><p class="kicker">02 · Aihekartta</p><h2>Aihe keskellä, hakusanaryhmät ympärillä</h2><p class="sub">Jokaisessa ryhmässä näkyvät sen kolme haetuinta hakusanaa. Luvut ovat hakuja kuukaudessa.</p></header><div class="body"><div class="map" style="--mh:600px"><svg class="map-lines" viewBox="0 0 1168 600" aria-hidden="true"><path d="M 454 300 C 362 300, 362 81, 270 81"/><path d="M 714 300 C 806 300, 806 81, 898 81"/><path d="M 454 300 C 362 300, 362 300, 270 300"/><path d="M 714 300 C 806 300, 806 300, 898 300"/><path d="M 454 300 C 362 300, 362 519, 270 519"/><path d="M 714 300 C 806 300, 806 519, 898 519"/><path d="M 584 245 C 584 203.5, 584 203.5, 584 162"/><path d="M 584 355 C 584 396.5, 584 396.5, 584 438"/></svg>
+<div class="map-center" style="--x:454px;--y:245px"><b>aurinkopaneelit</b><span>aurinkopaneeli: 18 100 hakua/kk</span></div>
+<section class="map-card" style="--x:0px;--y:0px;--h:162px">
+<h3>Yleinen <span>Tiedonhaku</span></h3>
+<ul><li><span>aurinkopaneeli</span><span class="n">18 100</span></li><li><span>aurinkopaneelit</span><span class="n">4 400</span></li><li><span>aurinkovoima</span><span class="n">1 600</span></li></ul>
+<p>+ 2 muuta · yhteensä 25 490 hakua/kk</p></section>
+<section class="map-card" style="--x:898px;--y:0px;--h:162px">
+<h3>Hinta <span>Osto</span></h3>
+<ul><li><span>aurinkopaneeli hinta</span><span class="n">1 300</span></li><li><span>aurinkopaneeli hinta asennettuna</span><span class="n">390</span></li><li><span>aurinkopaneelit omakotitaloon hinta</span><span class="n">260</span></li></ul>
+<p>+ 3 muuta · yhteensä 2 560 hakua/kk</p></section>
+<section class="map-card" style="--x:0px;--y:219px;--h:162px">
+<h3>Tarjous ja paketit <span>Osto</span></h3>
+<ul><li><span>aurinkopaneeli tarjous</span><span class="n">880</span></li><li><span>aurinkopaneeli paketti</span><span class="n">720</span></li><li><span>aurinkopaneeli paketti tarjous</span><span class="n">590</span></li></ul>
+<p>+ 1 muuta · yhteensä 2 580 hakua/kk</p></section>
+<section class="map-card" style="--x:898px;--y:219px;--h:162px">
+<h3>Asennus <span>Osto</span></h3>
+<ul><li><span>aurinkopaneelien asennus</span><span class="n">260</span></li><li><span>aurinkopaneeli asennus</span><span class="n">210</span></li><li><span>aurinkopaneeli asennus hinta</span><span class="n">210</span></li></ul>
+<p>yhteensä 680 hakua/kk</p></section>
+<section class="map-card" style="--x:0px;--y:438px;--h:162px">
+<h3>Järjestelmät ja akut <span>Vertailu</span></h3>
+<ul><li><span>aurinkopaneelijärjestelmä</span><span class="n">1 600</span></li><li><span>aurinkosähköjärjestelmä</span><span class="n">880</span></li><li><span>aurinkopaneeli akku</span><span class="n">880</span></li></ul>
+<p>+ 3 muuta · yhteensä 4 570 hakua/kk</p></section>
+<section class="map-card" style="--x:898px;--y:438px;--h:162px">
+<h3>Käyttökohde <span>Vertailu</span></h3>
+<ul><li><span>aurinkopaneelit omakotitaloon</span><span class="n">720</span></li><li><span>aurinkopaneelit mökille</span><span class="n">590</span></li><li><span>aurinkosähköjärjestelmä mökille</span><span class="n">320</span></li></ul>
+<p>+ 1 muuta · yhteensä 1 840 hakua/kk</p></section>
+<section class="map-card" style="--x:449px;--y:0px;--h:162px">
+<h3>Paikkakunta <span>Paikallinen osto</span></h3>
+<ul><li><span>aurinkopaneelit turku</span><span class="n">140</span></li><li><span>aurinkopaneelit tampere</span><span class="n">90</span></li><li><span>aurinkopaneelit oulu</span><span class="n">90</span></li></ul>
+<p>+ 1 muuta · yhteensä 360 hakua/kk</p></section>
+<section class="map-card" style="--x:449px;--y:438px;--h:162px">
+<h3>Vertailu ja valinta <span>Vertailu</span></h3>
+<ul><li><span>paras aurinkopaneeli</span><span class="n">110</span></li><li><span>longi aurinkopaneeli</span><span class="n">110</span></li><li><span>tehokkain aurinkopaneeli</span><span class="n">90</span></li></ul>
+<p>yhteensä 310 hakua/kk</p></section></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>2 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">03 · Hakusanat ryhmittäin · 1/2</p><h2>Hakusanat ryhmiteltyinä hakuaikomuksen mukaan</h2><p class="sub">Jokaisella ryhmällä on hakuaikomus, sivu ja kanava. Klikkaushinnat ovat euroina. Koko lista on tiedostossa keywords.csv.</p></header><div class="body"><div class="cols"><div><section class="kw-group"><h3>Yleinen <span>25 490 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Tiedonhaku</li><li>Opas</li><li>SEO ja tekoälynäkyvyys</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneeli <small>myös: aurinkopaneelin</small></td><td class="num">18 100</td><td class="num">0,52</td><td class="num">Korkea</td><td class="num">283</td></tr>
+<tr><td>aurinkopaneelit</td><td class="num">4 400</td><td class="num">1,35</td><td class="num">Korkea</td><td class="num">112</td></tr>
+<tr><td>aurinkovoima</td><td class="num">1 600</td><td class="num">1,92</td><td class="num">Matala</td><td class="num">5</td></tr>
+<tr><td>aurinkokenno</td><td class="num">1 000</td><td class="num">0,43</td><td class="num">Korkea</td><td class="num">5</td></tr>
+<tr><td>aurinkosähkö</td><td class="num">390</td><td class="num">1,03</td><td class="num">Korkea</td><td class="num">13</td></tr>
+</tbody></table></section><section class="kw-group"><h3>Hinta <span>2 560 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Osto</li><li>Hintasivu</li><li>Google Ads ja SEO</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneeli hinta <small>myös: aurinkopaneelit hinta, aurinkokennot hinta</small></td><td class="num">1 300</td><td class="num">0,71</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneeli hinta asennettuna <small>myös: aurinkopaneelit hinta asennettuna, aurinkopaneelin hinta asennettuna, aurinkopaneelien hinta asennettuna</small></td><td class="num">390</td><td class="num">1,43</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneelit omakotitaloon hinta <small>myös: aurinkopaneeli omakotitalo hinta</small></td><td class="num">260</td><td class="num">1,96</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneelien hinta <small>myös: aurinkokennojen hinta</small></td><td class="num">260</td><td class="num">0,96</td><td class="num">Korkea</td><td class="num">15</td></tr>
+<tr><td>10 kw aurinkosähköjärjestelmä hinta</td><td class="num">260</td><td class="num">0,69</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneelijärjestelmä hinta</td><td class="num">90</td><td class="num">1,06</td><td class="num">Korkea</td><td class="num">0</td></tr>
+</tbody></table></section></div><div><section class="kw-group"><h3>Tarjous ja paketit <span>2 580 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Osto</li><li>Palvelusivu ja tarjouslomake</li><li>Google Ads</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneeli tarjous <small>myös: aurinkopaneelit tarjous</small></td><td class="num">880</td><td class="num">0,78</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneeli paketti <small>myös: aurinkopaneelipaketti</small></td><td class="num">720</td><td class="num">0,60</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneeli paketti tarjous</td><td class="num">590</td><td class="num">0,83</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneelit asennettuna</td><td class="num">390</td><td class="num">2,06</td><td class="num">Korkea</td><td class="num">0</td></tr>
+</tbody></table></section><section class="kw-group"><h3>Asennus <span>680 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Osto</li><li>Asennuspalvelun sivu</li><li>Google Ads ja SEO</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneelien asennus <small>myös: aurinkopaneelin asennus</small></td><td class="num">260</td><td class="num">1,69</td><td class="num">Korkea</td><td class="num">8</td></tr>
+<tr><td>aurinkopaneeli asennus</td><td class="num">210</td><td class="num">0,86</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneeli asennus hinta</td><td class="num">210</td><td class="num">1,63</td><td class="num">Korkea</td><td class="num">0</td></tr>
+</tbody></table></section></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>3 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">04 · Hakusanat ryhmittäin · 2/2</p><h2>Hakusanat ryhmittäin, jatkuu</h2></header><div class="body"><div class="cols"><div><section class="kw-group"><h3>Järjestelmät ja akut <span>4 570 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Vertailu</li><li>Tuoteryhmän sivu</li><li>SEO</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneelijärjestelmä</td><td class="num">1 600</td><td class="num">0,71</td><td class="num">Korkea</td><td class="num">18</td></tr>
+<tr><td>aurinkosähköjärjestelmä</td><td class="num">880</td><td class="num">1,34</td><td class="num">Korkea</td><td class="num">16</td></tr>
+<tr><td>aurinkopaneeli akku <small>myös: aurinkopaneelin akku</small></td><td class="num">880</td><td class="num">0,46</td><td class="num">Korkea</td><td class="num">15</td></tr>
+<tr><td>aurinkovoimala</td><td class="num">720</td><td class="num">0,90</td><td class="num">Korkea</td><td class="num">6</td></tr>
+<tr><td>aurinkopaneeli invertteri <small>myös: aurinkopaneelit invertteri</small></td><td class="num">320</td><td class="num">0,37</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>aurinkopaneelit ja akku <small>myös: aurinkopaneelit ja akut</small></td><td class="num">170</td><td class="num">2,02</td><td class="num">Korkea</td><td class="num">3</td></tr>
+</tbody></table></section><section class="kw-group"><h3>Käyttökohde <span>1 840 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Vertailu</li><li>Sivu per käyttökohde</li><li>SEO</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneelit omakotitaloon</td><td class="num">720</td><td class="num">2,90</td><td class="num">Korkea</td><td class="num">13</td></tr>
+<tr><td>aurinkopaneelit mökille <small>myös: aurinkopaneeli mökille</small></td><td class="num">590</td><td class="num">0,85</td><td class="num">Korkea</td><td class="num">21</td></tr>
+<tr><td>aurinkosähköjärjestelmä mökille</td><td class="num">320</td><td class="num">0,72</td><td class="num">Korkea</td><td class="num">4</td></tr>
+<tr><td>aurinkosähkö mökille</td><td class="num">210</td><td class="num">0,39</td><td class="num">Korkea</td><td class="num">3</td></tr>
+</tbody></table></section></div><div><section class="kw-group"><h3>Paikkakunta <span>360 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Paikallinen osto</li><li>Paikkakuntasivu</li><li>Google Ads ja paikallinen SEO</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>aurinkopaneelit turku</td><td class="num">140</td><td class="num">4,28</td><td class="num">Korkea</td><td class="num">–</td></tr>
+<tr><td>aurinkopaneelit tampere</td><td class="num">90</td><td class="num">3,48</td><td class="num">Korkea</td><td class="num">–</td></tr>
+<tr><td>aurinkopaneelit oulu</td><td class="num">90</td><td class="num">2,27</td><td class="num">Korkea</td><td class="num">–</td></tr>
+<tr><td>aurinkopaneelit helsinki</td><td class="num">40</td><td class="num">3,75</td><td class="num">Keski</td><td class="num">–</td></tr>
+</tbody></table></section><section class="kw-group"><h3>Vertailu ja valinta <span>310 hakua/kk</span></h3>
+<ul class="pills pills-s"><li>Vertailu</li><li>Vertailuartikkeli</li><li>SEO ja tekoälynäkyvyys</li></ul>
+<table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th><th class="num">Kilpailu</th><th class="num">Tekoälyhaut/kk</th></tr></thead><tbody>
+<tr><td>paras aurinkopaneeli</td><td class="num">110</td><td class="num">0,64</td><td class="num">Korkea</td><td class="num">35</td></tr>
+<tr><td>longi aurinkopaneeli <small>myös: longi aurinkopaneelit</small></td><td class="num">110</td><td class="num">0,46</td><td class="num">Korkea</td><td class="num">0</td></tr>
+<tr><td>tehokkain aurinkopaneeli</td><td class="num">90</td><td class="num">0,12</td><td class="num">Korkea</td><td class="num">6</td></tr>
+</tbody></table></section></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>4 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">05 · Kausivaihtelu</p><h2>Milloin hakua ”aurinkopaneeli” haetaan</h2><p class="sub">Haut kuukausittain viimeisen 12 kuukauden ajalta. Huippukuukausi on korostettu.</p></header><div class="body"><div class="season"><ol class="months"><li class="" title="marraskuu 2025: 6 600"><b>6 600</b><i style="height:13.3%"></i><span>marras<small>2025</small></span></li><li class="" title="joulukuu 2025: 4 400"><b>4 400</b><i style="height:8.9%"></i><span>joulu<small>&nbsp;</small></span></li><li class="" title="tammikuu 2026: 8 100"><b>8 100</b><i style="height:16.4%"></i><span>tammi<small>2026</small></span></li><li class="" title="helmikuu 2026: 12 100"><b>12 100</b><i style="height:24.4%"></i><span>helmi<small>&nbsp;</small></span></li><li class="peak" title="maaliskuu 2026: 49 500"><b>49 500</b><i style="height:100.0%"></i><span>maalis<small>&nbsp;</small></span></li><li class="" title="huhtikuu 2026: 12 100"><b>12 100</b><i style="height:24.4%"></i><span>huhti<small>&nbsp;</small></span></li><li class="" title="toukokuu 2026: 14 800"><b>14 800</b><i style="height:29.9%"></i><span>touko<small>&nbsp;</small></span></li><li class="peak" title="kesäkuu 2026: 49 500"><b>49 500</b><i style="height:100.0%"></i><span>kesä<small>&nbsp;</small></span></li><li class="" title="heinäkuu 2026: 18 100"><b>18 100</b><i style="height:36.6%"></i><span>heinä<small>&nbsp;</small></span></li><li class="" title="elokuu 2026: 9 900"><b>9 900</b><i style="height:20.0%"></i><span>elo<small>&nbsp;</small></span></li><li class="" title="syyskuu 2026: 14 800"><b>14 800</b><i style="height:29.9%"></i><span>syys<small>&nbsp;</small></span></li><li class="" title="lokakuu 2026: 8 100"><b>8 100</b><i style="height:16.4%"></i><span>loka<small>&nbsp;</small></span></li></ol>
+<div class="tiles"><div class="tile"><span>Huippu</span><b>49 500</b><em>maaliskuu 2026 ja kesäkuu 2026</em></div><div class="tile"><span>Hiljaisin</span><b>4 400</b><em>joulukuu 2025</em></div><div class="tile"><span>Keskiarvo, 12 kk</span><b>17 333</b><em>hakua kuukaudessa</em></div></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>5 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">06 · Budjetin jako</p><h2>Näin 1 000–2 000 € kuukaudessa jakautuu ryhmille</h2><p class="sub">Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.</p></header><div class="body"><div class="budget"><svg class="ring" viewBox="0 0 200 200" role="img" aria-label="Budjetin jako ryhmittäin"><g transform="rotate(-90 100 100)"><circle cx="100" cy="100" r="80" fill="none" stroke="#2a78d6" stroke-width="26" pathLength="100" stroke-dasharray="25.25 74.75" stroke-dashoffset="0.00"><title>Tarjous ja paketit: 25,9 %</title></circle><circle cx="100" cy="100" r="80" fill="none" stroke="#eb6834" stroke-width="26" pathLength="100" stroke-dasharray="19.94 80.06" stroke-dashoffset="-25.85"><title>Järjestelmät ja akut: 20,5 %</title></circle><circle cx="100" cy="100" r="80" fill="none" stroke="#1baf7a" stroke-width="26" pathLength="100" stroke-dasharray="14.95 85.05" stroke-dashoffset="-46.39"><title>Käyttökohde: 15,6 %</title></circle><circle cx="100" cy="100" r="80" fill="none" stroke="#eda100" stroke-width="26" pathLength="100" stroke-dasharray="12.97 87.03" stroke-dashoffset="-61.94"><title>Paikkakunta: 13,6 %</title></circle><circle cx="100" cy="100" r="80" fill="none" stroke="#e87ba4" stroke-width="26" pathLength="100" stroke-dasharray="12.87 87.13" stroke-dashoffset="-75.51"><title>Hinta: 13,5 %</title></circle><circle cx="100" cy="100" r="80" fill="none" stroke="#b9b9b9" stroke-width="26" pathLength="100" stroke-dasharray="10.42 89.58" stroke-dashoffset="-88.98"><title>Muut ryhmät: 11 %</title></circle></g>
+<text x="100" y="97" text-anchor="middle" class="ring-total" style="font-size:17px">1 000–2 000 €</text><text x="100" y="116" text-anchor="middle" class="ring-unit">kuukaudessa</text></svg>
+<table><thead><tr><th>Ryhmä</th><th>Hakuaikomus</th><th class="num">Paino</th><th class="num">Osuus</th><th class="num">€/kk</th></tr></thead><tbody>
+<tr><td><i style="background:#2a78d6"></i>Tarjous ja paketit</td><td>Osto</td><td class="num">1</td><td class="num">25,9 %</td><td class="num">259–517</td></tr>
+<tr><td><i style="background:#eb6834"></i>Järjestelmät ja akut</td><td>Vertailu</td><td class="num">0,5</td><td class="num">20,5 %</td><td class="num">205–411</td></tr>
+<tr><td><i style="background:#1baf7a"></i>Käyttökohde</td><td>Vertailu</td><td class="num">0,5</td><td class="num">15,6 %</td><td class="num">156–311</td></tr>
+<tr><td><i style="background:#eda100"></i>Paikkakunta</td><td>Paikallinen osto</td><td class="num">1</td><td class="num">13,6 %</td><td class="num">136–271</td></tr>
+<tr><td><i style="background:#e87ba4"></i>Hinta</td><td>Osto</td><td class="num">0,5</td><td class="num">13,5 %</td><td class="num">135–269</td></tr>
+<tr><td><i style="background:#b9b9b9"></i>Asennus</td><td>Osto</td><td class="num">1</td><td class="num">10,3 %</td><td class="num">103–206</td></tr>
+<tr><td><i style="background:#b9b9b9"></i>Vertailu ja valinta</td><td>Vertailu</td><td class="num">0,5</td><td class="num">0,7 %</td><td class="num">7–14</td></tr>
+<tr class="zero"><td><i style="background:#b9b9b9"></i>Yleinen</td><td>Tiedonhaku</td><td class="num">0</td><td class="num">0 %</td><td class="num">0</td></tr>
+<tr class="sum"><td>Yhteensä</td><td></td><td></td><td class="num">100 %</td><td class="num">1 000–2 000</td></tr></tbody></table></div>
+
+<p class="note">Klikkaushinnat on muunnettu valuutasta USD valuuttaan EUR kurssilla 0,9099 (Euroopan keskuspankki, 2026-11-20).</p></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>6 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">07 · Tekoälyn vastaukset</p><h2>Mitä tekoäly vastaa ostajan kysymyksiin</h2><p class="sub">Jokaisesta kysymyksestä näkyvät haut, jotka tekoäly teki, sivustot, joihin se nojasi, ja yritykset, jotka se mainitsi.</p></header><div class="body"><div class="cols"><section class="ai"><p class="ai-q"><span>ChatGPT</span>Mikä aurinkopaneelijärjestelmä kannattaa hankkia omakotitaloon Suomessa ja mitä se maksaa?</p>
+<h3>Tekoälyn tekemät haut</h3><ul class="pills "><li>aurinkopaneelijärjestelmän asennettu hinta Suomessa 2026 omakotitalo tuotanto mitoitus akku kannattavuus</li></ul>
+<h3>Lähteet</h3><ul class="pills "><li>www.energiaeki.fi</li><li>www.motiva.fi</li><li>www.asuntosuomi.fi</li></ul>
+</section><section class="ai"><p class="ai-q"><span>ChatGPT</span>Mistä kannattaa pyytää tarjous aurinkopaneelien asennuksesta?</p>
+<h3>Tekoälyn tekemät haut</h3><ul class="pills "><li>aurinkopaneelien asennus Helsinki Uusimaa yritykset tarjous vertailu 2026</li></ul>
+<h3>Lähteet</h3><ul class="pills "><li>solarum.fi</li><li>solarvoima.fi</li><li>lampopartio.fi</li><li>www.helsingintalotekniikka.fi</li><li>1komma5.com</li><li>kodinplaza.fi</li><li>www.energiaeki.fi</li></ul>
+<h3>Mainitut yritykset ja merkit</h3><ul class="pills "><li>Solarum Suomi</li><li>Solarvoima</li><li>Lämpöpartio</li><li>Helsingin Talotekniikka</li><li>1KOMMA5°</li><li>Lumos Energia</li><li>Wirmax Solar Oy</li><li>Aurinkovisio – Aurinkopaneelit</li><li>Paneelipojat Oy</li></ul></section></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>7 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">08 · Googlen tulossivu</p><h2>Mitä Google näyttää haulla ”aurinkopaneelit hinta”</h2></header><div class="body"><div class="cols"><div><h3 class="h">Tulostyypit</h3><ul class="pills "><li>Tekoälykatsaus</li><li>Orgaaniset tulokset</li><li>Muut kysyvät myös</li><li>Muut hakivat myös</li></ul>
+<h3 class="h">Muut kysyvät myös</h3><ul class="lines"><li>Mitä maksaa 12 aurinkopaneelia asennettuna?</li><li>Missä ajassa aurinkopaneeli maksaa itsensä takaisin?</li><li>Paljonko aurinkopaneeli maksaa omakotitaloon?</li><li>Mikä on aurinkopaneelien hinta vuonna 2026?</li><li>Kannattaako aurinkopaneelit 2026?</li><li>Paljonko aurinkopaneelien asennus maksaa?</li><li>Kannattaako ostaa aurinkopaneelit?</li><li>Voiko aurinkopaneelit asentaa itse?</li><li>Paljonko 6kW aurinkopaneeli tuotto?</li></ul></div>
+<div><h3 class="h">Kärkitulokset</h3><ol class="serp"><li><span class="n">1</span><b>scanoffice.fi</b><span class="t">Aurinkopaneelien hinta, alk. 5 000 € (4 kWp)</span></li><li><span class="n">2</span><b>aurinkosahkotukku.fi</b><span class="t">Aurinkopaneelit</span></li><li><span class="n">3</span><b>1komma5.com</b><span class="t">Aurinkopaneelien hinta 2026: esimerkkihinnat omakotitaloon</span></li><li><span class="n">4</span><b>energiatuote.fi</b><span class="t">Aurinkopaneelit verkkokaupasta l Paras hinta-laatusuhde</span></li><li><span class="n">5</span><b>savonaurinkosahko.fi</b><span class="t">Aurinkopaneeli hintaopas 2026: Mitä aurinkopaneelit maksaa?</span></li><li><span class="n">6</span><b>omavoima.fi</b><span class="t">Aurinkopaneelitarjous - aurinkosähköä tarjoushintaan ...</span></li><li><span class="n">7</span><b>a-maailma.fi</b><span class="t">☀️ Aurinkopaneelien hinta – mistä hinta muodostuu</span></li><li><span class="n">8</span><b>aurinkopaneelikauppa.fi</b><span class="t">Aurinkovoimalat</span></li><li><span class="n">9</span><b>is.fi</b><span class="t">Aurinkosähkö kallistui yllättäen</span></li></ol></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>8 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">09 · Oma sivusto hakutuloksissa</p><h2>Missä ryhmissä sivusto jo näkyy ja missä ei vielä</h2><p class="sub">Search Console (kuvitteellinen esimerkki) · 1.8.–31.10.2026. Luvut kertovat sivuston omasta näkyvyydestä, markkinan hakumäärät ovat aiemmissa taulukoissa.</p></header><div class="body"><div class="cols cols-wide"><div><table><thead><tr><th>Ryhmä</th><th class="num">Hakusanoja näkyvissä</th><th class="num">Näyttökerrat</th><th class="num">Klikkaukset</th><th class="num">Keskisijainti</th><th>Sivu</th></tr></thead><tbody><tr><td>Yleinen</td><td class="num">1/5</td><td class="num">1 400</td><td class="num">9</td><td class="num">18,2</td><td class="path">/aurinkopaneelit</td></tr><tr><td>Hinta</td><td class="num">3/6</td><td class="num">980</td><td class="num">27</td><td class="num">10,7</td><td class="path">/aurinkopaneelit/hinta</td></tr><tr class="zero"><td>Tarjous ja paketit</td><td class="num">0/4</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="path">–</td></tr><tr><td>Asennus</td><td class="num">2/3</td><td class="num">460</td><td class="num">26</td><td class="num">7,1</td><td class="path">/asennus</td></tr><tr class="zero"><td>Järjestelmät ja akut</td><td class="num">0/6</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="path">–</td></tr><tr><td>Käyttökohde</td><td class="num">1/4</td><td class="num">130</td><td class="num">6</td><td class="num">9,7</td><td class="path">/aurinkopaneelit</td></tr><tr><td>Paikkakunta</td><td class="num">2/4</td><td class="num">175</td><td class="num">15</td><td class="num">8,5</td><td class="path">/tampere</td></tr><tr class="zero"><td>Vertailu ja valinta</td><td class="num">0/3</td><td class="num">–</td><td class="num">–</td><td class="num">–</td><td class="path">–</td></tr></tbody></table>
+<p class="note"><b>Ryhmät, joissa sivusto ei vielä näy:</b> Tarjous ja paketit, Järjestelmät ja akut, Vertailu ja valinta.</p></div>
+<div><h3 class="h">Lähellä kärkeä: sijat 5–15</h3><table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Sijainti</th></tr></thead><tbody><tr><td>aurinkopaneeli hinta</td><td class="num">1 300</td><td class="num">11,3</td></tr><tr><td>aurinkopaneelit omakotitaloon</td><td class="num">720</td><td class="num">9,7</td></tr><tr><td>aurinkopaneeli hinta asennettuna</td><td class="num">390</td><td class="num">7,8</td></tr><tr><td>aurinkopaneelien hinta</td><td class="num">260</td><td class="num">12,6</td></tr><tr><td>aurinkopaneelien asennus</td><td class="num">260</td><td class="num">6,4</td></tr><tr><td>aurinkopaneeli asennus</td><td class="num">210</td><td class="num">8,9</td></tr><tr><td>aurinkopaneelit turku</td><td class="num">140</td><td class="num">13,5</td></tr></tbody></table></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>9 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">10 · Oma sivusto hakutuloksissa</p><h2>Muut haut, joilla sivusto näkyy</h2><p class="sub">Search Console (kuvitteellinen esimerkki) · 1.8.–31.10.2026. Nämä haut eivät ole vielä missään ryhmässä.</p></header><div class="body"><table><thead><tr><th>Hakusana</th><th class="num">Näyttökerrat</th><th class="num">Klikkaukset</th><th class="num">Keskisijainti</th><th>Sivu</th></tr></thead><tbody><tr><td>aurinkopaneelien kiinnitys peltikattoon</td><td class="num">70</td><td class="num">5</td><td class="num">6,1</td><td class="path">/blogi/kiinnitys-peltikattoon</td></tr><tr><td>aurinkopaneelien takuu</td><td class="num">45</td><td class="num">2</td><td class="num">9,0</td><td class="path">/blogi/takuu</td></tr></tbody></table></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>10 / 11</span></footer></section>
+<section class="slide "><header><p class="kicker">11 · Ryhmittelemättömät hakusanat</p><h2>Suurimmat hakusanat, jotka jäivät ryhmien ulkopuolelle</h2><p class="sub">Käykää lista läpi: osa kuuluu johonkin ryhmään, osa ei liity siihen, mitä myytte.</p></header><div class="body"><div class="cols"><div><table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th></tr></thead><tbody><tr><td>at aurinkopaneelit</td><td class="num">480</td><td class="num">0,76</td></tr><tr><td>kannettava aurinkopaneeli</td><td class="num">390</td><td class="num">0,22</td></tr><tr><td>puuilo aurinkopaneeli</td><td class="num">390</td><td class="num">0,15</td></tr><tr><td>kärkkäinen aurinkopaneeli</td><td class="num">390</td><td class="num">0,35</td></tr><tr><td>aurinkopaneeli kärkkäinen</td><td class="num">390</td><td class="num">0,37</td></tr><tr><td>kannettavat aurinkopaneelit</td><td class="num">390</td><td class="num">0,22</td></tr><tr><td>aurinkopaneelit kärkkäinen</td><td class="num">390</td><td class="num">0,37</td></tr><tr><td>kärkkäinen aurinkopaneelit</td><td class="num">390</td><td class="num">0,35</td></tr><tr><td>puuilo aurinkopaneelit</td><td class="num">390</td><td class="num">0,15</td></tr><tr><td>motonet aurinkopaneeli</td><td class="num">320</td><td class="num">0,09</td></tr><tr><td>taipuisa aurinkopaneeli</td><td class="num">260</td><td class="num">0,13</td></tr><tr><td>aurinkopaneeli 12v</td><td class="num">260</td><td class="num">0,18</td></tr></tbody></table></div><div><table><thead><tr><th>Hakusana</th><th class="num">Haut/kk</th><th class="num">Klikkaushinta</th></tr></thead><tbody><tr><td>aurinkosähkö akku</td><td class="num">260</td><td class="num">0,74</td></tr><tr><td>aurinkopaneeli 400w</td><td class="num">260</td><td class="num">0,32</td></tr><tr><td>aurinkopaneeli puuilo</td><td class="num">260</td><td class="num">0,20</td></tr><tr><td>aurinkopaneelikaapeli</td><td class="num">260</td><td class="num">0,29</td></tr><tr><td>aurinkopaneeli motonet</td><td class="num">260</td><td class="num">0,11</td></tr><tr><td>aurinkosähkö akut</td><td class="num">260</td><td class="num">0,74</td></tr><tr><td>aurinkopaneelien asennustarvikkeet</td><td class="num">260</td><td class="num">1,69</td></tr><tr><td>aurinkopaneelit puuilo</td><td class="num">260</td><td class="num">0,20</td></tr><tr><td>aurinkopaneelijärjestelmä mökille</td><td class="num">210</td><td class="num">0,59</td></tr><tr><td>biltema aurinkopaneeli</td><td class="num">210</td><td class="num">0,14</td></tr><tr><td>ecoflow aurinkopaneeli</td><td class="num">210</td><td class="num">0,25</td></tr><tr><td>12v aurinkopaneeli</td><td class="num">210</td><td class="num">0,20</td></tr></tbody></table></div></div></div><footer class="foot"><span>Avainsanatutkimus: aurinkopaneelit</span><span>Tehty RJ Digitalin avainsanatutkimus-skillillä · rjdigital.fi</span><span>11 / 11</span></footer></section>
+</main></body></html>
