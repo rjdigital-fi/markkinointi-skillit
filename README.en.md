@@ -13,12 +13,20 @@ The report holds:
 - a topic map of the branches of the topic
 - keywords in groups with search volume, click price, competition and search intent
 - twelve months of seasonality for the main keyword
-- a suggested budget split between the groups
+- a suggested budget split between the groups, in euros and for the budget range you give
 - what AI assistants answer to a buyer's questions, which searches they run and which sources they use
 - what the Google result page shows: AI Overview, People also ask and the top results
 - where your own site stands, if you give Search Console or Bing Webmaster Tools data: the groups where the site already shows up, the groups where it does not, and the keywords at positions 5 to 15
 
-The method is the one in the guide [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus) (in Finnish). Example output: [examples/aurinkopaneelit/report.md](examples/aurinkopaneelit/report.md).
+The method is the one in the guide [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus) (in Finnish). 
+
+The report comes as slides in one HTML file. Below are two slides from the example report (in Finnish); the whole example is in [examples/aurinkopaneelit](examples/aurinkopaneelit/).
+
+[![Topic map of the example report: the topic in the middle, keyword groups around it](examples/aurinkopaneelit/kuvat/dia-02.png)](examples/aurinkopaneelit/)
+
+[![Budget split of the example report across the groups, in euros](examples/aurinkopaneelit/kuvat/dia-06.png)](examples/aurinkopaneelit/)
+
+The search data in the example is real, but the company, the budget and the weights are made up.
 
 ### Bring your own data source
 
@@ -56,12 +64,12 @@ The scripts need Node.js 18 or newer and nothing else.
 ### Use
 
 ```
-Do a keyword research for solar panels. We install panels on houses in Tampere and Turku. The budget is 1,000 euros a month.
+Do a keyword research for solar panels. We install panels on houses in Tampere and Turku. The budget is 1,000–2,000 euros a month.
 ```
 
 Or call it directly: `/rjdigital:avainsanatutkimus`.
 
-The result is saved in `avainsanatutkimus/<topic>/`: `report.md` and `keywords.csv`.
+The result is saved in `avainsanatutkimus/<topic>/`: `report.html` is the report as slides (opens in a browser and prints to PDF), `report.md` the same report as text and `keywords.csv` the full keyword list for a spreadsheet.
 
 ### Good to know
 
@@ -69,6 +77,7 @@ The result is saved in `avainsanatutkimus/<topic>/`: `report.md` and `keywords.c
 - Paid sources use credits or money. The agent gives an estimate before the first call and the real cost at the end. The calls for the example report cost about 0.15 US dollars in DataForSEO.
 - API keys stay in environment variables or in the MCP connection. They are not written into the chat or into files.
 - The budget split is a starting point from volume, click price and intent. Real campaign data replaces it after the first weeks.
+- The agent always asks for a preliminary budget range. The report is in euros: when the source gives click prices in US dollars, they are converted with the European Central Bank's reference rate, and the rate and its date are shown in the report.
 
 ## Author
 

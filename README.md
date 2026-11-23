@@ -18,7 +18,15 @@ Raportissa on:
 - mitä Googlen tulossivulla näkyy: tekoälykatsaus, "Muut kysyvät myös" ja kärkitulokset
 - oman sivustonne tilanne, jos annatte Search Consolen tai Bing Webmaster Toolsin datan: missä ryhmissä sivusto jo näkyy, missä ei vielä ja mitkä hakusanat ovat sijoilla 5–15
 
-Menetelmä on sama kuin oppaassani [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus). Valmis esimerkki dioina: [examples/aurinkopaneelit](examples/aurinkopaneelit/).
+Menetelmä on sama kuin oppaassani [Avainsanatutkimus](https://rjdigital.fi/oppaat/avainsanatutkimus).
+
+Raportti tulee dioina yhtenä HTML-tiedostona. Alla on kaksi diaa esimerkkiraportista, koko esimerkki on kansiossa [examples/aurinkopaneelit](examples/aurinkopaneelit/).
+
+[![Esimerkkiraportin aihekartta: aihe keskellä ja hakusanaryhmät ympärillä](examples/aurinkopaneelit/kuvat/dia-02.png)](examples/aurinkopaneelit/)
+
+[![Esimerkkiraportin budjetin jako ryhmille euroina](examples/aurinkopaneelit/kuvat/dia-06.png)](examples/aurinkopaneelit/)
+
+Esimerkin hakudata on oikeaa, mutta yritys, budjetti ja painot ovat keksittyjä: kuvitteellinen esimerkki.
 
 ### Valitkaa datalähde itse
 

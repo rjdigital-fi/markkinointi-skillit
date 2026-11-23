@@ -222,7 +222,7 @@ the range.
 one slide per page. `--note "..."` adds a line to the cover, for example what the numbers are based on.
 `--brand "NAME"` puts the user's company name at the top of the cover: use it only when the user asks.
 
-Both reports hold the topic map (a Mermaid mind map in `report.md`), the keyword tables by group, the seasonality of the main
+Both reports hold the topic map (drawn as a map in `report.html`, a table in `report.md`), the keyword tables by group, the seasonality of the main
 keyword, the budget split, the AI answers, the result page notes, the site's own visibility (when `site.json` exists)
 and the largest ungrouped keywords. Read the
 ungrouped list: a large keyword left there is either off-topic or a gap in your groups. Fix `groups.json` and

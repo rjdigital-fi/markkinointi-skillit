@@ -9,48 +9,16 @@
 
 ## Aihekartta
 
-```mermaid
-mindmap
-  root((aurinkopaneelit))
-    Yleinen · 25 490 hakua/kk
-      aurinkopaneeli · 18 100
-      aurinkopaneelit · 4 400
-      aurinkovoima · 1 600
-      aurinkokenno · 1 000
-    Hinta · 2 560 hakua/kk
-      aurinkopaneeli hinta · 1 300
-      aurinkopaneeli hinta asennettuna · 390
-      aurinkopaneelit omakotitaloon hinta · 260
-      aurinkopaneelien hinta · 260
-    Tarjous ja paketit · 2 580 hakua/kk
-      aurinkopaneeli tarjous · 880
-      aurinkopaneeli paketti · 720
-      aurinkopaneeli paketti tarjous · 590
-      aurinkopaneelit asennettuna · 390
-    Asennus · 680 hakua/kk
-      aurinkopaneelien asennus · 260
-      aurinkopaneeli asennus · 210
-      aurinkopaneeli asennus hinta · 210
-    Järjestelmät ja akut · 4 570 hakua/kk
-      aurinkopaneelijärjestelmä · 1 600
-      aurinkosähköjärjestelmä · 880
-      aurinkopaneeli akku · 880
-      aurinkovoimala · 720
-    Käyttökohde · 1 840 hakua/kk
-      aurinkopaneelit omakotitaloon · 720
-      aurinkopaneelit mökille · 590
-      aurinkosähköjärjestelmä mökille · 320
-      aurinkosähkö mökille · 210
-    Paikkakunta · 360 hakua/kk
-      aurinkopaneelit turku · 140
-      aurinkopaneelit tampere · 90
-      aurinkopaneelit oulu · 90
-      aurinkopaneelit helsinki · 40
-    Vertailu ja valinta · 310 hakua/kk
-      paras aurinkopaneeli · 110
-      longi aurinkopaneeli · 110
-      tehokkain aurinkopaneeli · 90
-```
+| Ryhmä | Haut/kk | Suurimmat hakusanat |
+| --- | ---: | --- |
+| Yleinen | 25 490 | aurinkopaneeli (18 100), aurinkopaneelit (4 400), aurinkovoima (1 600), aurinkokenno (1 000) |
+| Hinta | 2 560 | aurinkopaneeli hinta (1 300), aurinkopaneeli hinta asennettuna (390), aurinkopaneelit omakotitaloon hinta (260), aurinkopaneelien hinta (260) |
+| Tarjous ja paketit | 2 580 | aurinkopaneeli tarjous (880), aurinkopaneeli paketti (720), aurinkopaneeli paketti tarjous (590), aurinkopaneelit asennettuna (390) |
+| Asennus | 680 | aurinkopaneelien asennus (260), aurinkopaneeli asennus (210), aurinkopaneeli asennus hinta (210) |
+| Järjestelmät ja akut | 4 570 | aurinkopaneelijärjestelmä (1 600), aurinkosähköjärjestelmä (880), aurinkopaneeli akku (880), aurinkovoimala (720) |
+| Käyttökohde | 1 840 | aurinkopaneelit omakotitaloon (720), aurinkopaneelit mökille (590), aurinkosähköjärjestelmä mökille (320), aurinkosähkö mökille (210) |
+| Paikkakunta | 360 | aurinkopaneelit turku (140), aurinkopaneelit tampere (90), aurinkopaneelit oulu (90), aurinkopaneelit helsinki (40) |
+| Vertailu ja valinta | 310 | paras aurinkopaneeli (110), longi aurinkopaneeli (110), tehokkain aurinkopaneeli (90) |
 
 ## Hakusanat ryhmittäin
 

@@ -96,14 +96,11 @@ if (cfg.market) out.push(`- ${T.market}: ${cfg.market}`);
 out.push(`- ${T.fetched}: ${new Date().toISOString().slice(0, 10)}`);
 out.push(`- ${n(keywords.length)} ${T.found}, ${n(groups.reduce((s, g) => s + g.rows.length, 0))} ${T.grouped}`, "");
 
-// Mermaid mind map: the topic in the middle, groups around it, the biggest keywords under each group.
-const safe = (s) => String(s).replace(/[()[\]{}"`]/g, "").trim();
-out.push(`## ${T.map}`, "", "```mermaid", "mindmap", `  root((${safe(cfg.topic ?? T.title)}))`);
-for (const g of groups) {
-  out.push(`    ${safe(g.name)} · ${n(g.volume)} ${T.perMonth}`);
-  for (const r of g.rows.slice(0, 4)) out.push(`      ${safe(r.keyword)} · ${n(r.volume)}`);
-}
-out.push("```", "");
+// Topic map as a table: one row per group with its biggest keywords. report.html draws the same as a map.
+const mapCell = (s) => String(s).replace(/\|/g, "/").trim();
+out.push(`## ${T.map}`, "", `| ${T.group} | ${T.vol} | ${lang === "en" ? "Largest keywords" : "Suurimmat hakusanat"} |`, "| --- | ---: | --- |");
+for (const g of groups) out.push(`| ${mapCell(g.name)} | ${n(g.volume)} | ${g.rows.slice(0, 4).map((r) => `${mapCell(r.keyword)} (${n(r.volume)})`).join(", ")} |`);
+out.push("");
 
 out.push(`## ${T.table}`, "");
 for (const g of groups) {
