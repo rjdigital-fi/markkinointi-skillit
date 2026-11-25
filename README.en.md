@@ -79,6 +79,70 @@ The result is saved in `avainsanatutkimus/<topic>/`: `report.html` is the report
 - The budget split is a starting point from volume, click price and intent. Real campaign data replaces it after the first weeks.
 - The agent always asks for a preliminary budget range. The report is in euros: when the source gives click prices in US dollars, they are converted with the European Central Bank's reference rate, and the rate and its date are shown in the report.
 
+## Tekoälynäkyvyys (AI visibility check)
+
+Finds out whether AI assistants name your company when a buyer asks for a recommendation. The agent asks the buyer's questions from ChatGPT, Gemini, Google AI Mode and, if you want, Perplexity, reads the answers and builds a report. It works in any language and market, and the report is written in Finnish or English.
+
+The report holds:
+
+- a question by AI table: in which answers the company is named and where its own site is a source
+- visibility per AI
+- the companies the AI names for the same questions
+- the sites the answers lean on
+- quotes of what was said about the company
+- the method: questions, runs and the limits of the result
+
+Two slides from the example report (in Finnish); the whole example is in [examples/ilmalampopumput](examples/ilmalampopumput/).
+
+[![Example report table: questions in rows, AIs in columns](examples/ilmalampopumput/kuvat/dia-2.png)](examples/ilmalampopumput/)
+
+[![Example report: the companies the AI names](examples/ilmalampopumput/kuvat/dia-4.png)](examples/ilmalampopumput/)
+
+The companies, sites and answers in the example are made up.
+
+A quick three-question version runs in the browser: [tekoälynäkyvyyden testi](https://rjdigital.fi/tekoalynakyvyys-testi) (in Finnish).
+
+### Data source
+
+What matters is that the answers come from the real apps with web search on, with sources.
+
+| Source | How to connect |
+| --- | --- |
+| DataForSEO | API login in environment variables, a ready script is included. About 0.004 US dollars per answer (Perplexity about 0.007). |
+| AI visibility tools: Cloro, Peec AI, Profound, Otterly and others | MCP, API or an export. Answers are brought in with `answers.mjs`. |
+| Result page APIs: SerpApi, SearchApi, HasData | Google AI Mode and AI Overviews, brought in with the same script |
+| Anything else | the answer as a JSON or text file, the agent maps the fields |
+
+What has been tested: DataForSEO with a real run in November 2026 (ChatGPT, Gemini and AI Mode). The import for other tools is tested with sample files, not with real accounts. The import always prints what it found.
+
+### Use
+
+```
+Check the AI visibility of Example Ltd, example.com. We install heat pumps in houses around Tampere.
+```
+
+Or call it directly: `/rjdigital:tekoalynakyvyys`. Install as above; the folder is `skills/tekoalynakyvyys`.
+
+The agent proposes the questions and you edit them to sound like your customers. It tells the cost before fetching. The result is saved in `tekoalynakyvyys/<company>/`.
+
+### Good to know
+
+- The result is a snapshot. An AI answers the same question differently each time, so every question is asked 2 to 3 times. With a small question set, a change under about 10 percentage points is noise.
+- Keep the questions the same if you want to compare later. New questions are a new baseline.
+- Questions are sent to the AIs without the company's name.
+- "Named" means the company's name is in the answer text. "Cited" means the AI used the company's site as a source. They are counted separately.
+- A script collects company names from the answers, and the agent reads the answers and confirms which of them are competitors.
+
+### Credits
+
+The method borrows ideas from open projects: a question set that follows the buying path, repeated runs and the caution about small changes ([geo-visibility-skill](https://github.com/thevibegarage/geo-visibility-skill)), telling a mention from a bare source link ([oneglanse](https://github.com/oneglanse/oneglanse)) and two-stage name detection ([elmo](https://github.com/elmohq/elmo)). The code is my own.
+
+## Make it look like yours
+
+You can restyle every tool and report to your own brand: your own theme, fonts and colours. In both skills the look lives in one file, `brand.json` (`skills/avainsanatutkimus/brand.json` and `skills/tekoalynakyvyys/brand.json`): name, logo, font and colours. A `brand.json` copied to the work folder overrides the skill's own, so each client can have a different look. Ask the agent to change the look, for example by giving it your website address, and it will do it for you.
+
+The AI visibility report shows the icons of companies, source sites and AIs. They load from Google's favicon service when the report is opened. `"icons": false` turns them off.
+
 ## Author
 
 Joonas Rotko, [RJ Digital](https://rjdigital.fi).

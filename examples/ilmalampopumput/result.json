@@ -1,0 +1,417 @@
+{
+  "company": "Havula Lämpö Oy",
+  "domain": "havulalampo.example",
+  "date": "2026-11-24",
+  "runs": 2,
+  "engines": [
+    {
+      "id": "chatgpt",
+      "label": "ChatGPT",
+      "answers": 8,
+      "mentioned": 3,
+      "cited": 3
+    },
+    {
+      "id": "gemini",
+      "label": "Gemini",
+      "answers": 8,
+      "mentioned": 1,
+      "cited": 1
+    },
+    {
+      "id": "aimode",
+      "label": "Google AI Mode",
+      "answers": 8,
+      "mentioned": 0,
+      "cited": 1
+    }
+  ],
+  "questions": [
+    {
+      "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+      "cells": {
+        "chatgpt": {
+          "answers": 2,
+          "mentioned": 1,
+          "cited": 1,
+          "verdict": "sometimes",
+          "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Pirkan Pumppuasennus"
+          ]
+        },
+        "gemini": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä",
+            "Pirkan Pumppuasennus"
+          ]
+        },
+        "aimode": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä"
+          ]
+        }
+      },
+      "answers": 6,
+      "mentioned": 1,
+      "cited": 1
+    },
+    {
+      "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+      "cells": {
+        "chatgpt": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä"
+          ]
+        },
+        "gemini": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Pirkan Pumppuasennus"
+          ]
+        },
+        "aimode": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 1,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu"
+          ]
+        }
+      },
+      "answers": 6,
+      "mentioned": 0,
+      "cited": 1
+    },
+    {
+      "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+      "cells": {
+        "chatgpt": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä",
+            "Pirkan Pumppuasennus"
+          ]
+        },
+        "gemini": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä"
+          ]
+        },
+        "aimode": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Kiertovirta Oy",
+            "Tunturipumppu",
+            "Pirkan Pumppuasennus",
+            "Saarelan Lämpö ja Kylmä"
+          ]
+        }
+      },
+      "answers": 6,
+      "mentioned": 0,
+      "cited": 0
+    },
+    {
+      "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+      "cells": {
+        "chatgpt": {
+          "answers": 2,
+          "mentioned": 2,
+          "cited": 2,
+          "verdict": "yes",
+          "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.",
+          "names": [
+            "Saarelan Lämpö ja Kylmä",
+            "Kylmäkolmio",
+            "Tunturipumppu"
+          ]
+        },
+        "gemini": {
+          "answers": 2,
+          "mentioned": 1,
+          "cited": 1,
+          "verdict": "sometimes",
+          "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.",
+          "names": [
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä",
+            "Kylmäkolmio"
+          ]
+        },
+        "aimode": {
+          "answers": 2,
+          "mentioned": 0,
+          "cited": 0,
+          "verdict": "no",
+          "quote": "",
+          "names": [
+            "Tunturipumppu",
+            "Saarelan Lämpö ja Kylmä",
+            "Kylmäkolmio"
+          ]
+        }
+      },
+      "answers": 6,
+      "mentioned": 3,
+      "cited": 3
+    }
+  ],
+  "total": {
+    "answers": 24,
+    "mentioned": 4,
+    "cited": 5,
+    "share": 17,
+    "citedShare": 21
+  },
+  "competitors": [
+    {
+      "name": "Tunturipumppu",
+      "answers": 23,
+      "share": 96,
+      "engines": {
+        "chatgpt": 7,
+        "gemini": 8,
+        "aimode": 8
+      },
+      "questions": 4,
+      "domain": "tunturipumppu.example",
+      "evidence": "brief"
+    },
+    {
+      "name": "Kiertovirta Oy",
+      "answers": 17,
+      "share": 71,
+      "engines": {
+        "chatgpt": 6,
+        "gemini": 5,
+        "aimode": 6
+      },
+      "questions": 3,
+      "domain": "kiertovirta.example",
+      "evidence": "brief"
+    },
+    {
+      "name": "Saarelan Lämpö ja Kylmä",
+      "answers": 12,
+      "share": 50,
+      "engines": {
+        "gemini": 4,
+        "aimode": 4,
+        "chatgpt": 4
+      },
+      "questions": 4,
+      "domain": "saarelanlampo.example",
+      "evidence": "brief"
+    },
+    {
+      "name": "Pirkan Pumppuasennus",
+      "answers": 5,
+      "share": 21,
+      "engines": {
+        "chatgpt": 2,
+        "gemini": 2,
+        "aimode": 1
+      },
+      "questions": 3,
+      "domain": "",
+      "evidence": "brief"
+    },
+    {
+      "name": "Kylmäkolmio",
+      "answers": 3,
+      "share": 13,
+      "engines": {
+        "chatgpt": 1,
+        "gemini": 1,
+        "aimode": 1
+      },
+      "questions": 1,
+      "domain": "kylmakolmio.example",
+      "evidence": "brief"
+    }
+  ],
+  "unconfirmed": [],
+  "sources": [
+    {
+      "domain": "kiertovirta.example",
+      "answers": 12,
+      "engines": {
+        "chatgpt": 6,
+        "gemini": 1,
+        "aimode": 5
+      },
+      "own": false,
+      "share": 50
+    },
+    {
+      "domain": "lampopumppuvertailu.example",
+      "answers": 12,
+      "engines": {
+        "chatgpt": 5,
+        "aimode": 5,
+        "gemini": 2
+      },
+      "own": false,
+      "share": 50
+    },
+    {
+      "domain": "tunturipumppu.example",
+      "answers": 10,
+      "engines": {
+        "chatgpt": 4,
+        "gemini": 4,
+        "aimode": 2
+      },
+      "own": false,
+      "share": 42
+    },
+    {
+      "domain": "asentajahaku.example",
+      "answers": 8,
+      "engines": {
+        "chatgpt": 2,
+        "gemini": 4,
+        "aimode": 2
+      },
+      "own": false,
+      "share": 33
+    },
+    {
+      "domain": "saarelanlampo.example",
+      "answers": 8,
+      "engines": {
+        "chatgpt": 3,
+        "aimode": 3,
+        "gemini": 2
+      },
+      "own": false,
+      "share": 33
+    },
+    {
+      "domain": "remonttihinnat.example",
+      "answers": 6,
+      "engines": {
+        "chatgpt": 2,
+        "gemini": 2,
+        "aimode": 2
+      },
+      "own": false,
+      "share": 25
+    },
+    {
+      "domain": "havulalampo.example",
+      "answers": 5,
+      "engines": {
+        "chatgpt": 3,
+        "aimode": 1,
+        "gemini": 1
+      },
+      "own": true,
+      "share": 21
+    },
+    {
+      "domain": "rakentajafoorumi.example",
+      "answers": 4,
+      "engines": {
+        "aimode": 3,
+        "chatgpt": 1
+      },
+      "own": false,
+      "share": 17
+    },
+    {
+      "domain": "kylmakolmio.example",
+      "answers": 2,
+      "engines": {
+        "gemini": 1,
+        "aimode": 1
+      },
+      "own": false,
+      "share": 8
+    }
+  ],
+  "ownPages": [
+    "https://havulalampo.example/"
+  ],
+  "searches": [
+    "ilmalämpöpumppu asennus tampere",
+    "ilmalämpöpumppu hinta asennettuna tampere",
+    "ilmalämpöpumppu asentaja pirkanmaa kokemuksia",
+    "ilmalämpöpumpun huolto tampere"
+  ],
+  "quotes": [
+    {
+      "engine": "chatgpt",
+      "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+      "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla."
+    },
+    {
+      "engine": "chatgpt",
+      "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+      "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla."
+    },
+    {
+      "engine": "chatgpt",
+      "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+      "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla."
+    },
+    {
+      "engine": "gemini",
+      "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+      "quote": "- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla."
+    }
+  ],
+  "sourcesOfData": [
+    "kuvitteellinen esimerkki"
+  ]
+}

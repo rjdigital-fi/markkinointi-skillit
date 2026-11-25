@@ -1,9 +1,9 @@
 {
   "name": "rjdigital",
-  "description": "Free marketing skills by RJ Digital. Keyword research with real data from the SEO, SEM or GEO tool you already use: Semrush, Ahrefs, SE Ranking, DataForSEO, Google Ads, SearchApi, SerpApi, HasData, Cloro, any other MCP or API, or a CSV export.",
-  "version": "0.3.0",
+  "description": "Free marketing skills by RJ Digital. An AI visibility check with real answers from ChatGPT, Gemini, Google AI Mode and Perplexity, and keyword research with real data from the SEO, SEM or GEO tool you already use: Semrush, Ahrefs, SE Ranking, DataForSEO, Google Ads, SearchApi, SerpApi, HasData, Cloro, any other MCP or API, or a CSV export.",
+  "version": "0.4.0",
   "author": { "name": "RJ Digital", "url": "https://rjdigital.fi" },
-  "homepage": "https://rjdigital.fi/oppaat/avainsanatutkimus",
+  "homepage": "https://rjdigital.fi/skillit",
   "repository": "https://github.com/rjdigital-fi/skills",
   "license": "MIT"
 }

@@ -1,0 +1,672 @@
+[
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "chatgpt",
+    "run": 1,
+    "text": "Tampereella on useita ilmalämpöpumppuja asentavia yrityksiä. Näitä kannattaa pyytää tarjoukselle:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Havula Lämpö Oy** asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      },
+      {
+        "domain": "havulalampo.example",
+        "url": "https://havulalampo.example/",
+        "title": "Havula Lämpö Oy"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu asennus tampere"
+    ],
+    "brands": [
+      "Kiertovirta Oy",
+      "Tunturipumppu",
+      "Havula Lämpö Oy"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "chatgpt",
+    "run": 2,
+    "text": "Tässä muutama Tampereen seudun asentaja, joista löytyy tietoa verkosta:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Pirkan Pumppuasennus** on pieni asennusliike, jolta saa asennuksen usein nopealla aikataululla.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu asennus tampere"
+    ],
+    "brands": [
+      "Kiertovirta Oy",
+      "Tunturipumppu",
+      "Pirkan Pumppuasennus"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "gemini",
+    "run": 1,
+    "text": "Tampereella on useita ilmalämpöpumppuja asentavia yrityksiä. Näitä kannattaa pyytää tarjoukselle:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "gemini",
+    "run": 2,
+    "text": "Tässä muutama Tampereen seudun asentaja, joista löytyy tietoa verkosta:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Pirkan Pumppuasennus** on pieni asennusliike, jolta saa asennuksen usein nopealla aikataululla.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "aimode",
+    "run": 1,
+    "text": "Tampereella on useita ilmalämpöpumppuja asentavia yrityksiä. Näitä kannattaa pyytää tarjoukselle:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "rakentajafoorumi.example",
+        "url": "https://rakentajafoorumi.example/keskustelu/ilp-asentaja-tampere",
+        "title": "Kokemuksia ILP-asentajista Tampereella"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "engine": "aimode",
+    "run": 2,
+    "text": "Tässä muutama Tampereen seudun asentaja, joista löytyy tietoa verkosta:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nPyydä tarjous vähintään kahdelta ja tarkista, että asentajalla on kylmäalan pätevyys.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "chatgpt",
+    "run": 1,
+    "text": "Ilmalämpöpumppu maksaa asennettuna tyypillisesti noin 1 500–2 800 euroa laitteen ja asennuspaikan mukaan. Tampereella asennuksia tekevät esimerkiksi:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu hinta asennettuna tampere"
+    ],
+    "brands": [
+      "Tunturipumppu",
+      "Kiertovirta Oy"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "chatgpt",
+    "run": 2,
+    "text": "Hinta riippuu laitteesta, putkivedon pituudesta ja asennuspaikasta. Tarjouksen saa muun muassa näiltä:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu hinta asennettuna tampere"
+    ],
+    "brands": [
+      "Kiertovirta Oy",
+      "Tunturipumppu",
+      "Saarelan Lämpö ja Kylmä"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "gemini",
+    "run": 1,
+    "text": "Ilmalämpöpumppu maksaa asennettuna tyypillisesti noin 1 500–2 800 euroa laitteen ja asennuspaikan mukaan. Tampereella asennuksia tekevät esimerkiksi:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "gemini",
+    "run": 2,
+    "text": "Hinta riippuu laitteesta, putkivedon pituudesta ja asennuspaikasta. Tarjouksen saa muun muassa näiltä:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Pirkan Pumppuasennus** on pieni asennusliike, jolta saa asennuksen usein nopealla aikataululla.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "aimode",
+    "run": 1,
+    "text": "Ilmalämpöpumppu maksaa asennettuna tyypillisesti noin 1 500–2 800 euroa laitteen ja asennuspaikan mukaan. Tampereella asennuksia tekevät esimerkiksi:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "havulalampo.example",
+        "url": "https://havulalampo.example/",
+        "title": "Havula Lämpö Oy"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "engine": "aimode",
+    "run": 2,
+    "text": "Hinta riippuu laitteesta, putkivedon pituudesta ja asennuspaikasta. Tarjouksen saa muun muassa näiltä:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nTarkista tarjouksesta, mitä asennukseen kuuluu, ja muista kotitalousvähennys.",
+    "sources": [
+      {
+        "domain": "remonttihinnat.example",
+        "url": "https://remonttihinnat.example/ilmalampopumppu-hinta",
+        "title": "Ilmalämpöpumpun hinta asennettuna"
+      },
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "chatgpt",
+    "run": 1,
+    "text": "Pirkanmaalla toimii sekä ketjuja että paikallisia asennusliikkeitä. Lyhyt vertailu:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "rakentajafoorumi.example",
+        "url": "https://rakentajafoorumi.example/keskustelu/ilp-asentaja-tampere",
+        "title": "Kokemuksia ILP-asentajista Tampereella"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu asentaja pirkanmaa kokemuksia"
+    ],
+    "brands": [
+      "Kiertovirta Oy",
+      "Tunturipumppu",
+      "Saarelan Lämpö ja Kylmä"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "chatgpt",
+    "run": 2,
+    "text": "Vertailin asentajia sen perusteella, mitä ne kertovat hinnoista, takuusta ja huollosta:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Pirkan Pumppuasennus** on pieni asennusliike, jolta saa asennuksen usein nopealla aikataululla.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumppu asentaja pirkanmaa kokemuksia"
+    ],
+    "brands": [
+      "Kiertovirta Oy",
+      "Tunturipumppu",
+      "Pirkan Pumppuasennus"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "gemini",
+    "run": 1,
+    "text": "Pirkanmaalla toimii sekä ketjuja että paikallisia asennusliikkeitä. Lyhyt vertailu:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "gemini",
+    "run": 2,
+    "text": "Vertailin asentajia sen perusteella, mitä ne kertovat hinnoista, takuusta ja huollosta:\n\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "aimode",
+    "run": 1,
+    "text": "Pirkanmaalla toimii sekä ketjuja että paikallisia asennusliikkeitä. Lyhyt vertailu:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Pirkan Pumppuasennus** on pieni asennusliike, jolta saa asennuksen usein nopealla aikataululla.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "rakentajafoorumi.example",
+        "url": "https://rakentajafoorumi.example/keskustelu/ilp-asentaja-tampere",
+        "title": "Kokemuksia ILP-asentajista Tampereella"
+      },
+      {
+        "domain": "kiertovirta.example",
+        "url": "https://kiertovirta.example/",
+        "title": "Kiertovirta Oy"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "engine": "aimode",
+    "run": 2,
+    "text": "Vertailin asentajia sen perusteella, mitä ne kertovat hinnoista, takuusta ja huollosta:\n\n- **Kiertovirta Oy** asentaa ilmalämpöpumppuja Tampereella ja lähikunnissa, ja kiinteä asennushinta näkyy verkkosivulla.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nValinta riippuu siitä, painatko hintaa, aikataulua vai huoltoa. Pyytäisin tarjouksen kahdelta ensimmäiseltä.",
+    "sources": [
+      {
+        "domain": "lampopumppuvertailu.example",
+        "url": "https://lampopumppuvertailu.example/ilmalampopumppu-asennus-tampere",
+        "title": "Ilmalämpöpumpun asennus Tampere: vertailu"
+      },
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "chatgpt",
+    "run": 1,
+    "text": "Ilmalämpöpumppu kannattaa huollattaa parin vuoden välein. Tampereen seudulla huoltoja tekevät:\n\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Havula Lämpö Oy** asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.\n- **Kylmäkolmio** huoltaa ja asentaa lämpöpumppuja Pirkanmaalla.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "havulalampo.example",
+        "url": "https://havulalampo.example/",
+        "title": "Havula Lämpö Oy"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumpun huolto tampere"
+    ],
+    "brands": [
+      "Saarelan Lämpö ja Kylmä",
+      "Havula Lämpö Oy",
+      "Kylmäkolmio"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "chatgpt",
+    "run": 2,
+    "text": "Huollon saa näiltä Tampereen seudun yrityksiltä:\n\n- **Havula Lämpö Oy** asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "havulalampo.example",
+        "url": "https://havulalampo.example/",
+        "title": "Havula Lämpö Oy"
+      },
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      }
+    ],
+    "searches": [
+      "ilmalämpöpumpun huolto tampere"
+    ],
+    "brands": [
+      "Havula Lämpö Oy",
+      "Saarelan Lämpö ja Kylmä",
+      "Tunturipumppu"
+    ],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "gemini",
+    "run": 1,
+    "text": "Ilmalämpöpumppu kannattaa huollattaa parin vuoden välein. Tampereen seudulla huoltoja tekevät:\n\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Havula Lämpö Oy** asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "havulalampo.example",
+        "url": "https://havulalampo.example/",
+        "title": "Havula Lämpö Oy"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "gemini",
+    "run": 2,
+    "text": "Huollon saa näiltä Tampereen seudun yrityksiltä:\n\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n- **Kylmäkolmio** huoltaa ja asentaa lämpöpumppuja Pirkanmaalla.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "kylmakolmio.example",
+        "url": "https://kylmakolmio.example/",
+        "title": "Kylmäkolmio"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "aimode",
+    "run": 1,
+    "text": "Ilmalämpöpumppu kannattaa huollattaa parin vuoden välein. Tampereen seudulla huoltoja tekevät:\n\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Kylmäkolmio** huoltaa ja asentaa lämpöpumppuja Pirkanmaalla.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "kylmakolmio.example",
+        "url": "https://kylmakolmio.example/",
+        "title": "Kylmäkolmio"
+      },
+      {
+        "domain": "asentajahaku.example",
+        "url": "https://asentajahaku.example/tampere/ilmalampopumput",
+        "title": "Ilmalämpöpumppuasentajat Tampereella"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  },
+  {
+    "question": "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?",
+    "engine": "aimode",
+    "run": 2,
+    "text": "Huollon saa näiltä Tampereen seudun yrityksiltä:\n\n- **Saarelan Lämpö ja Kylmä** on paikallinen kylmäalan yritys, joka tekee asennusten lisäksi huollot.\n- **Tunturipumppu** on valtakunnallinen ketju, jolla on toimipiste Tampereella ja laaja merkkivalikoima.\n\nKysy huollon sisältö ja hinta etukäteen, koska ne vaihtelevat yrityksittäin.",
+    "sources": [
+      {
+        "domain": "saarelanlampo.example",
+        "url": "https://saarelanlampo.example/",
+        "title": "Saarelan Lämpö ja Kylmä"
+      },
+      {
+        "domain": "tunturipumppu.example",
+        "url": "https://tunturipumppu.example/",
+        "title": "Tunturipumppu"
+      },
+      {
+        "domain": "rakentajafoorumi.example",
+        "url": "https://rakentajafoorumi.example/keskustelu/ilp-asentaja-tampere",
+        "title": "Kokemuksia ILP-asentajista Tampereella"
+      }
+    ],
+    "searches": [],
+    "brands": [],
+    "date": "2026-11-24",
+    "source": "kuvitteellinen esimerkki"
+  }
+]

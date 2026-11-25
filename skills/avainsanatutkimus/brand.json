@@ -1,0 +1,26 @@
+{
+  "_ohje": "Diaraportin ulkoasu on tässä tiedostossa. Vaihtakaa nimi, logo, värit ja fontti omaan brändiinne. Työkansion oma brand.json ohittaa tämän. \"chart\" on budjettikaavion värit ryhmittäin.",
+  "_note": "The look of the slide report lives in this file. Change the name, logo, colours and font to your own brand. A brand.json in the work folder overrides this one. \"chart\" holds the colours of the budget chart, one per group.",
+  "name": "",
+  "logo": "",
+  "font": "Hanken Grotesk",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap",
+  "colors": {
+    "paper": "#ffffff",
+    "soft": "#f3f3f3",
+    "soft2": "#e8e8e8",
+    "ink": "#141414",
+    "muted": "#6b6b6b",
+    "line": "#e2e2e2",
+    "accent": "#ff5a1f",
+    "night": "#000000"
+  },
+  "chart": [
+    "#2a78d6",
+    "#eb6834",
+    "#1baf7a",
+    "#eda100",
+    "#e87ba4",
+    "#008300"
+  ]
+}

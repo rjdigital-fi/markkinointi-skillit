@@ -36,6 +36,7 @@ Work in one folder per research, by default `avainsanatutkimus/<topic-slug>/` in
 | `chatgpt.json` | AI answers: the question, the searches the AI ran, sources, brands named |
 | `serp-<keyword>.json` | Google result page: result types, People also ask, top results |
 | `site.json` | optional: the site's own queries from Search Console or Bing Webmaster Tools, with clicks, impressions, position and page |
+| `brand.json` | optional: the look of `report.html` for this folder |
 | `report.html`, `report.md`, `keywords.csv` | the result |
 
 Scripts are in `scripts/` next to this file. They need Node 18 or newer and nothing else.
@@ -220,7 +221,14 @@ the range.
 
 `report.html` is the report the user reads: slides in one file that opens in any browser and prints to PDF
 one slide per page. `--note "..."` adds a line to the cover, for example what the numbers are based on.
-`--brand "NAME"` puts the user's company name at the top of the cover: use it only when the user asks.
+`--brand "NAME"` puts the user's company name at the top of the cover for one run.
+
+The look of `report.html` comes from `brand.json`: first the one in the work folder, else the one in the skill
+folder. It holds the name, logo, font (`font` and the web font address `fontUrl`), the colours and the colours
+of the budget chart. The report is the user's to restyle. Tell them once that they can have it in their own
+theme, fonts and colours, and offer to do it: copy the skill's `brand.json` to the work folder, change it and
+run `report-html.mjs` again. If they give a website, read its colours and font from there and confirm before
+you save. Keep text readable: dark text on light surfaces, and an accent that stands out from both.
 
 Both reports hold the topic map (drawn as a map in `report.html`, a table in `report.md`), the keyword tables by group, the seasonality of the main
 keyword, the budget split, the AI answers, the result page notes, the site's own visibility (when `site.json` exists)

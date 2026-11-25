@@ -1,0 +1,22 @@
+{
+  "_ohje": "Raportin ulkoasu on tässä tiedostossa. Vaihtakaa nimi, logo, värit ja fontti omaan brändiinne. Työkansion oma brand.json ohittaa tämän. \"icons\": false jättää yritysten ja tekoälyjen kuvakkeet pois.",
+  "_note": "The look of the report lives in this file. Change the name, logo, colours and font to your own brand. A brand.json in the work folder overrides this one. \"icons\": false leaves out the icons of companies and AIs.",
+  "name": "RJ DIGITAL",
+  "credit": {
+    "fi": "Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi",
+    "en": "Built with RJ Digital's AI visibility skill · rjdigital.fi"
+  },
+  "logo": "",
+  "font": "Hanken Grotesk",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap",
+  "colors": {
+    "paper": "#ffffff",
+    "soft": "#f3f3f3",
+    "ink": "#141414",
+    "muted": "#6b6b6b",
+    "line": "#e2e2e2",
+    "accent": "#ff5a1f",
+    "night": "#000000"
+  },
+  "icons": true
+}

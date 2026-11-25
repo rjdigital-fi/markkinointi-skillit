@@ -83,6 +83,70 @@ Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.html` on raportti 
 - Budjetin jako on lähtökohta, joka lasketaan hakumääristä, klikkaushinnoista ja hakuaikomuksesta. Oikea mainosdata tarkentaa sen ensimmäisten viikkojen jälkeen.
 - Agentti kysyy aina alustavan budjettihaarukan. Raportti on euroissa: jos lähteen klikkaushinnat ovat dollareissa, ne muunnetaan Euroopan keskuspankin viitekurssilla, ja kurssi päivämäärineen näkyy raportissa.
 
+## Tekoälynäkyvyys
+
+Skilli selvittää, mainitseeko tekoäly yrityksenne, kun ostaja pyytää suositusta. Agentti kysyy ostajan kysymykset ChatGPT:ltä, Geminiltä, Googlen AI Modelta ja halutessanne Perplexityltä, lukee vastaukset ja tekee niistä raportin.
+
+Raportissa on:
+
+- taulukko kysymyksistä ja tekoälyistä: missä vastauksissa yrityksenne mainitaan ja missä oma sivustonne on lähteenä
+- näkyvyys tekoälyittäin
+- yritykset, jotka tekoäly nimeää samoihin kysymyksiin
+- sivustot, joihin vastaukset nojaavat
+- lainaukset siitä, mitä yrityksestänne sanottiin
+- menetelmä: kysymykset, ajokerrat ja tuloksen rajat
+
+Alla on kaksi diaa esimerkkiraportista, koko esimerkki on kansiossa [examples/ilmalampopumput](examples/ilmalampopumput/).
+
+[![Esimerkkiraportin taulukko: kysymykset riveillä, tekoälyt sarakkeissa](examples/ilmalampopumput/kuvat/dia-2.png)](examples/ilmalampopumput/)
+
+[![Esimerkkiraportin lista yrityksistä, jotka tekoäly nimeää](examples/ilmalampopumput/kuvat/dia-4.png)](examples/ilmalampopumput/)
+
+Esimerkin yritykset, sivustot ja vastaukset ovat keksittyjä: kuvitteellinen esimerkki.
+
+Nopean kolmen kysymyksen version voi kokeilla selaimessa: [tekoälynäkyvyyden testi](https://rjdigital.fi/tekoalynakyvyys-testi). Skilli on sama asia laajempana: kysymyksiä on niin monta kuin tarvitaan, ja jokainen kysytään useaan kertaan.
+
+### Datalähde
+
+Tärkeintä on, että vastaukset tulevat oikeista sovelluksista verkkohaku päällä ja lähteet mukana.
+
+| Lähde | Miten kytketään |
+| --- | --- |
+| DataForSEO | rajapinnan tunnukset ympäristömuuttujissa, mukana valmis skripti. Yksi vastaus maksaa noin 0,004 dollaria (Perplexity noin 0,007). |
+| Tekoälynäkyvyyden työkalut: Cloro, Peec AI, Profound, Otterly ja muut | MCP, rajapinta tai vienti. Vastaukset tuodaan skriptillä `answers.mjs`. |
+| Tulossivurajapinnat: SerpApi, SearchApi, HasData | Googlen AI Mode ja tekoälykatsaukset, tuodaan samalla skriptillä |
+| Jokin muu | vastaus JSON- tai tekstitiedostona, agentti sovittaa kentät |
+
+Mitä on testattu: DataForSEO oikealla ajolla marraskuussa 2026 (ChatGPT, Gemini ja AI Mode). Muiden työkalujen tuonti on testattu mallitiedostoilla, ei oikeilla tileillä. Tuonti tulostaa aina, mitä se löysi.
+
+### Käyttö
+
+```
+Kartoita tekoälynäkyvyys yritykselle Esimerkki Oy, esimerkki.fi. Asennamme ilmalämpöpumppuja omakotitaloihin Tampereen seudulla.
+```
+
+Tai kutsukaa suoraan: `/rjdigital:tekoalynakyvyys`. Asennus on sama kuin yllä, kansio on `skills/tekoalynakyvyys`.
+
+Agentti ehdottaa kysymykset, ja te muokkaatte ne sellaisiksi, kuin asiakkaanne ne kirjoittaisi. Ennen hakua agentti kertoo hinnan. Tulos tallentuu kansioon `tekoalynakyvyys/<yritys>/`.
+
+### Hyvä tietää
+
+- Tulos on tilannekuva. Tekoäly vastaa samaan kysymykseen eri kerroilla eri tavalla, joten jokainen kysymys kysytään 2–3 kertaa. Pienellä kysymysmäärällä alle noin 10 prosenttiyksikön muutos on satunnaisvaihtelua.
+- Pitäkää kysymykset samoina, jos haluatte verrata tulosta myöhemmin. Uudet kysymykset ovat uusi lähtötaso.
+- Kysymykset lähetetään tekoälyille ilman yrityksen nimeä.
+- "Mainittu" tarkoittaa, että yrityksen nimi on vastauksen tekstissä. "Lähteenä" tarkoittaa, että tekoäly nojasi yrityksen sivustoon. Ne lasketaan erikseen.
+- Skripti poimii vastauksista yritysten nimiä, ja agentti lukee vastaukset ja varmistaa, mitkä nimistä ovat oikeasti kilpailijoita.
+
+### Kiitokset
+
+Menetelmässä on ideoita avoimista projekteista: ostopolun mukainen kysymysjoukko, toistetut ajot ja varoitus pienistä muutoksista ([geo-visibility-skill](https://github.com/thevibegarage/geo-visibility-skill)), maininnan ja pelkän lähdelinkin erottaminen ([oneglanse](https://github.com/oneglanse/oneglanse)) ja kaksivaiheinen nimien tunnistus ([elmo](https://github.com/elmohq/elmo)). Koodi on omaa.
+
+## Oma ilme
+
+Kaikki työkalut ja raportit saa muuttaa oman brändin näköisiksi: oma teema, omat fontit ja omat värit. Kummassakin skillissä ilme on yhdessä tiedostossa, `brand.json` (`skills/avainsanatutkimus/brand.json` ja `skills/tekoalynakyvyys/brand.json`): nimi, logo, fontti ja värit. Työkansioon kopioitu `brand.json` ohittaa skillin oman, joten eri asiakkaille voi tehdä eri ilmeen. Pyytäkää agenttia vaihtamaan ilme, vaikka antamalla verkkosivunne osoite, niin se tekee sen puolestanne.
+
+Tekoälynäkyvyyden raportti näyttää yritysten, lähdesivustojen ja tekoälyjen kuvakkeet. Ne haetaan Googlen kuvakepalvelusta, kun raportti avataan. Kuvakkeet saa pois asetuksella `"icons": false`.
+
 ## Tekijä
 
 Joonas Rotko, [RJ Digital](https://rjdigital.fi). Teen hakukoneoptimointia, tekoälynäkyvyyttä ja hakumainontaa.

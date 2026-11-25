@@ -1,0 +1,36 @@
+{
+  "company": "Havula Lämpö Oy",
+  "domain": "havulalampo.example",
+  "aliases": [
+    "Havula Lämpö",
+    "Havulan Lämpö"
+  ],
+  "sells": "ilmalämpöpumppujen asennus ja huolto",
+  "area": "Tampere",
+  "buyer": "omakotitalon omistaja",
+  "market": {
+    "location_code": 2246,
+    "language_code": "fi",
+    "country": "FI"
+  },
+  "engines": [
+    "chatgpt",
+    "gemini",
+    "aimode"
+  ],
+  "runs": 2,
+  "questions": [
+    "Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.",
+    "Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?",
+    "Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?",
+    "Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?"
+  ],
+  "competitors": [
+    "Kiertovirta Oy",
+    "Tunturipumppu",
+    "Saarelan Lämpö ja Kylmä",
+    "Pirkan Pumppuasennus",
+    "Kylmäkolmio"
+  ],
+  "notCompanies": []
+}

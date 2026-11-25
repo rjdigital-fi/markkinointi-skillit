@@ -193,12 +193,75 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
     execFileSync("node", [path.join(scripts, "report-html.mjs"), "--dir", dir, "--lang", "fi", "--out", path.join(dir, "fi.html")], { encoding: "utf8" });
     const fi = fs.readFileSync(path.join(dir, "fi.html"), "utf8");
     problems.push(...want(/<html lang="fi">/.test(fi), "lang fi"), ...want(/Näin 1.000–2.000 € kuukaudessa jakautuu ryhmille/.test(fi), "fi budget title"), ...want(!/class="brand"/.test(fi), "no brand by default"));
+    fs.writeFileSync(path.join(dir, "brand.json"), JSON.stringify({ name: "OMA", font: "Inter", fontUrl: "https://fonts.googleapis.com/css2?family=Inter", colors: { accent: "#0055ff" } }));
+    execFileSync("node", [path.join(scripts, "report-html.mjs"), "--dir", dir, "--out", path.join(dir, "own.html")], { encoding: "utf8" });
+    const ownLook = fs.readFileSync(path.join(dir, "own.html"), "utf8");
+    problems.push(...want(/--accent:#0055ff/.test(ownLook), "brand.json accent"), ...want(/--font:"Inter"/.test(ownLook) && /family=Inter/.test(ownLook), "brand.json font"), ...want(/class="brand">OMA</.test(ownLook), "brand.json name"), ...want(/--paper:#ffffff/.test(ownLook), "other colours keep their defaults"));
+    fs.rmSync(path.join(dir, "brand.json"));
     fs.writeFileSync(path.join(dir, "groups.json"), JSON.stringify(cfg));
   } catch (e) {
     problems = [String(e.stderr || e.message).trim()];
   }
   console.log(`${problems.length ? "FAIL" : "ok  "} Slide report: both languages, budget range and currency${problems.length ? `: ${problems.join("; ")}` : ""}`);
   if (problems.length) failed++;
+}
+
+// --- AI visibility skill (tekoalynakyvyys): import, analysis and report on made-up answers ---
+{
+  const ai = path.join(path.dirname(fileURLToPath(import.meta.url)), "..", "skills", "tekoalynakyvyys", "scripts");
+  const dir = path.join(tmp, "ai");
+  fs.mkdirSync(dir);
+  const run = (script, ...a) => execFileSync("node", [path.join(ai, script), ...a], { encoding: "utf8" });
+  const check = (name, fn) => {
+    n++;
+    let problems = [];
+    try {
+      problems = fn();
+    } catch (e) {
+      problems = [String(e.stderr || e.message).trim()];
+    }
+    console.log(`${problems.length ? "FAIL" : "ok  "} ${name}${problems.length ? `: ${problems.join("; ")}` : ""}`);
+    if (problems.length) failed++;
+  };
+  const q1 = "Which company installs heat pumps in Tampere?";
+  const q2 = "Compare heat pump installers in Tampere.";
+  fs.writeFileSync(path.join(dir, "brief.json"), JSON.stringify({ company: "Acme Lämpö Oy", domain: "acmelampo.fi", aliases: ["Acme Lämpö"], questions: [q1, q2], competitors: ["Beta Pumput"], notCompanies: ["Ilmalämpöpumppu"] }));
+  const put = (file, content, q, engine, runNo = "1") => {
+    fs.writeFileSync(path.join(dir, file), content);
+    return run("answers.mjs", "--file", path.join(dir, file), "--question", q, "--engine", engine, "--run", runNo, "--dir", dir);
+  };
+
+  check("AI answers: DataForSEO-style JSON, tool JSON with citations, plain text", () => {
+    const a = put("a.json", JSON.stringify({ tasks: [{ result: [{ markdown: "**Acme Lämpö** and **Beta Pumput** install them. **Ilmalämpöpumppu** saves energy.", sources: [{ url: "https://www.acmelampo.fi/asennus", title: "Acme" }, { url: "https://vertailu.example/pumput", title: "Vertailu" }] }] }] }), q1, "chatgpt");
+    const b = put("b.json", JSON.stringify({ result: { text: "Try **Beta Pumput** or **Gamma Kylmä**, **Delta Asennus**.", citations: [{ url: "https://betapumput.fi/", title: "Beta" }] } }), q1, "gemini");
+    const c = put("c.txt", "Beta Pumput is the usual choice in Tampere.", q2, "chatgpt");
+    put("d.md", "Acme Lämpö Oy and Beta Pumput both get good reviews.", q2, "gemini");
+    const rows = JSON.parse(fs.readFileSync(path.join(dir, "answers.json"), "utf8"));
+    return [...want(/sources: 2/.test(a), "two sources in the first answer"), ...want(/sources: 1 \(betapumput\.fi\)/.test(b), "citations read as sources"), ...want(/sources: 0/.test(c), "plain text has no sources"), ...want(rows.length === 4, `four answers saved, got ${rows.length}`), ...want(rows[0].sources[0].domain === "acmelampo.fi", "www stripped from the domain")];
+  });
+
+  check("AI analysis: named, cited, competitors, dropped names", () => {
+    const out = run("analyze.mjs", "--dir", dir);
+    const r = JSON.parse(fs.readFileSync(path.join(dir, "result.json"), "utf8"));
+    const names = r.competitors.map((c) => c.name);
+    const beta = r.competitors.find((c) => c.name === "Beta Pumput");
+    const all = [...names, ...r.unconfirmed.map((c) => c.name)];
+    return [...want(/named in 2 of 4 answers \(50 %\)/.test(out), "summary line"), ...want(r.total.mentioned === 2 && r.total.cited === 1, `named 2 and cited 1, got ${r.total.mentioned} and ${r.total.cited}`), ...want(beta?.answers === 4 && beta.evidence === "brief", "Beta Pumput in all four answers, from the brief"), ...want(!all.includes("Ilmalämpöpumppu"), "notCompanies dropped"), ...want(!all.some((x) => /Acme/.test(x)), "own company is not a competitor"), ...want(!names.includes("Gamma Kylmä, Delta Asennus"), "a bold run with two names is split"), ...want(r.questions[0].cells.chatgpt.verdict === "yes" && r.questions[0].cells.gemini.verdict === "no", "matrix verdicts"), ...want(r.sources.find((s) => s.domain === "acmelampo.fi")?.own === true, "own site marked in sources")];
+  });
+
+  check("AI report: both languages, note, brand", () => {
+    const out = run("report.mjs", "--dir", dir, "--lang", "en", "--note", "Test <note>", "--brand", "ACME");
+    const en = fs.readFileSync(path.join(dir, "report.html"), "utf8");
+    run("report.mjs", "--dir", dir, "--lang", "fi", "--out", path.join(dir, "fi.html"));
+    const fi = fs.readFileSync(path.join(dir, "fi.html"), "utf8");
+    return [...want(/report\.html: \d+ slides/.test(out), "prints the slide count"), ...want(/<html lang="en">/.test(en), "lang en"), ...want(/Test &lt;note&gt;/.test(en), "escaped note"), ...want(/ACME/.test(en), "brand name"), ...want(!/<script/i.test(en), "no scripts"), ...want(/Beta Pumput/.test(en), "competitor row"), ...want(/<html lang="fi">/.test(fi), "lang fi"), ...want(fs.existsSync(path.join(dir, "report.md")), "report.md written"), ...want(/s2\/favicons\?domain=chatgpt\.com/.test(en), "AI icons"), ...want(!/s2\/favicons/.test(fs.readFileSync(path.join(run("report.mjs", "--dir", dir, "--icons", "off", "--out", path.join(dir, "plain.html")) && dir, "plain.html"), "utf8")), "--icons off leaves icons out")];
+  });
+
+  check("AI cost estimate makes no calls and needs no credentials", () => {
+    fs.writeFileSync(path.join(dir, "brief.json"), JSON.stringify({ ...JSON.parse(fs.readFileSync(path.join(dir, "brief.json"), "utf8")), engines: ["chatgpt", "gemini", "aimode"], runs: 2 }));
+    const out = run("dataforseo.mjs", "estimate", "--dir", dir);
+    return want(/12/.test(out) && /\$/.test(out), `12 answers and a dollar sum, got: ${out.trim().slice(0, 120)}`);
+  });
 }
 
 fs.rmSync(tmp, { recursive: true, force: true });

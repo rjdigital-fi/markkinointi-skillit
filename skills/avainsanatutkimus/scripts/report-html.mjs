@@ -3,9 +3,11 @@
 //   node report-html.mjs --dir <work folder> [--lang fi|en] [--budget 1000-2000] [--note "..."] [--brand "NAME"] [--out report.html]
 // One self-contained HTML file with no scripts. The script makes no network calls; the page itself loads one web
 // font when opened and falls back to system fonts without it. Opens in any browser, prints to PDF one slide per page.
-// --note adds a line to the cover, --brand a name to the top of the cover. Budget, currency and rate work as in report.mjs.
+// The look (name, logo, colours, font) comes from brand.json: the one in the work folder, else the one in the skill folder.
+// --note adds a line to the cover, --brand a name to the top of the cover for one run. Budget, currency and rate work as in report.mjs.
 import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const rest = process.argv.slice(2);
 const args = {};
@@ -17,6 +19,13 @@ for (let i = 0; i < rest.length; i++) {
 const dir = path.resolve(args.dir ?? ".");
 const read = (f) => JSON.parse(fs.readFileSync(path.join(dir, f), "utf8"));
 const has = (f) => fs.existsSync(path.join(dir, f));
+const here = path.dirname(fileURLToPath(import.meta.url));
+const brandFile = [path.join(dir, "brand.json"), path.join(here, "..", "brand.json")].find((f) => fs.existsSync(f));
+const brand = brandFile ? JSON.parse(fs.readFileSync(brandFile, "utf8")) : {};
+const theme = { paper: "#ffffff", soft: "#f3f3f3", soft2: "#e8e8e8", ink: "#141414", muted: "#6b6b6b", line: "#e2e2e2", accent: "#ff5a1f", night: "#000000", ...(brand.colors ?? {}) };
+const font = String(brand.font || "Hanken Grotesk").replace(/["<>;{}]/g, "");
+const fontUrl = brand.fontUrl === undefined ? "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap" : brand.fontUrl;
+const brandName = args.brand && args.brand !== "true" ? args.brand : brand.name ?? "";
 const keywords = read("keywords.json");
 const cfg = read("groups.json");
 const lang = (args.lang ?? cfg.lang ?? "fi") === "en" ? "en" : "fi";
@@ -221,7 +230,7 @@ if (main?.months?.length) {
 
 // ---------- 4. Budget ----------
 {
-  const COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300"];
+  const COLORS = Array.isArray(brand.chart) && brand.chart.length ? brand.chart : ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300"];
   const GREY = "#b9b9b9";
   const sorted = [...groups].sort((a, b) => b.score - a.score).map((g) => ({ g, share: totalScore ? (g.score / totalScore) * 100 : 0 }));
   const nonZero = sorted.filter((s) => s.share > 0);
@@ -349,13 +358,13 @@ ${none.length ? `<p class="note"><b>${L.siteNone}</b> ${e(none.join(", "))}.</p>
 // ---------- Page ----------
 const total = slides.length + 1;
 const foot = (i) => `<footer class="foot"><span>${L.research}: ${e(topic)}</span><span>${L.credit}</span><span>${i} / ${total}</span></footer>`;
-const cover = `<section class="slide cover">${args.brand && args.brand !== "true" ? `<p class="brand">${e(args.brand)}</p>` : ""}<div class="cover-main"><p class="kicker">${L.research}</p><h1>${e(cap(topic))}</h1>
+const cover = `<section class="slide cover">${brand.logo ? `<img class="logo" src="${e(brand.logo)}" alt="${e(brandName)}">` : brandName ? `<p class="brand">${e(brandName)}</p>` : ""}<div class="cover-main"><p class="kicker">${L.research}</p><h1>${e(cap(topic))}</h1>
 <dl class="stats"><div><dt>${L.found}</dt><dd>${n(keywords.length)}</dd></div><div><dt>${L.grouped}</dt><dd>${n(groups.reduce((s, g) => s + g.rows.length, 0))}</dd></div><div><dt>${L.groupsN}</dt><dd>${groups.length}</dd></div><div><dt>${L.totalVol}</dt><dd>${n(groups.reduce((s, g) => s + g.volume, 0))}</dd></div></dl></div>
 <div class="cover-meta"><p><b>${L.data}</b> ${e(sources.join(", ") || L.noData)}</p>${cfg.market ? `<p><b>${L.market}</b> ${e(cfg.market)}</p>` : ""}<p><b>${L.built}</b> ${today}</p>${args.note ? `<p class="cover-note">${e(args.note)}</p>` : ""}</div></section>`;
 const body = slides.map((s, i) => `<section class="slide ${s.cls}"><header><p class="kicker">${String(i + 2).padStart(2, "0")} · ${e(s.kicker)}</p><h2>${s.title}</h2>${s.sub ? `<p class="sub">${s.sub}</p>` : ""}</header><div class="body">${s.body}</div>${foot(i + 2)}</section>`).join("\n");
 
 const css = `
-:root{--paper:#fff;--soft:#f3f3f3;--soft-2:#e8e8e8;--ink:#141414;--muted:#6b6b6b;--line:#e2e2e2;--accent:#ff5a1f;--night:#000;--font:"Hanken Grotesk","Helvetica Neue",Arial,system-ui,sans-serif;color-scheme:light}
+:root{--paper:${theme.paper};--soft:${theme.soft};--soft-2:${theme.soft2};--ink:${theme.ink};--muted:${theme.muted};--line:${theme.line};--accent:${theme.accent};--night:${theme.night};--font:"${font}","Helvetica Neue",Arial,system-ui,sans-serif;color-scheme:light}
 *{box-sizing:border-box}
 body{margin:0;background:var(--soft);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased}
 .deck{width:min(1280px,100% - 32px);margin:32px auto;display:grid;gap:28px}
@@ -372,6 +381,7 @@ h2{font-size:38px;font-weight:500;line-height:1.15;letter-spacing:-0.02em;max-wi
 /* cover */
 .cover{background:var(--night) radial-gradient(900px circle at 100% 0%,rgba(255,255,255,.13),transparent 60%);color:#fff;padding-bottom:48px}
 .brand{font-size:14px;font-weight:600;letter-spacing:.32em}
+.logo{height:36px;width:auto;align-self:flex-start}
 .cover-main{margin-top:auto}
 .cover .kicker{color:rgba(255,255,255,.64);font-size:16px}
 h1{font-size:104px;font-weight:500;line-height:1;letter-spacing:-0.035em;overflow-wrap:anywhere}
@@ -490,8 +500,7 @@ body{background:#fff}
 const html = `<!doctype html>
 <html lang="${lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${L.research}: ${e(topic)}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+${fontUrl ? `<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n<link href="${e(fontUrl)}" rel="stylesheet">` : ""}
 <style>${css}</style></head>
 <body><main class="deck">
 ${cover}
