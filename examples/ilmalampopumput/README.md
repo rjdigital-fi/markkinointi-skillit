@@ -11,6 +11,7 @@ Tiedostot:
 - [brief.json](brief.json): yritys, kysymykset, tekoälyt ja vahvistetut kilpailijat.
 - [answers.json](answers.json): vastaukset, joista raportti on laskettu.
 - [result.json](result.json): analyysin tulos.
+- [checks.json](checks.json): sivuston ja lähdesivujen pikatarkistus, tässä keksityin tuloksin.
 
 ## 1. Kansi
 
@@ -36,6 +37,10 @@ Tiedostot:
 
 ![Lainauksia vastauksista, joissa yritys mainittiin](kuvat/dia-6.png)
 
-## 7. Näin kartoitus tehtiin
+## 7. Mistä tulos syntyy
 
-![Menetelmä: kysymykset, tekoälyt, ajokerrat ja tuloksen rajat](kuvat/dia-7.png)
+![Kolme työaluetta: tekninen pohja, sisältö ja jäsentely, maininnat muualla, jokaisesta pikatarkistus](kuvat/dia-7.png)
+
+## 8. Näin kartoitus tehtiin
+
+![Menetelmä: kysymykset, tekoälyt, ajokerrat ja tuloksen rajat](kuvat/dia-8.png)

@@ -71,6 +71,34 @@ td small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
 blockquote{margin:0;background:var(--soft);border-radius:14px;padding:22px 24px}
 blockquote p{font-size:17px;line-height:1.45}
 blockquote footer{margin-top:12px;font-size:12px;color:var(--muted)}
+.work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.work-card{display:flex;flex-direction:column;padding:20px 22px}
+.work-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:8px}
+.work-top .v{margin-left:auto}
+.work-num{flex:none;width:28px;height:28px;border-radius:999px;background:var(--paper);font-size:13px;font-weight:600;line-height:28px;text-align:center}
+.lv-ok{background:var(--ink);color:var(--paper)}
+.lv-some{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.lv-gap{box-shadow:inset 0 0 0 1.5px var(--accent);background:var(--paper)}
+.lv-none{background:var(--line);color:var(--muted)}
+.work-card h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:0}
+.work-q{font-size:14px;color:var(--muted)}
+.meter{display:flex;align-items:center;gap:12px;margin-top:12px}
+.meter-bar{display:flex;gap:4px;flex:1}
+.meter-bar i{flex:1;height:6px;border-radius:999px;background:var(--line)}
+.meter-bar i.on{background:var(--ink)}
+.meter-num{font-size:13px;color:var(--muted);white-space:nowrap}
+.meter-num b{color:var(--ink);font-weight:600}
+.work-label{margin-top:12px;font-size:12px;font-weight:600}
+.checks{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px;font-size:13.5px;line-height:1.35}
+.checks li{display:flex;gap:8px;overflow-wrap:anywhere;min-width:0}
+.checks span{min-width:0}
+.checks b{flex:none;width:16px;font-weight:600}
+.checks .is-gap b{color:var(--accent)}
+.checks .is-ok,.checks .is-unknown{color:var(--muted)}
+.work-none{font-size:14px;color:var(--muted)}
+.work-job{margin-top:auto;padding-top:14px;font-size:13px;line-height:1.4}
+.work-job b{font-weight:600;margin-right:6px}
+.work-small{margin-top:12px;font-size:12px;color:var(--muted);max-width:90em}
 @media (max-width:1311px){
 .slide{padding:32px 24px 20px;min-height:0}
 h1{font-size:clamp(40px,10vw,96px)}
@@ -80,7 +108,8 @@ h2{font-size:clamp(26px,5vw,38px)}
 .stats dd{font-size:30px}
 }
 @media (max-width:860px){
-.cols,.quotes{grid-template-columns:1fr;gap:28px}
+.cols,.quotes,.work{grid-template-columns:1fr;gap:28px}
+.work{gap:16px}
 .body{overflow-x:auto}
 .matrix{min-width:560px}
 .foot span:nth-child(2){display:none}
@@ -90,7 +119,7 @@ h2{font-size:clamp(26px,5vw,38px)}
 body{background:#fff}
 .deck{width:1280px;margin:0;gap:0}
 .slide{border-radius:0;break-after:page;break-inside:avoid;min-height:800px}
-.cover,.v,.tile,.bar,.bar i,.pills li,blockquote{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cover,.v,.tile,.bar,.bar i,.pills li,blockquote,.meter-bar i,.work-num{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }</style></head>
 <body><main class="deck">
 <section class="slide cover"><p class="brand">RJ DIGITAL</p><div class="cover-main"><p class="kicker">Tekoälynäkyvyyden kartoitus</p><h1>Havula Lämpö Oy</h1>
@@ -108,6 +137,22 @@ body{background:#fff}
 <section class="slide"><p class="kicker">Lähteet</p><h2>Sivustot, joihin tekoäly nojaa</h2><p class="sub">Tekoäly hakee vastauksensa näiltä sivustoilta. Listalla näkyy myös, onko oma sivusto mukana.</p><div class="body"><div class="cols"><div><table class="board"><thead><tr><th>Sivusto</th><th></th><th class="num">Vastauksia</th><th class="num">Osuus</th></tr></thead><tbody><tr><td><span class="ico ico-l" aria-hidden="true">K</span>kiertovirta.example</td><td class="barcell"><div class="bar "><i style="width:100%"></i></div></td><td class="num">12</td><td class="num">50 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">L</span>lampopumppuvertailu.example</td><td class="barcell"><div class="bar "><i style="width:100%"></i></div></td><td class="num">12</td><td class="num">50 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">T</span>tunturipumppu.example</td><td class="barcell"><div class="bar "><i style="width:83.33333333333333%"></i></div></td><td class="num">10</td><td class="num">42 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">A</span>asentajahaku.example</td><td class="barcell"><div class="bar "><i style="width:66.66666666666667%"></i></div></td><td class="num">8</td><td class="num">33 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">S</span>saarelanlampo.example</td><td class="barcell"><div class="bar "><i style="width:66.66666666666667%"></i></div></td><td class="num">8</td><td class="num">33 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">R</span>remonttihinnat.example</td><td class="barcell"><div class="bar "><i style="width:50%"></i></div></td><td class="num">6</td><td class="num">25 %</td></tr><tr class="own"><td><span class="ico ico-l" aria-hidden="true">H</span>havulalampo.example <em>oma sivusto</em></td><td class="barcell"><div class="bar "><i style="width:41.666666666666664%"></i></div></td><td class="num">5</td><td class="num">21 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">R</span>rakentajafoorumi.example</td><td class="barcell"><div class="bar "><i style="width:33.333333333333336%"></i></div></td><td class="num">4</td><td class="num">17 %</td></tr><tr><td><span class="ico ico-l" aria-hidden="true">K</span>kylmakolmio.example</td><td class="barcell"><div class="bar "><i style="width:16.666666666666668%"></i></div></td><td class="num">2</td><td class="num">8 %</td></tr></tbody></table></div>
 <div><h3 class="h3">Omat sivut, joihin tekoäly viittasi</h3><ul class="list"><li>havulalampo.example/</li></ul></div></div></div><footer class="foot"><span>Tekoälynäkyvyyden kartoitus: Havula Lämpö Oy</span><span>Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi</span><span>5</span></footer></section>
 <section class="slide"><p class="kicker">Mitä tekoäly sanoo</p><h2>Näin tekoäly kuvaa yritystä Havula Lämpö Oy</h2><p class="sub">Otteet ovat suoraan vastauksista. Tarkistakaa, että tiedot pitävät paikkansa.</p><div class="body"><div class="quotes"><blockquote><p>- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.</p><footer><span class="eng"><img class="ico" src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=64" alt="" width="20" height="20" loading="lazy" referrerpolicy="no-referrer">ChatGPT</span> · Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.</footer></blockquote><blockquote><p>- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.</p><footer><span class="eng"><img class="ico" src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=64" alt="" width="20" height="20" loading="lazy" referrerpolicy="no-referrer">ChatGPT</span> · Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?</footer></blockquote><blockquote><p>- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.</p><footer><span class="eng"><img class="ico" src="https://www.google.com/s2/favicons?domain=chatgpt.com&amp;sz=64" alt="" width="20" height="20" loading="lazy" referrerpolicy="no-referrer">ChatGPT</span> · Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?</footer></blockquote><blockquote><p>- Havula Lämpö Oy asentaa ja huoltaa ilmalämpöpumppuja Tampereen seudulla, ja huoltojen hinnat on kerrottu verkkosivulla.</p><footer><span class="eng"><img class="ico" src="https://www.google.com/s2/favicons?domain=gemini.google.com&amp;sz=64" alt="" width="20" height="20" loading="lazy" referrerpolicy="no-referrer">Gemini</span> · Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?</footer></blockquote></div></div><footer class="foot"><span>Tekoälynäkyvyyden kartoitus: Havula Lämpö Oy</span><span>Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi</span><span>6</span></footer></section>
+<section class="slide"><p class="kicker">Kolme työaluetta</p><h2>Mistä tulos syntyy</h2><p class="sub">Näkyvyys tekoälyn vastauksissa rakentuu kolmesta asiasta. Jokaisesta katsottiin pikaisesti, missä Havula Lämpö Oy on nyt.</p><div class="body"><div class="work"><section class="tile work-card"><div class="work-top"><span class="work-num">1</span><h3>Tekninen pohja</h3><span class="v lv-some">Parannettavaa</span></div>
+<p class="work-q">Pääseekö tekoäly lukemaan sivustoanne?</p>
+<div class="meter"><span class="meter-bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i></span><span class="meter-num"><b>4</b> / 5 kunnossa</span></div>
+<p class="work-label">Kehityskohteet</p><ul class="checks"><li class="is-gap"><b aria-hidden="true">→</b><span>Perplexityn, Clauden tai Bingin botteja on estetty robots.txt-tiedostossa</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>ChatGPT:n hakubotit saavat lukea sivuston</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>Googlen botit saavat lukea sivuston</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>Etusivun teksti on luettavissa ilman JavaScriptiä</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>Sivukartta löytyy</span></li></ul>
+
+<p class="work-job"><b>Mitä työ on:</b>Varmistetaan, että tekoälyn botit pääsevät jokaiselle tärkeälle sivulle ja saavat tekstin luettavaksi.</p></section><section class="tile work-card"><div class="work-top"><span class="work-num">2</span><h3>Sisältö ja jäsentely</h3><span class="v lv-gap">Selvä puute</span></div>
+<p class="work-q">Kertooko sivusto selvästi, mitä myytte, kenelle ja missä?</p>
+<div class="meter"><span class="meter-bar"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></span><span class="meter-num"><b>2</b> / 5 kunnossa</span></div>
+<p class="work-label">Kehityskohteet</p><ul class="checks"><li class="is-gap"><b aria-hidden="true">→</b><span>Hintoja tai linkkiä hinnastoon ei löytynyt etusivulta</span></li><li class="is-gap"><b aria-hidden="true">→</b><span>Usein kysyttyjä kysymyksiä ei löytynyt etusivulta</span></li><li class="is-gap"><b aria-hidden="true">→</b><span>Yritystiedoilta puuttuu rakenteinen merkintä</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>Etusivun otsikot kertovat, mitä myytte</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>Toiminta-alue (Tampere) mainitaan etusivulla</span></li></ul>
+
+<p class="work-job"><b>Mitä työ on:</b>Tehdään sivut, jotka vastaavat ostajan kysymyksiin suoraan, ja jäsennetään ne niin, että vastauksen voi poimia.</p></section><section class="tile work-card"><div class="work-top"><span class="work-num">3</span><h3>Maininnat muualla</h3><span class="v lv-gap">Selvä puute</span></div>
+<p class="work-q">Oletteko niillä ulkopuolisilla sivuilla, joihin vastaukset nojaavat?</p>
+<div class="meter"><span class="meter-bar"><i class="on"></i><i></i><i></i><i></i></span><span class="meter-num"><b>1</b> / 4 kunnossa</span></div>
+<p class="work-label">Kehityskohteet</p><ul class="checks"><li class="is-gap"><b aria-hidden="true">→</b><span>lampopumppuvertailu.example: teitä ei mainita</span></li><li class="is-gap"><b aria-hidden="true">→</b><span>remonttihinnat.example: teitä ei mainita</span></li><li class="is-gap"><b aria-hidden="true">→</b><span>rakentajafoorumi.example: teitä ei mainita</span></li><li class="is-ok"><b aria-hidden="true">✓</b><span>asentajahaku.example: yrityksenne mainitaan</span></li></ul>
+
+<p class="work-job"><b>Mitä työ on:</b>Hankitaan maininnat niihin vertailuihin, listoihin ja medioihin, joita tekoäly käyttää lähteenä.</p></section></div><p class="work-small">Suuntaa antava pikatarkistus: se katsoo etusivun, robots.txt-tiedoston ja vastausten lähdesivut. Lähteistä ovat mukana vain ulkopuoliset sivut, joilla mainitaan alan yrityksiä. Kilpailijoiden omat sivut on jätetty pois. Koko sivustoa tarkistus ei käy läpi.</p></div><footer class="foot"><span>Tekoälynäkyvyyden kartoitus: Havula Lämpö Oy</span><span>Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi</span><span>7</span></footer></section>
 <section class="slide"><p class="kicker">Menetelmä</p><h2>Näin kartoitus tehtiin</h2><div class="body"><div class="cols"><div><h3 class="h3">Kysytyt kysymykset</h3><ol class="list"><li>Mikä yritys asentaa ilmalämpöpumpun Tampereella? Suosittele muutama luotettava asentaja.</li><li>Paljonko ilmalämpöpumppu maksaa asennettuna omakotitaloon Tampereella ja keneltä se kannattaa tilata?</li><li>Vertaile ilmalämpöpumppujen asentajia Pirkanmaalla. Kenet valitsisit ja miksi?</li><li>Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?</li></ol><h3 class="h3 h3-gap">Hakuja, joita tekoäly teki vastatakseen</h3><ul class="pills"><li>ilmalämpöpumppu asennus tampere</li><li>ilmalämpöpumppu hinta asennettuna tampere</li><li>ilmalämpöpumppu asentaja pirkanmaa kokemuksia</li><li>ilmalämpöpumpun huolto tampere</li></ul></div>
-<div><h3 class="h3">Näin luette tuloksen</h3><ul class="list"><li>Tekoälyn vastaus vaihtelee kerrasta toiseen. Tämä kartoitus on tilannekuva yhdeltä päivältä.</li><li>Jokainen kysymys kysyttiin useaan kertaan, ja ruudussa näkyy, monessako vastauksessa yritys mainittiin.</li><li>Alle kymmenen prosenttiyksikön muutokset kahden ajon välillä ovat todennäköisesti satunnaisvaihtelua.</li><li>Pitäkää kysymykset samoina ja ajakaa kartoitus uudelleen noin kerran kuussa, niin näette suunnan.</li><li>Maininta lasketaan nimestä vastauksen tekstissä. Pelkkä linkki ei ole maininta, se lasketaan lähteeksi.</li></ul></div></div></div><footer class="foot"><span>Tekoälynäkyvyyden kartoitus: Havula Lämpö Oy</span><span>Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi</span><span>7</span></footer></section>
+<div><h3 class="h3">Näin luette tuloksen</h3><ul class="list"><li>Tekoälyn vastaus vaihtelee kerrasta toiseen. Tämä kartoitus on tilannekuva yhdeltä päivältä.</li><li>Jokainen kysymys kysyttiin useaan kertaan, ja ruudussa näkyy, monessako vastauksessa yritys mainittiin.</li><li>Alle kymmenen prosenttiyksikön muutokset kahden ajon välillä ovat todennäköisesti satunnaisvaihtelua.</li><li>Pitäkää kysymykset samoina ja ajakaa kartoitus uudelleen noin kerran kuussa, niin näette suunnan.</li><li>Maininta lasketaan nimestä vastauksen tekstissä. Pelkkä linkki ei ole maininta, se lasketaan lähteeksi.</li></ul></div></div></div><footer class="foot"><span>Tekoälynäkyvyyden kartoitus: Havula Lämpö Oy</span><span>Tehty RJ Digitalin tekoälynäkyvyys-skillillä · rjdigital.fi</span><span>8</span></footer></section>
 </main></body></html>

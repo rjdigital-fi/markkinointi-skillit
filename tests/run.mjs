@@ -212,11 +212,11 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
   const dir = path.join(tmp, "ai");
   fs.mkdirSync(dir);
   const run = (script, ...a) => execFileSync("node", [path.join(ai, script), ...a], { encoding: "utf8" });
-  const check = (name, fn) => {
+  const check = async (name, fn) => {
     n++;
     let problems = [];
     try {
-      problems = fn();
+      problems = await fn();
     } catch (e) {
       problems = [String(e.stderr || e.message).trim()];
     }
@@ -231,7 +231,7 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
     return run("answers.mjs", "--file", path.join(dir, file), "--question", q, "--engine", engine, "--run", runNo, "--dir", dir);
   };
 
-  check("AI answers: DataForSEO-style JSON, tool JSON with citations, plain text", () => {
+  await check("AI answers: DataForSEO-style JSON, tool JSON with citations, plain text", () => {
     const a = put("a.json", JSON.stringify({ tasks: [{ result: [{ markdown: "**Acme Lämpö** and **Beta Pumput** install them. **Ilmalämpöpumppu** saves energy.", sources: [{ url: "https://www.acmelampo.fi/asennus", title: "Acme" }, { url: "https://vertailu.example/pumput", title: "Vertailu" }] }] }] }), q1, "chatgpt");
     const b = put("b.json", JSON.stringify({ result: { text: "Try **Beta Pumput** or **Gamma Kylmä**, **Delta Asennus**.", citations: [{ url: "https://betapumput.fi/", title: "Beta" }] } }), q1, "gemini");
     const c = put("c.txt", "Beta Pumput is the usual choice in Tampere.", q2, "chatgpt");
@@ -240,7 +240,7 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
     return [...want(/sources: 2/.test(a), "two sources in the first answer"), ...want(/sources: 1 \(betapumput\.fi\)/.test(b), "citations read as sources"), ...want(/sources: 0/.test(c), "plain text has no sources"), ...want(rows.length === 4, `four answers saved, got ${rows.length}`), ...want(rows[0].sources[0].domain === "acmelampo.fi", "www stripped from the domain")];
   });
 
-  check("AI analysis: named, cited, competitors, dropped names", () => {
+  await check("AI analysis: named, cited, competitors, dropped names", () => {
     const out = run("analyze.mjs", "--dir", dir);
     const r = JSON.parse(fs.readFileSync(path.join(dir, "result.json"), "utf8"));
     const names = r.competitors.map((c) => c.name);
@@ -249,7 +249,7 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
     return [...want(/named in 2 of 4 answers \(50 %\)/.test(out), "summary line"), ...want(r.total.mentioned === 2 && r.total.cited === 1, `named 2 and cited 1, got ${r.total.mentioned} and ${r.total.cited}`), ...want(beta?.answers === 4 && beta.evidence === "brief", "Beta Pumput in all four answers, from the brief"), ...want(!all.includes("Ilmalämpöpumppu"), "notCompanies dropped"), ...want(!all.some((x) => /Acme/.test(x)), "own company is not a competitor"), ...want(!names.includes("Gamma Kylmä, Delta Asennus"), "a bold run with two names is split"), ...want(r.questions[0].cells.chatgpt.verdict === "yes" && r.questions[0].cells.gemini.verdict === "no", "matrix verdicts"), ...want(r.sources.find((s) => s.domain === "acmelampo.fi")?.own === true, "own site marked in sources")];
   });
 
-  check("AI report: both languages, note, brand", () => {
+  await check("AI report: both languages, note, brand", () => {
     const out = run("report.mjs", "--dir", dir, "--lang", "en", "--note", "Test <note>", "--brand", "ACME");
     const en = fs.readFileSync(path.join(dir, "report.html"), "utf8");
     run("report.mjs", "--dir", dir, "--lang", "fi", "--out", path.join(dir, "fi.html"));
@@ -257,7 +257,41 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
     return [...want(/report\.html: \d+ slides/.test(out), "prints the slide count"), ...want(/<html lang="en">/.test(en), "lang en"), ...want(/Test &lt;note&gt;/.test(en), "escaped note"), ...want(/ACME/.test(en), "brand name"), ...want(!/<script/i.test(en), "no scripts"), ...want(/Beta Pumput/.test(en), "competitor row"), ...want(/<html lang="fi">/.test(fi), "lang fi"), ...want(fs.existsSync(path.join(dir, "report.md")), "report.md written"), ...want(/s2\/favicons\?domain=chatgpt\.com/.test(en), "AI icons"), ...want(!/s2\/favicons/.test(fs.readFileSync(path.join(run("report.mjs", "--dir", dir, "--icons", "off", "--out", path.join(dir, "plain.html")) && dir, "plain.html"), "utf8")), "--icons off leaves icons out")];
   });
 
-  check("AI cost estimate makes no calls and needs no credentials", () => {
+  await check("AI site checks: robots rules, homepage facts, source pages", async () => {
+    const { workChecks, topSourcePages, robotsAllows } = await import(path.join(ai, "checks.mjs"));
+    const robots = "User-agent: *\nDisallow: /admin\n\nUser-agent: PerplexityBot\nDisallow: /\n";
+    const home = `<html><head><title>Ilmalämpöpumppujen asennus | Acme Lämpö</title><script type="application/ld+json">{"@type":"LocalBusiness"}</script></head><body><h1>Asennamme ilmalämpöpumput</h1><p>${"Teksti jatkuu tässä. ".repeat(60)}</p><a href="/hinnasto">Hinnasto</a></body></html>`;
+    const w = workChecks({ company: "Acme Lämpö Oy", domain: "acmelampo.fi", sells: "ilmalämpöpumppujen asennus", area: "Tampere", competitors: ["Beta Pumput"] }, { robots, home, sitemap: null }, [
+      { domain: "vertailu.example", html: "<p>Beta Pumput ja Acme Lämpö vertailussa</p>" },
+      { domain: "lista.example", html: "<p>Beta Pumput on listan kärjessä</p>" },
+      { domain: "uutiset.example", html: "<p>Sää on tänään pilvinen</p>" },
+      { domain: "kiinni.example", html: null },
+    ]);
+    const by = (list, id) => list.find((c) => c.id === id)?.ok;
+    const rows = JSON.parse(fs.readFileSync(path.join(dir, "answers.json"), "utf8"));
+    const top = topSourcePages(rows, "acmelampo.fi", [], 10, ["Beta Pumput"]);
+    return [
+      ...want(robotsAllows(robots, "OAI-SearchBot") && !robotsAllows(robots, "PerplexityBot") && !robotsAllows(robots, "Googlebot", "/admin/x"), "robots rules per bot and path"),
+      ...want(by(w.tech, "bots-chatgpt") === true && by(w.tech, "bots-others") === false && by(w.tech, "text") === true && by(w.tech, "sitemap") === null, "technical checks"),
+      ...want(by(w.content, "service") === true && by(w.content, "area") === false && by(w.content, "prices") === true && by(w.content, "faq") === false && by(w.content, "schema") === true, "content checks"),
+      ...want(w.mentions.length === 2 && w.mentions[0].ok === true && w.mentions[1].ok === false && w.mentions[1].detail === "lista.example", "only source pages that name companies of the trade count"),
+      ...want(top.length === 1 && top[0].domain === "vertailu.example", `own and competitor sites are not source pages, got ${top.map((x) => x.domain).join(", ")}`),
+    ];
+  });
+
+  await check("AI report: the work section appears only with checks.json", () => {
+    const before = fs.readFileSync(path.join(dir, "fi.html"), "utf8");
+    fs.writeFileSync(path.join(dir, "checks.json"), JSON.stringify({ tech: [{ id: "bots-chatgpt", ok: true }, { id: "sitemap", ok: null }], content: [{ id: "area", ok: false, detail: "Tampere <b>" }, { id: "unknown-id", ok: false }], mentions: [] }));
+    run("report.mjs", "--dir", dir, "--lang", "fi", "--out", path.join(dir, "work-fi.html"));
+    const fi = fs.readFileSync(path.join(dir, "work-fi.html"), "utf8");
+    const md = fs.readFileSync(path.join(dir, "report.md"), "utf8");
+    run("report.mjs", "--dir", dir, "--lang", "en", "--out", path.join(dir, "work-en.html"));
+    const en = fs.readFileSync(path.join(dir, "work-en.html"), "utf8");
+    fs.rmSync(path.join(dir, "checks.json"));
+    return [...want(!/Mistä tulos syntyy/.test(before), "no work slide without checks.json"), ...want(/Mistä tulos syntyy/.test(fi) && /Tekninen pohja/.test(fi) && /Selvä puute/.test(fi), "fi slide with areas and levels"), ...want(/Toiminta-aluetta \(Tampere &lt;b&gt;\) ei mainita/.test(fi), "detail filled in and escaped"), ...want(!/unknown-id/.test(fi), "unknown check ids are skipped"), ...want(/## Mistä tulos syntyy/.test(md) && /\*\*1 \/ 1\*\* kunnossa/.test(md), "report.md section"), ...want(/Where the result comes from/.test(en) && /Clear gap/.test(en) && /Could not be checked/.test(en), "en slide"), ...want(!/<script/i.test(en), "no scripts")];
+  });
+
+  await check("AI cost estimate makes no calls and needs no credentials", () => {
     fs.writeFileSync(path.join(dir, "brief.json"), JSON.stringify({ ...JSON.parse(fs.readFileSync(path.join(dir, "brief.json"), "utf8")), engines: ["chatgpt", "gemini", "aimode"], runs: 2 }));
     const out = run("dataforseo.mjs", "estimate", "--dir", dir);
     return want(/12/.test(out) && /\$/.test(out), `12 answers and a dollar sum, got: ${out.trim().slice(0, 120)}`);

@@ -94,6 +94,7 @@ Raportissa on:
 - yritykset, jotka tekoäly nimeää samoihin kysymyksiin
 - sivustot, joihin vastaukset nojaavat
 - lainaukset siitä, mitä yrityksestänne sanottiin
+- mistä tulos syntyy: pikatarkistus kolmesta työalueesta eli teknisestä pohjasta, sisällöstä ja maininnoista muualla. Agentti lukee sivustonne etusivun, robots.txt-tiedoston ja sivukartan sekä enintään kymmenen vastausten lähdesivua. Tarkistus on ilmainen ja suuntaa antava.
 - menetelmä: kysymykset, ajokerrat ja tuloksen rajat
 
 Alla on kaksi diaa esimerkkiraportista, koko esimerkki on kansiossa [examples/ilmalampopumput](examples/ilmalampopumput/).

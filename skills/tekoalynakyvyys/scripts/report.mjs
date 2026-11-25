@@ -46,6 +46,27 @@ const L = {
     src: "Lähteet", srcTitle: "Sivustot, joihin tekoäly nojaa", srcSub: "Tekoäly hakee vastauksensa näiltä sivustoilta. Listalla näkyy myös, onko oma sivusto mukana.", site: "Sivusto", own: "oma sivusto", ownPages: "Omat sivut, joihin tekoäly viittasi", ownNone: "Oma sivusto ei ollut lähteenä yhdessäkään vastauksessa.", srcNone: "Vastauksissa ei ollut lähteitä.",
     quotes: "Mitä tekoäly sanoo", quotesTitle: (c) => `Näin tekoäly kuvaa yritystä ${c}`, quotesSub: "Otteet ovat suoraan vastauksista. Tarkistakaa, että tiedot pitävät paikkansa.",
     method: "Menetelmä", methodTitle: "Näin kartoitus tehtiin", asked: "Kysytyt kysymykset", searches: "Hakuja, joita tekoäly teki vastatakseen", read: "Näin luette tuloksen",
+    work: "Kolme työaluetta", workTitle: "Mistä tulos syntyy", workSub: (c) => `Näkyvyys tekoälyn vastauksissa rakentuu kolmesta asiasta. Jokaisesta katsottiin pikaisesti, missä ${c} on nyt.`,
+    workSmall: "Suuntaa antava pikatarkistus: se katsoo etusivun, robots.txt-tiedoston ja vastausten lähdesivut. Lähteistä ovat mukana vain ulkopuoliset sivut, joilla mainitaan alan yrityksiä. Kilpailijoiden omat sivut on jätetty pois. Koko sivustoa tarkistus ei käy läpi.",
+    level: { ok: "Kunnossa", some: "Parannettavaa", gap: "Selvä puute", none: "Ei voitu tarkistaa" }, inOrder: "kunnossa", gaps: "Kehityskohteet", job: "Mitä työ on", mentionsNone: "Luetuista lähdesivuista yksikään ei mainitse alan yrityksiä, joten tätä ei voitu arvioida.",
+    areas: {
+      tech: ["Tekninen pohja", "Pääseekö tekoäly lukemaan sivustoanne?", "Varmistetaan, että tekoälyn botit pääsevät jokaiselle tärkeälle sivulle ja saavat tekstin luettavaksi."],
+      content: ["Sisältö ja jäsentely", "Kertooko sivusto selvästi, mitä myytte, kenelle ja missä?", "Tehdään sivut, jotka vastaavat ostajan kysymyksiin suoraan, ja jäsennetään ne niin, että vastauksen voi poimia."],
+      mentions: ["Maininnat muualla", "Oletteko niillä ulkopuolisilla sivuilla, joihin vastaukset nojaavat?", "Hankitaan maininnat niihin vertailuihin, listoihin ja medioihin, joita tekoäly käyttää lähteenä."],
+    },
+    checks: {
+      "bots-chatgpt": ["ChatGPT:n hakubotit saavat lukea sivuston", "ChatGPT:n hakubotteja on estetty robots.txt-tiedostossa", "ChatGPT:n bottien sääntöjä ei voitu lukea"],
+      "bots-google": ["Googlen botit saavat lukea sivuston", "Googlen botteja on estetty robots.txt-tiedostossa", "Googlen bottien sääntöjä ei voitu lukea"],
+      "bots-others": ["Perplexityn, Clauden ja Bingin botit saavat lukea sivuston", "Perplexityn, Clauden tai Bingin botteja on estetty robots.txt-tiedostossa", "Muiden tekoälybottien sääntöjä ei voitu lukea"],
+      text: ["Etusivun teksti on luettavissa ilman JavaScriptiä", "Etusivulla on hyvin vähän tekstiä ilman JavaScriptiä", "Etusivua ei voitu lukea"],
+      sitemap: ["Sivukartta löytyy", "Sivukarttaa ei löytynyt", "Sivukarttaa ei voitu tarkistaa"],
+      service: ["Etusivun otsikot kertovat, mitä myytte", "Etusivun otsikoissa ei näy sanoja, joilla palvelu on kuvattu", "Etusivun otsikoita ei voitu verrata palvelun kuvaukseen"],
+      area: ["Toiminta-alue ({x}) mainitaan etusivulla", "Toiminta-aluetta ({x}) ei mainita etusivulla", "Toiminta-aluetta ei voitu tarkistaa"],
+      prices: ["Hinnat tai linkki hinnastoon löytyy etusivulta", "Hintoja tai linkkiä hinnastoon ei löytynyt etusivulta", "Hintoja ei voitu tarkistaa"],
+      faq: ["Usein kysytyt kysymykset löytyvät etusivulta", "Usein kysyttyjä kysymyksiä ei löytynyt etusivulta", "Usein kysyttyjä kysymyksiä ei voitu tarkistaa"],
+      schema: ["Yritystiedoilla on rakenteinen merkintä", "Yritystiedoilta puuttuu rakenteinen merkintä", "Rakenteista merkintää ei voitu tarkistaa"],
+      source: ["{x}: yrityksenne mainitaan", "{x}: teitä ei mainita", "{x}: sivua ei voitu lukea"],
+    },
     notes: (n, runs) => [
       "Tekoälyn vastaus vaihtelee kerrasta toiseen. Tämä kartoitus on tilannekuva yhdeltä päivältä.",
       runs > 1 ? "Jokainen kysymys kysyttiin useaan kertaan, ja ruudussa näkyy, monessako vastauksessa yritys mainittiin." : "Jokainen kysymys kysyttiin kerran. Toistakaa ajo, ennen kuin teette tuloksesta isoja päätöksiä.",
@@ -64,6 +85,27 @@ const L = {
     src: "Sources", srcTitle: "Sites the AIs rely on", srcSub: "The AIs build their answers from these sites. The list also shows whether your own site is among them.", site: "Site", own: "your site", ownPages: "Your pages the AIs cited", ownNone: "Your site was not a source in any answer.", srcNone: "The answers had no sources.",
     quotes: "What the AIs say", quotesTitle: (c) => `How the AIs describe ${c}`, quotesSub: "The excerpts are straight from the answers. Check that the facts are right.",
     method: "Method", methodTitle: "How the check was done", asked: "Questions asked", searches: "Searches the AIs ran to answer", read: "How to read the result",
+    work: "Three areas of work", workTitle: "Where the result comes from", workSub: (c) => `Visibility in AI answers is built on three things. Each got a quick look at where ${c} is now.`,
+    workSmall: "A rough check: it looks at the homepage, robots.txt and the source pages of the answers. Of the sources, only outside pages that name companies of the trade are included. Competitors' own sites are left out. It does not go through the whole site.",
+    level: { ok: "In order", some: "Room to improve", gap: "Clear gap", none: "Could not be checked" }, inOrder: "in order", gaps: "To develop", job: "What the work is", mentionsNone: "None of the source pages that could be read names companies of the trade, so this could not be assessed.",
+    areas: {
+      tech: ["Technical base", "Can the AIs read your site?", "Making sure AI bots reach every important page and get the text to read."],
+      content: ["Content and structure", "Does the site say clearly what you sell, to whom and where?", "Building pages that answer the buyer's questions directly, structured so that the answer can be picked up."],
+      mentions: ["Mentions elsewhere", "Are you on the outside pages the answers lean on?", "Earning mentions in the comparisons, lists and media the AIs use as sources."],
+    },
+    checks: {
+      "bots-chatgpt": ["ChatGPT's search bots may read the site", "ChatGPT's search bots are blocked in robots.txt", "The rules for ChatGPT's bots could not be read"],
+      "bots-google": ["Google's bots may read the site", "Google's bots are blocked in robots.txt", "The rules for Google's bots could not be read"],
+      "bots-others": ["The bots of Perplexity, Claude and Bing may read the site", "Bots of Perplexity, Claude or Bing are blocked in robots.txt", "The rules for other AI bots could not be read"],
+      text: ["The homepage text can be read without JavaScript", "The homepage has very little text without JavaScript", "The homepage could not be read"],
+      sitemap: ["A sitemap was found", "No sitemap was found", "The sitemap could not be checked"],
+      service: ["The homepage headings say what you sell", "The homepage headings do not use the words that describe the service", "The homepage headings could not be compared with the service description"],
+      area: ["The service area ({x}) is on the homepage", "The service area ({x}) is not on the homepage", "The service area could not be checked"],
+      prices: ["Prices or a link to pricing are on the homepage", "No prices or link to pricing on the homepage", "Prices could not be checked"],
+      faq: ["Frequently asked questions are on the homepage", "No frequently asked questions on the homepage", "Frequently asked questions could not be checked"],
+      schema: ["Company details have structured data", "Company details lack structured data", "Structured data could not be checked"],
+      source: ["{x}: your company is named", "{x}: you are not named", "{x}: the page could not be read"],
+    },
     notes: (n, runs) => [
       "AI answers vary from one run to the next. This check is a snapshot of one day.",
       runs > 1 ? "Each question was asked several times, and a cell shows in how many answers the company was named." : "Each question was asked once. Repeat the run before making big decisions on the result.",
@@ -80,6 +122,23 @@ const dateText = new Date(r.date ?? Date.now()).toLocaleDateString(loc, { day: "
 const t = r.total;
 const engLabel = Object.fromEntries(r.engines.map((x) => [x.id, x.label]));
 const dataSources = (r.sourcesOfData ?? []).join(", ");
+
+// checks.json is optional: site-check.mjs writes it. Without it the report has no "work" section.
+const checksFile = path.join(dir, "checks.json");
+const work = fs.existsSync(checksFile) ? readJson(checksFile) : null;
+const workAreas = work
+  ? ["tech", "content", "mentions"].map((key, i) => {
+      const list = (work[key] ?? []).filter((c) => L.checks[c.id]);
+      const text = (c) => L.checks[c.id][c.ok === true ? 0 : c.ok === false ? 1 : 2].replace("{x}", c.detail ?? "");
+      const gaps = list.filter((c) => c.ok === false).map(text);
+      const oks = list.filter((c) => c.ok === true).map(text);
+      const unknown = list.filter((c) => c.ok == null).map(text);
+      const known = gaps.length + oks.length;
+      const level = !known ? "none" : !gaps.length ? "ok" : gaps.length / known >= 0.5 ? "gap" : "some";
+      const [title, question, job] = L.areas[key];
+      return { key, n: i + 1, title, question, job, gaps, oks, unknown, known, level };
+    })
+  : [];
 
 // ---------- report.md ----------
 const cellMd = (c) => (c.verdict === "none" ? "–" : `${c.verdict === "yes" ? L.yes : c.verdict === "sometimes" ? L.some : L.no} ${c.mentioned}/${c.answers}`);
@@ -117,6 +176,29 @@ const md = [
   r.ownPages.length ? `**${L.ownPages}:**\n\n${r.ownPages.map((u) => `- ${u}`).join("\n")}` : L.ownNone,
   "",
   ...(r.quotes.length ? [`## ${L.quotesTitle(r.company)}`, "", ...r.quotes.slice(0, 8).map((q) => `> ${q.quote}\n>\n> ${engLabel[q.engine] ?? q.engine} · ${q.question}\n`)] : []),
+  ...(work
+    ? [
+        `## ${L.workTitle}`,
+        "",
+        L.workSub(r.company),
+        "",
+        ...workAreas.flatMap((a) => [
+          `### ${a.n}. ${a.title}: ${L.level[a.level]}`,
+          "",
+          `${a.question}${a.known ? ` **${a.oks.length} / ${a.known}** ${L.inOrder}.` : ""}`,
+          "",
+          ...a.gaps.map((x) => `- → ${x}`),
+          ...a.oks.map((x) => `- ✓ ${x}`),
+          ...a.unknown.map((x) => `- ? ${x}`),
+          ...(a.key === "mentions" && !a.known && !a.unknown.length ? [L.mentionsNone] : []),
+          "",
+          `**${L.job}:** ${a.job}`,
+          "",
+        ]),
+        `_${L.workSmall}_`,
+        "",
+      ]
+    : []),
   `## ${L.methodTitle}`,
   "",
   `**${L.asked}:**`,
@@ -201,7 +283,27 @@ slide(
 if (r.quotes.length)
   slide(L.quotes, L.quotesTitle(r.company), L.quotesSub, `<div class="quotes">${r.quotes.slice(0, 4).map((q) => `<blockquote><p>${e(q.quote)}</p><footer>${eng(q.engine, engLabel[q.engine] ?? q.engine)} · ${e(q.question)}</footer></blockquote>`).join("")}</div>`);
 
-// 6. Method
+// 6. Where the result comes from (only when site-check.mjs has been run)
+if (work) {
+  const rows = (list, sign, cls) => list.map((x) => `<li class="${cls}"><b aria-hidden="true">${sign}</b><span>${e(x)}</span></li>`).join("");
+  slide(
+    L.work,
+    L.workTitle,
+    L.workSub(r.company),
+    `<div class="work">${workAreas
+      .map(
+        (a) => `<section class="tile work-card"><div class="work-top"><span class="work-num">${a.n}</span><h3>${e(a.title)}</h3><span class="v lv-${a.level}">${L.level[a.level]}</span></div>
+<p class="work-q">${e(a.question)}</p>
+${a.known ? `<div class="meter"><span class="meter-bar">${Array.from({ length: a.known }, (_, i) => `<i${i < a.oks.length ? ' class="on"' : ""}></i>`).join("")}</span><span class="meter-num"><b>${a.oks.length}</b> ${L.of} ${a.known} ${L.inOrder}</span></div>` : ""}
+${a.gaps.length ? `<p class="work-label">${L.gaps}</p>` : ""}<ul class="checks">${rows(a.gaps, "→", "is-gap")}${rows(a.oks, "✓", "is-ok")}${rows(a.unknown, "?", "is-unknown")}</ul>
+${a.key === "mentions" && !a.known && !a.unknown.length ? `<p class="work-none">${L.mentionsNone}</p>` : ""}
+<p class="work-job"><b>${L.job}:</b>${e(a.job)}</p></section>`,
+      )
+      .join("")}</div><p class="work-small">${e(L.workSmall)}</p>`,
+  );
+}
+
+// 7. Method
 slide(
   L.method,
   L.methodTitle,
@@ -284,6 +386,34 @@ td small{display:block;font-size:12px;color:var(--muted);margin-top:3px}
 blockquote{margin:0;background:var(--soft);border-radius:14px;padding:22px 24px}
 blockquote p{font-size:17px;line-height:1.45}
 blockquote footer{margin-top:12px;font-size:12px;color:var(--muted)}
+.work{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;align-items:stretch}
+.work-card{display:flex;flex-direction:column;padding:20px 22px}
+.work-top{display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-bottom:8px}
+.work-top .v{margin-left:auto}
+.work-num{flex:none;width:28px;height:28px;border-radius:999px;background:var(--paper);font-size:13px;font-weight:600;line-height:28px;text-align:center}
+.lv-ok{background:var(--ink);color:var(--paper)}
+.lv-some{box-shadow:inset 0 0 0 1.5px var(--ink)}
+.lv-gap{box-shadow:inset 0 0 0 1.5px var(--accent);background:var(--paper)}
+.lv-none{background:var(--line);color:var(--muted)}
+.work-card h3{font-size:19px;font-weight:500;letter-spacing:-0.01em;margin:0}
+.work-q{font-size:14px;color:var(--muted)}
+.meter{display:flex;align-items:center;gap:12px;margin-top:12px}
+.meter-bar{display:flex;gap:4px;flex:1}
+.meter-bar i{flex:1;height:6px;border-radius:999px;background:var(--line)}
+.meter-bar i.on{background:var(--ink)}
+.meter-num{font-size:13px;color:var(--muted);white-space:nowrap}
+.meter-num b{color:var(--ink);font-weight:600}
+.work-label{margin-top:12px;font-size:12px;font-weight:600}
+.checks{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:5px;font-size:13.5px;line-height:1.35}
+.checks li{display:flex;gap:8px;overflow-wrap:anywhere;min-width:0}
+.checks span{min-width:0}
+.checks b{flex:none;width:16px;font-weight:600}
+.checks .is-gap b{color:var(--accent)}
+.checks .is-ok,.checks .is-unknown{color:var(--muted)}
+.work-none{font-size:14px;color:var(--muted)}
+.work-job{margin-top:auto;padding-top:14px;font-size:13px;line-height:1.4}
+.work-job b{font-weight:600;margin-right:6px}
+.work-small{margin-top:12px;font-size:12px;color:var(--muted);max-width:90em}
 @media (max-width:1311px){
 .slide{padding:32px 24px 20px;min-height:0}
 h1{font-size:clamp(40px,10vw,96px)}
@@ -293,7 +423,8 @@ h2{font-size:clamp(26px,5vw,38px)}
 .stats dd{font-size:30px}
 }
 @media (max-width:860px){
-.cols,.quotes{grid-template-columns:1fr;gap:28px}
+.cols,.quotes,.work{grid-template-columns:1fr;gap:28px}
+.work{gap:16px}
 .body{overflow-x:auto}
 .matrix{min-width:560px}
 .foot span:nth-child(2){display:none}
@@ -303,7 +434,7 @@ h2{font-size:clamp(26px,5vw,38px)}
 body{background:#fff}
 .deck{width:1280px;margin:0;gap:0}
 .slide{border-radius:0;break-after:page;break-inside:avoid;min-height:800px}
-.cover,.v,.tile,.bar,.bar i,.pills li,blockquote{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.cover,.v,.tile,.bar,.bar i,.pills li,blockquote,.meter-bar i,.work-num{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }`;
 
 const html = `<!doctype html>

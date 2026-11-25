@@ -40,6 +40,7 @@ Work in one folder per check, by default `tekoalynakyvyys/<company-slug>/` in th
 | `answers.json` | every answer: question, engine, run, text, sources, the searches the AI ran, brands |
 | `raw/` | raw responses of the DataForSEO script, so a rerun costs nothing |
 | `result.json` | the analysis |
+| `checks.json` | rough checks of the site and of the source pages (step 4) |
 | `report.html`, `report.md` | the result: slides in one HTML file, and the same as text |
 | `brand.json` | optional: the look of the report for this folder |
 
@@ -48,8 +49,9 @@ Scripts are in `scripts/` next to this file. They need Node 18 or newer and noth
 - `scripts/dataforseo.mjs` asks the questions through DataForSEO: `estimate` prints the cost, `fetch` saves the answers.
 - `scripts/answers.mjs` brings one answer from any other tool into `answers.json`.
 - `scripts/analyze.mjs` reads `brief.json` and `answers.json`, writes `result.json` and prints a summary.
+- `scripts/site-check.mjs` reads the company's robots.txt, homepage and sitemap and the source pages of the answers, and writes `checks.json`. Free, no paid calls.
 - `scripts/report.mjs` builds `report.html` and `report.md`. It makes no network calls.
-- `scripts/core.mjs` is the shared logic: name detection, counting, question templates.
+- `scripts/core.mjs` is the shared logic: name detection, counting, question templates. `scripts/checks.mjs` is the logic of the site checks.
 
 ## Step 0: the brief and the data source
 
@@ -147,7 +149,29 @@ Now do the part a script cannot do. Read the answers:
 Note for yourself what kind of mentions these are: recommended first, one in a list, or only mentioned in
 passing. Note which sites carry the answers: the company's own, competitors', comparison sites, forums.
 
-## Step 4: the report
+## Step 4: where the result comes from
+
+```
+node scripts/site-check.mjs --dir <folder>
+```
+
+Visibility in AI answers is built on three things, and this script takes a rough look at each:
+
+1. Technical base: may the bots of ChatGPT, Google, Perplexity, Claude and Bing read the site (robots.txt),
+   is the homepage text readable without JavaScript, is there a sitemap.
+2. Content and structure: do the homepage headings say what is sold, is the service area there, prices or a
+   link to pricing, frequently asked questions, structured data for the company.
+3. Mentions elsewhere: of the outside pages the answers leaned on most (up to ten are read), which name the
+   company. Only pages that name the company or a confirmed competitor count, so sort the competitor list
+   in step 3 first. Competitors' own sites are left out.
+
+The script fetches the company's own site and the source pages from this machine. It costs nothing. It needs
+`sells` and `area` in `brief.json`. A check it could not make stays "could not be checked": never guess it.
+The checks are indicative: they read the homepage, robots.txt and the source pages, not the whole site. Say
+so when you talk about them. If the user does not want outside pages fetched, skip this step: the report is
+then built without this section.
+
+## Step 5: the report
 
 ```
 node scripts/report.mjs --dir <folder> --lang fi
@@ -171,8 +195,10 @@ Then tell the user, in a few sentences:
 - in how many answers the company was named and in how many its site was cited, per AI
 - who is named most, and which sites the answers lean on
 - which questions are the weakest
+- which of the three areas (technical base, content, mentions elsewhere) shows the clearest gap, and that
+  those checks are rough
 - that this is a snapshot, how many times each question was asked, and what the run cost
 - that the same questions can be asked again later for comparison, and that the question set must stay the same
 
-Do not turn the report into a list of quick fixes. What to do about the result depends on the business and is
-a separate piece of work.
+Do not turn the report into a list of quick fixes. The three areas name where the work is, not how to do it.
+What to do about the result depends on the business and is a separate piece of work.

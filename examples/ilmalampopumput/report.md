@@ -70,6 +70,47 @@ Tehty 24. marraskuuta 2026 · 2 ajoa per kysymys · Data: kuvitteellinen esimerk
 >
 > Gemini · Ilmalämpöpumppu pitää huoltaa. Mikä yritys tekee huoltoja Tampereen seudulla?
 
+## Mistä tulos syntyy
+
+Näkyvyys tekoälyn vastauksissa rakentuu kolmesta asiasta. Jokaisesta katsottiin pikaisesti, missä Havula Lämpö Oy on nyt.
+
+### 1. Tekninen pohja: Parannettavaa
+
+Pääseekö tekoäly lukemaan sivustoanne? **4 / 5** kunnossa.
+
+- → Perplexityn, Clauden tai Bingin botteja on estetty robots.txt-tiedostossa
+- ✓ ChatGPT:n hakubotit saavat lukea sivuston
+- ✓ Googlen botit saavat lukea sivuston
+- ✓ Etusivun teksti on luettavissa ilman JavaScriptiä
+- ✓ Sivukartta löytyy
+
+**Mitä työ on:** Varmistetaan, että tekoälyn botit pääsevät jokaiselle tärkeälle sivulle ja saavat tekstin luettavaksi.
+
+### 2. Sisältö ja jäsentely: Selvä puute
+
+Kertooko sivusto selvästi, mitä myytte, kenelle ja missä? **2 / 5** kunnossa.
+
+- → Hintoja tai linkkiä hinnastoon ei löytynyt etusivulta
+- → Usein kysyttyjä kysymyksiä ei löytynyt etusivulta
+- → Yritystiedoilta puuttuu rakenteinen merkintä
+- ✓ Etusivun otsikot kertovat, mitä myytte
+- ✓ Toiminta-alue (Tampere) mainitaan etusivulla
+
+**Mitä työ on:** Tehdään sivut, jotka vastaavat ostajan kysymyksiin suoraan, ja jäsennetään ne niin, että vastauksen voi poimia.
+
+### 3. Maininnat muualla: Selvä puute
+
+Oletteko niillä ulkopuolisilla sivuilla, joihin vastaukset nojaavat? **1 / 4** kunnossa.
+
+- → lampopumppuvertailu.example: teitä ei mainita
+- → remonttihinnat.example: teitä ei mainita
+- → rakentajafoorumi.example: teitä ei mainita
+- ✓ asentajahaku.example: yrityksenne mainitaan
+
+**Mitä työ on:** Hankitaan maininnat niihin vertailuihin, listoihin ja medioihin, joita tekoäly käyttää lähteenä.
+
+_Suuntaa antava pikatarkistus: se katsoo etusivun, robots.txt-tiedoston ja vastausten lähdesivut. Lähteistä ovat mukana vain ulkopuoliset sivut, joilla mainitaan alan yrityksiä. Kilpailijoiden omat sivut on jätetty pois. Koko sivustoa tarkistus ei käy läpi._
+
 ## Näin kartoitus tehtiin
 
 **Kysytyt kysymykset:**

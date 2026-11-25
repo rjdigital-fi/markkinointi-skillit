@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-24",
+  "domain": "havulalampo.example",
+  "tech": [
+    {
+      "id": "bots-chatgpt",
+      "ok": true
+    },
+    {
+      "id": "bots-google",
+      "ok": true
+    },
+    {
+      "id": "bots-others",
+      "ok": false
+    },
+    {
+      "id": "text",
+      "ok": true
+    },
+    {
+      "id": "sitemap",
+      "ok": true
+    }
+  ],
+  "content": [
+    {
+      "id": "service",
+      "ok": true
+    },
+    {
+      "id": "area",
+      "ok": true,
+      "detail": "Tampere"
+    },
+    {
+      "id": "prices",
+      "ok": false
+    },
+    {
+      "id": "faq",
+      "ok": false
+    },
+    {
+      "id": "schema",
+      "ok": false
+    }
+  ],
+  "mentions": [
+    {
+      "id": "source",
+      "ok": false,
+      "detail": "lampopumppuvertailu.example"
+    },
+    {
+      "id": "source",
+      "ok": true,
+      "detail": "asentajahaku.example"
+    },
+    {
+      "id": "source",
+      "ok": false,
+      "detail": "remonttihinnat.example"
+    },
+    {
+      "id": "source",
+      "ok": false,
+      "detail": "rakentajafoorumi.example"
+    }
+  ],
+  "pagesRead": [
+    {
+      "domain": "lampopumppuvertailu.example",
+      "url": "https://lampopumppuvertailu.example/",
+      "answers": 12,
+      "read": true
+    },
+    {
+      "domain": "asentajahaku.example",
+      "url": "https://asentajahaku.example/",
+      "answers": 8,
+      "read": true
+    },
+    {
+      "domain": "remonttihinnat.example",
+      "url": "https://remonttihinnat.example/",
+      "answers": 6,
+      "read": true
+    },
+    {
+      "domain": "rakentajafoorumi.example",
+      "url": "https://rakentajafoorumi.example/",
+      "answers": 4,
+      "read": true
+    }
+  ]
+}

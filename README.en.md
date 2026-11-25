@@ -90,6 +90,7 @@ The report holds:
 - the companies the AI names for the same questions
 - the sites the answers lean on
 - quotes of what was said about the company
+- where the result comes from: a rough check of three areas of work, the technical base, the content and mentions elsewhere. The agent reads the homepage, robots.txt and sitemap of your site and up to ten source pages of the answers. The check is free and indicative.
 - the method: questions, runs and the limits of the result
 
 Two slides from the example report (in Finnish); the whole example is in [examples/ilmalampopumput](examples/ilmalampopumput/).
