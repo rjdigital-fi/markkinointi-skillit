@@ -5,3 +5,5 @@ node_modules/
 # research output made while testing the skills
 /avainsanatutkimus/
 raw/
+# the example keeps its image board pictures
+!examples/yrityskonteksti/raw/

@@ -29,6 +29,10 @@ This skill is the full version: as many questions as needed, each asked several 
 - Do not judge or rank the companies in the answers. Report what the answers show.
 - The report is the user's to restyle. Tell them once that the look (name, colours, font, logo) lives in
   `brand.json`, and offer to set it to their own brand.
+- If the project has a `yrityskonteksti/` folder (made with the `yrityskonteksti` skill of this plugin), read
+  `yritys.md`, `kohderyhma.md` and `brandi.md` there before the brief and do not ask again what they answer.
+  Facts marked `[auki]` are not known: ask. If the work folder has no `brand.json`, copy the one from
+  `yrityskonteksti/` so the report gets the company's own look.
 
 ## Files
 

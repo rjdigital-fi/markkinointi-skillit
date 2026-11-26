@@ -24,6 +24,10 @@ the same method for an agent.
   report what was used at the end. Fetch once and reuse the saved files.
 - Never print, log or commit API keys. Read them from the environment or let the MCP connection hold them.
 - Do not judge or rank the companies that show up in the data. Report what the data shows.
+- If the project has a `yrityskonteksti/` folder (made with the `yrityskonteksti` skill of this plugin), read
+  `yritys.md`, `kohderyhma.md` and `brandi.md` there before the brief and do not ask again what they answer.
+  Facts marked `[auki]` are not known: ask. If the work folder has no `brand.json`, copy the one from
+  `yrityskonteksti/` so the report gets the company's own look.
 
 ## Files
 

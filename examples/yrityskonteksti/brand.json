@@ -1,0 +1,18 @@
+{
+  "_ohje": "Yrityksen ulkoasu koneen luettavassa muodossa. Muut skillit lukevat nimen, värit ja fontin tästä tiedostosta. Käyttöohjeet (mikä väri missä) ovat tiedostossa brandi.md.",
+  "_note": "The company's look in a form a machine can read. The other skills read the name, colours and font from this file. Usage rules (which colour where) are in brandi.md.",
+  "name": "KUURANTA IT",
+  "logo": "",
+  "font": "Inter",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap",
+  "colors": {
+    "paper": "#ffffff",
+    "soft": "#f2f5f7",
+    "ink": "#101c2c",
+    "muted": "#5b6878",
+    "line": "#d9dfe6",
+    "accent": "#1f6feb",
+    "night": "#0b1f3a"
+  },
+  "icons": true
+}

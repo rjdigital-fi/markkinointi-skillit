@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="fi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mitkä näistä kuvista ovat teidän näköisiänne?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+:root{--paper:#ffffff;--soft:#f2f5f7;--ink:#101c2c;--muted:#5b6878;--line:#d9dfe6;--accent:#1f6feb;color-scheme:light}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.5 "Inter","Helvetica Neue",Arial,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:1280px;margin:0 auto;padding:48px 24px 56px}
+.kicker{margin:0;color:var(--muted);font-size:14px;font-weight:500}
+h1{font-weight:500;font-size:clamp(28px,4.4vw,38px);line-height:1.15;letter-spacing:-0.02em;margin:10px 0 12px;max-width:20em}
+.lead{color:var(--muted);max-width:44em;margin:0}
+.how{margin:20px 0 32px;background:var(--soft);border-radius:14px;padding:14px 18px;font-size:15px;max-width:44em}
+.how b{font-weight:600;margin-right:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+figure{margin:0;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;break-inside:avoid}
+.im{height:250px;display:flex;align-items:center;justify-content:center;background:var(--soft)}
+.im img{max-width:100%;max-height:250px;object-fit:contain;display:block}
+figcaption{display:flex;gap:12px;align-items:flex-start;padding:12px 14px;font-size:14px;line-height:1.4;flex:1;border-top:1px solid var(--line)}
+.n{flex:none;width:32px;height:32px;border-radius:50%;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:15px;font-variant-numeric:tabular-nums}
+.t{min-width:0;overflow-wrap:anywhere}
+.t b{font-weight:600;display:block}
+.t span{color:var(--muted)}
+footer{margin-top:32px;border-top:1px solid var(--line);padding-top:14px;color:var(--muted);font-size:13px;display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:space-between}
+@media print{main{padding:24px}.im,.n,.how{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+</style></head>
+<body><main>
+<p class="kicker">Brändi ja ääni · kuvat</p>
+<h1>Mitkä näistä kuvista ovat teidän näköisiänne?</h1>
+<p class="lead">Vastatkaa numeroilla kolmena listana: hyvät, ei käytetä ja en osaa sanoa. Perusteluja ei tarvita. Kuvasääntö kirjoitetaan valinnoistanne.</p>
+<p class="how"><b>Esimerkki vastauksesta</b>Hyvät: 2, 5, 6. Ei käytetä: 1, 4. En osaa sanoa: 3.</p>
+<div class="grid">
+<figure><div class="im"><img src="raw/images/huppupainen-hakkeri.png" alt="" loading="lazy"></div><figcaption><div class="n">1</div><div class="t"><b>Huppupäinen hahmo ja koodia</b><span>kuvapankkikuva. Omasta kansiosta</span></div></figcaption></figure>
+<figure><div class="im"><img src="raw/images/lukko-ja-piirilevy.png" alt="" loading="lazy"></div><figcaption><div class="n">2</div><div class="t"><b>Riippulukko piirilevyn päällä</b><span>kuvapankkikuva. Omasta kansiosta</span></div></figcaption></figure>
+<figure><div class="im"><img src="raw/images/palvelinkaappi-asentaja.png" alt="" loading="lazy"></div><figcaption><div class="n">3</div><div class="t"><b>Työntekijä palvelinkaapin äärellä</b><span>oma kuva. Omasta kansiosta</span></div></figcaption></figure>
+<figure><div class="im"><img src="raw/images/tiimi-toimiston-edessa.png" alt="" loading="lazy"></div><figcaption><div class="n">4</div><div class="t"><b>Koko tiimi toimiston edessä</b><span>oma kuva. Omasta kansiosta</span></div></figcaption></figure>
+<figure><div class="im"><img src="raw/images/toimisto-kaksi-tyontekijaa.png" alt="" loading="lazy"></div><figcaption><div class="n">5</div><div class="t"><b>Kaksi työntekijää toimistolla</b><span>oma kuva. Omasta kansiosta. 2 lähes samanlaista versiota</span></div></figcaption></figure>
+<figure><div class="im"><img src="raw/images/valvontanakyma-kuvakaappaus.png" alt="" loading="lazy"></div><figcaption><div class="n">6</div><div class="t"><b>Kuvakaappaus valvontanäkymästä</b><span>kuvakaappaus. Omasta kansiosta</span></div></figcaption></figure>
+</div>
+<footer><span>KUURANTA IT · kuvataulu · 18.11.2026</span><span>Taululla on 6 kuvaa 6 löydetystä. Lähes samanlaiset kuvat näytetään kerran.</span></footer>
+</main></body></html>

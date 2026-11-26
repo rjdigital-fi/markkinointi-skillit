@@ -1,0 +1,101 @@
+{
+  "read": "2026-11-18",
+  "company": "KUURANTA IT",
+  "note": "label and note are yours to rewrite after looking at each picture. Set \"show\": false on a picture that does not belong on the board (another company's material, a stock photo placeholder), move one from left to groups to swap it in, then run images.mjs --board. verdict is good, no or unsure and is written with --good, --no and --unsure.",
+  "source": {
+    "url": "",
+    "pages": [],
+    "folder": "kuvapankki"
+  },
+  "groups": [
+    {
+      "n": 1,
+      "file": "raw/images/huppupainen-hakkeri.png",
+      "label": "Huppupäinen hahmo ja koodia",
+      "note": "kuvapankkikuva",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/huppupainen-hakkeri.png"
+      ],
+      "verdict": "no"
+    },
+    {
+      "n": 2,
+      "file": "raw/images/lukko-ja-piirilevy.png",
+      "label": "Riippulukko piirilevyn päällä",
+      "note": "kuvapankkikuva",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/lukko-ja-piirilevy.png"
+      ],
+      "verdict": "no"
+    },
+    {
+      "n": 3,
+      "file": "raw/images/palvelinkaappi-asentaja.png",
+      "label": "Työntekijä palvelinkaapin äärellä",
+      "note": "oma kuva",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/palvelinkaappi-asentaja.png"
+      ],
+      "verdict": "good"
+    },
+    {
+      "n": 4,
+      "file": "raw/images/tiimi-toimiston-edessa.png",
+      "label": "Koko tiimi toimiston edessä",
+      "note": "oma kuva",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/tiimi-toimiston-edessa.png"
+      ],
+      "verdict": "good"
+    },
+    {
+      "n": 5,
+      "file": "raw/images/toimisto-kaksi-tyontekijaa.png",
+      "label": "Kaksi työntekijää toimistolla",
+      "note": "oma kuva",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/toimisto-kaksi-tyontekijaa-rajattu.png",
+        "kuvapankki/toimisto-kaksi-tyontekijaa.png"
+      ],
+      "verdict": "good"
+    },
+    {
+      "n": 6,
+      "file": "raw/images/valvontanakyma-kuvakaappaus.png",
+      "label": "Kuvakaappaus valvontanäkymästä",
+      "note": "kuvakaappaus",
+      "width": 900,
+      "height": 600,
+      "pages": [],
+      "folder": true,
+      "versions": [
+        "kuvapankki/valvontanakyma-kuvakaappaus.png"
+      ],
+      "verdict": "unsure"
+    }
+  ],
+  "left": [],
+  "dropped": [],
+  "failed": [],
+  "answered": "2026-11-18"
+}

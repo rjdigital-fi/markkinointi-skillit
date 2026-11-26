@@ -46,14 +46,14 @@ Only keywords and volumes are required. Parts no source covers are left out of t
 
 Search Console and Bing Webmaster Tools are optional. The agent asks about them at the start. Their numbers are the site's own, so they are kept apart from market search volumes and shown in their own section of the report.
 
-What has been tested: DataForSEO end to end with a real run in November 2026. The import for the other tools is tested with sample files built from each tool's column and field names. The tests are included: `node tests/run.mjs`. The Search Console and Bing Webmaster Tools import is tested the same way with sample files. Not every tool has been run with a real account, and tools change their exports, so the import always prints which fields it found and which it did not. Excel files are not read: export CSV. Please open an [issue](https://github.com/rjdigital-fi/skills/issues) if something does not work.
+What has been tested: DataForSEO end to end with a real run in November 2026. The import for the other tools is tested with sample files built from each tool's column and field names. The tests are included: `node tests/run.mjs`. The Search Console and Bing Webmaster Tools import is tested the same way with sample files. Not every tool has been run with a real account, and tools change their exports, so the import always prints which fields it found and which it did not. Excel files are not read: export CSV. Please open an [issue](https://github.com/rjdigital-fi/markkinointi-skillit/issues) if something does not work.
 
 ### Install
 
 In Claude Code:
 
 ```
-/plugin marketplace add rjdigital-fi/skills
+/plugin marketplace add rjdigital-fi/markkinointi-skillit
 /plugin install rjdigital@rjdigital-fi
 ```
 
@@ -138,9 +138,74 @@ The agent proposes the questions and you edit them to sound like your customers.
 
 The method borrows ideas from open projects: a question set that follows the buying path, repeated runs and the caution about small changes ([geo-visibility-skill](https://github.com/thevibegarage/geo-visibility-skill)), telling a mention from a bare source link ([oneglanse](https://github.com/oneglanse/oneglanse)) and two-stage name detection ([elmo](https://github.com/elmohq/elmo)). The code is my own.
 
+## Brändi, kohderyhmä ja yrityskonteksti (brand, target group and company context)
+
+Writes down the basics of a business in three plain files that an AI reads before it does anything else: what the company sells and at what price, who it sells to and who it does not, and how it sounds and looks. After that you do not explain the same things again in every conversation. It works in any language; file names and headings are in Finnish by default and in English when you work in English.
+
+The agent first reads your website and your own texts, and asks you only what they do not answer. Every fact gets a marker:
+
+- **confirmed**: the owner's own word or decision
+- **derived**: read from the website or other material, not confirmed by anyone yet
+- **open**: missing. The item stays empty and becomes a question. Nothing is filled in by guessing.
+
+The result:
+
+| File | Content |
+| --- | --- |
+| `yritys.md` / `company.md` | what is sold, to whom, at what price, why customers buy, what you do not promise or do |
+| `kohderyhma.md` / `audience.md` | who you do not sell to, customer groups, the customer's own words, best and worst customers |
+| `brandi.md` / `brand.md` | voice rules with real example sentences, vocabulary, form of address, how colours, font and logo are used |
+| `kuvataulu.html` / `image-board.html` | the image board: the agent collects your pictures from the website or a folder, you answer with numbers which ones look like you and which are not used, and the picture rule is written from your choices |
+| `brand.json` | name, logo, font and colours in a form the other skills read |
+| `report.html` | the same as slides in the company's own colours, for the owner to read and approve |
+
+Three slides from the example (in Finnish); the whole example with its files is in [examples/yrityskonteksti](examples/yrityskonteksti/).
+
+[![Example status slide: confirmed, derived and open facts in the three files](examples/yrityskonteksti/kuvat/dia-2.png)](examples/yrityskonteksti/)
+
+[![Example voice rules: what the rule means, what it does not, and a real example sentence](examples/yrityskonteksti/kuvat/dia-13.png)](examples/yrityskonteksti/)
+
+[![Example picture choices: three good pictures, two that are not used and one the owner could not say](examples/yrityskonteksti/kuvat/dia-18.png)](examples/yrityskonteksti/)
+
+The company, prices, numbers and customer sentences in the example are made up.
+
+### Where the facts are read from
+
+| Source | How |
+| --- | --- |
+| Website | A script reads the front page, up to seven key pages and the stylesheets. Public pages only, without logging in. |
+| Own texts (optional) | Newsletters, offers, posts or emails as files. A script counts sentence length, form of address and common openings. |
+| LinkedIn (optional) | Only from material you hand over: LinkedIn's own data export (`Shares.csv`), a profile saved as PDF, pasted text or direct links to single posts. The agent does not open LinkedIn in your logged-in browser. |
+| You | An interview in batches of 3 to 5 questions. Dictated answers are fine, the agent sorts them. |
+
+Nothing is sent to other services, and the skill needs no paid data.
+
+### Use
+
+```
+Write the company context for Example Ltd, example.com. I approve the files.
+```
+
+Or call it directly: `/rjdigital:yrityskonteksti`. Install as above; the folder is `skills/yrityskonteksti`.
+
+The files are saved in `yrityskonteksti/`. The first draft comes from the website in a few minutes, and most of it is still derived or open. The interview is what makes the files useful.
+
+### Good to know
+
+- The files are plain text. Git is not required: the folder can live on a shared drive.
+- A fact read from the website is derived until the owner says it still holds. Websites go out of date.
+- A voice rule needs a real sentence you have written yourselves. The agent does not invent examples or customer quotes.
+- `check.mjs` checks the format of the files and reminds when the owner has not read a file for 180 days.
+- The other skills read the folder first: keyword research and the AI visibility check do not ask again what the files already answer, and their reports get the same look.
+- The look of the report comes from your own `brand.json`. The footer text can be changed or left empty in the same file.
+
+### Where the ideas come from
+
+Keeping the basics of a business in files that an AI reads before the work is an idea from the open [marketingskills](https://github.com/coreyhaines31/marketingskills) collection. What is my own here: the markers confirmed, derived and open, the check of the files, the owner and review date, and the report in the company's own colours. The code and the texts are my own.
+
 ## Make it look like yours
 
-You can restyle every tool and report to your own brand: your own theme, fonts and colours. In both skills the look lives in one file, `brand.json` (`skills/avainsanatutkimus/brand.json` and `skills/tekoalynakyvyys/brand.json`): name, logo, font and colours. A `brand.json` copied to the work folder overrides the skill's own, so each client can have a different look. Ask the agent to change the look, for example by giving it your website address, and it will do it for you.
+You can restyle every tool and report to your own brand: your own theme, fonts and colours. In every skill the look lives in one file, `brand.json` (for example `skills/avainsanatutkimus/brand.json`): name, logo, font and colours. A `brand.json` copied to the work folder overrides the skill's own, so each client can have a different look. Ask the agent to change the look, for example by giving it your website address, and it will do it for you. If you have made the company context, the other skills take the look from its `brand.json`.
 
 The AI visibility report shows the icons of companies, source sites and AIs. They load from Google's favicon service when the report is opened. `"icons": false` turns them off.
 

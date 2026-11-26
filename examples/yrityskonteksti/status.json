@@ -1,0 +1,108 @@
+{
+  "checked": "2026-11-26",
+  "company": "Kuuranta IT Oy",
+  "totals": {
+    "confirmed": 58,
+    "derived": 12,
+    "open": 10,
+    "ready": 0,
+    "files": 3
+  },
+  "files": [
+    {
+      "key": "company",
+      "file": "yritys.md",
+      "state": "draft",
+      "title": "Yritys ja tarjooma: Kuuranta IT Oy",
+      "company": "Kuuranta IT Oy",
+      "owner": "Elina Saarto",
+      "reviewed": "2026-11-20",
+      "ageDays": 6,
+      "confirmed": 24,
+      "derived": 4,
+      "open": 4,
+      "openItems": [
+        {
+          "section": "Yritys lyhyesti",
+          "text": "Uusia asiakkaita vuodessa"
+        },
+        {
+          "section": "Miksi meiltä ostetaan",
+          "text": "Asiakastyytyväisyys"
+        },
+        {
+          "section": "Mihin asiakas vertaa",
+          "text": "Ei tehdä mitään ennen kuin jotain sattuu."
+        },
+        {
+          "section": "Vastaväitteet ja vastaukset",
+          "text": "\"Kuinka kauan toimittajan vaihto kestää?\""
+        }
+      ],
+      "problems": [],
+      "notes": []
+    },
+    {
+      "key": "audience",
+      "file": "kohderyhma.md",
+      "state": "draft",
+      "title": "Kohderyhmä: Kuuranta IT Oy",
+      "company": "Kuuranta IT Oy",
+      "owner": "Elina Saarto",
+      "reviewed": "2026-11-20",
+      "ageDays": 6,
+      "confirmed": 17,
+      "derived": 3,
+      "open": 3,
+      "openItems": [
+        {
+          "section": "Ryhmä 2: yritys, jolta vaaditaan todiste tietoturvasta",
+          "text": "Mikä kaataa kaupan"
+        },
+        {
+          "section": "Ryhmä 2: yritys, jolta vaaditaan todiste tietoturvasta",
+          "text": "Kuinka pitkä ostoprosessi on"
+        },
+        {
+          "section": "Asiakkaan omat sanat",
+          "text": "IT-päällikön omat sanat puuttuvat."
+        }
+      ],
+      "problems": [],
+      "notes": []
+    },
+    {
+      "key": "brand",
+      "file": "brandi.md",
+      "state": "draft",
+      "title": "Brändi ja ääni: Kuuranta IT Oy",
+      "company": "Kuuranta IT Oy",
+      "owner": "Elina Saarto",
+      "reviewed": "2026-11-20",
+      "ageDays": 6,
+      "confirmed": 17,
+      "derived": 5,
+      "open": 3,
+      "openItems": [
+        {
+          "section": "Puhuttelu ja muoto",
+          "text": "LinkedInissä puhuttelu on päättämättä."
+        },
+        {
+          "section": "Ulkoasu",
+          "text": "Tumma teema"
+        },
+        {
+          "section": "Kuvat",
+          "text": "Kuvakaappaukset valvontanäkymästä: omistaja ei osannut vielä sanoa. Esimerkki: `valvontanakyma-kuvakaappaus.png`."
+        }
+      ],
+      "problems": [],
+      "notes": []
+    }
+  ],
+  "brand": {
+    "state": "ready",
+    "problems": []
+  }
+}

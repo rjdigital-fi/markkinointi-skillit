@@ -298,6 +298,207 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
   });
 }
 
+// --- yrityskonteksti: markers, the check, own texts, the website reader and the report ---
+{
+  const yk = path.join(scripts, "..", "..", "yrityskonteksti", "scripts");
+  const core = await import(path.join(yk, "core.mjs"));
+  const node = (script, ...a) => execFileSync("node", [path.join(yk, script), ...a], { encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] });
+  const ctx = async (name, fn) => {
+    n++;
+    let problems = [];
+    try { problems = await fn(); } catch (e) { problems = [String(e.stderr || e.message).trim().slice(0, 300)]; }
+    console.log(`${problems.length ? "FAIL" : "ok  "} ${name}${problems.length ? `: ${problems.join("; ")}` : ""}`);
+    if (problems.length) failed++;
+  };
+  const example = path.join(scripts, "..", "..", "..", "examples", "yrityskonteksti");
+  const copyExample = () => {
+    const dir = path.join(tmp, `yk-${n}-${Math.random().toString(36).slice(2, 7)}`);
+    fs.mkdirSync(dir);
+    for (const f of ["yritys.md", "kohderyhma.md", "brandi.md", "brand.json"]) fs.copyFileSync(path.join(example, f), path.join(dir, f));
+    return dir;
+  };
+
+  await ctx("Context: page picker takes hinted pages first, then service pages named after the service, never privacy pages", () => {
+    const L = (p, text = "") => ({ url: `https://x.fi${p}`, text });
+    const got = core.pickPages([L("/"), L("/hakukoneoptimointi", "SEO"), L("/tietosuoja"), L("/en"), L("/oppaat/pitka-opas"), L("/google-ads-mainonta"), L("/hinnat")], 3).map((u) => new URL(u).pathname);
+    return want(got.join() === "/hinnat,/hakukoneoptimointi,/google-ads-mainonta", `picked ${got.join()}`);
+  });
+
+  await ctx("Context: colours named in custom properties win over the most used colour", () => {
+    const b = core.suggestBrand([{ hex: "#ffffff", count: 30, vars: [] }, { hex: "#000000", count: 20, vars: ["--night"] }, { hex: "#141414", count: 9, vars: ["--ink"] }, { hex: "#f5f5f5", count: 9, vars: [] }, { hex: "#f3f3f3", count: 1, vars: ["--soft"] }, { hex: "#ff5a1f", count: 1, vars: ["--accent"] }], [{ family: "Hanken Grotesk" }], "X");
+    return want(b.colors.ink === "#141414" && b.colors.soft === "#f3f3f3" && b.colors.night === "#000000" && b.colors.accent === "#ff5a1f" && b.colors.paper === "#ffffff", JSON.stringify(b.colors));
+  });
+
+  await ctx("Context: markers in Finnish and English, with and without a source", () => {
+    const m = core.markers("| Hinta | 149 € | [vahvistettu: verkkosivu /hinnasto] | x [derived: site] y [auki] [OPEN]");
+    return [...want(m.map((x) => x.kind).join() === "confirmed,derived,open,open", `kinds ${m.map((x) => x.kind).join()}`), ...want(m[0].source === "verkkosivu /hinnasto" && m[2].source === "", "sources"), ...want(core.stripMarkers("Maalämpöä ei asenneta. [vahvistettu: ukk]") === "Maalämpöä ei asenneta.", "marker stripped")];
+  });
+
+  await ctx("Context: a file is read into confirmed, derived and open, and format problems are found", () => {
+    const text = "---\ncompany: Testi Oy\nowner: Maija\nreviewed: 2026-01-10\n---\n# Brändi\n\n## Ääni\n\n### Suora\n\n- Tarkoittaa: asia ensin.\n- Ei tarkoita: tylyä.\n- Esimerkki: \"Hinta on 100 €.\" [vahvistettu: verkkosivu]\n\n### Lämmin\n\n- Tarkoittaa: ystävällinen.\n\n## Sanasto\n\n| Käytetään | Ei käytetä | Merkintä |\n|---|---|---|\n| huolto | service | [päätelty] |\n| asennus | | [auki] |\n\n## Ulkoasu\n\n- Pääväri on sininen.\n\n## Muutokset\n\n- 2026-01-10: ensimmäinen versio.\n";
+    const r = core.readContextFile("brandi.md", text, new Date("2026-08-01"));
+    return [...want(r.confirmed === 1 && r.derived === 1 && r.open === 1, `counts ${r.confirmed}/${r.derived}/${r.open}`), ...want(r.noSource.length === 1, "a derived fact without a source is reported"), ...want(r.unmarked.length === 1 && /Pääväri/.test(r.unmarked[0].text), `one fact without a marker, got ${r.unmarked.length}`), ...want(r.voiceProblems.length === 1 && r.voiceProblems[0].rule === "Lämmin", "a voice rule without an example is reported"), ...want(r.owner === "Maija" && r.ageDays > 180, `owner and age ${r.ageDays}`), ...want(r.openItems[0].text === "asennus", `open item text ${r.openItems[0].text}`)];
+  });
+
+  await ctx("Context check: the example folder is a draft with open questions and no format problems", () => {
+    const dir = copyExample();
+    const out = node("check.mjs", "--dir", dir, "--today", "2026-11-26", "--strict");
+    const st = JSON.parse(fs.readFileSync(path.join(dir, "status.json"), "utf8"));
+    return [...want(st.totals.confirmed === 58 && st.totals.derived === 12 && st.totals.open === 10, `totals ${JSON.stringify(st.totals)}`), ...want(st.files.every((f) => f.state === "draft"), `states ${st.files.map((f) => f.state).join()}`), ...want(st.brand.state === "ready", `brand ${st.brand.state}`), ...want(/open 10/.test(out), "summary line")];
+  });
+
+  await ctx("Context check: --strict fails on a missing file, a missing section and an old review", () => {
+    const dir = copyExample();
+    fs.rmSync(path.join(dir, "kohderyhma.md"));
+    fs.writeFileSync(path.join(dir, "yritys.md"), fs.readFileSync(path.join(dir, "yritys.md"), "utf8").replace("## Mitä ei luvata eikä tehdä", "## Rajat"));
+    let code = 0;
+    try { node("check.mjs", "--dir", dir, "--today", "2027-09-01", "--strict"); } catch (e) { code = e.status; }
+    const st = JSON.parse(fs.readFileSync(path.join(dir, "status.json"), "utf8"));
+    const by = (k) => st.files.find((f) => f.key === k);
+    return [...want(code === 1, `exit code ${code}`), ...want(by("audience").state === "missing", "missing file"), ...want(by("company").state === "fix" && by("company").problems.some((p) => /section/i.test(p)), `missing section: ${by("company").problems.join(" / ")}`), ...want(by("brand").problems.concat(by("brand").notes ?? []).some((p) => /review|read/i.test(p)), "old review is flagged")];
+  });
+
+  await ctx("Context check: the templates are valid drafts once an owner is set", () => {
+    const dir = path.join(tmp, "yk-templates");
+    fs.mkdirSync(dir);
+    for (const f of ["yritys.md", "kohderyhma.md", "brandi.md"]) fs.writeFileSync(path.join(dir, f), fs.readFileSync(path.join(yk, "..", "templates", f), "utf8").replace("owner:", "owner: Maija"));
+    fs.copyFileSync(path.join(example, "brand.json"), path.join(dir, "brand.json"));
+    node("check.mjs", "--dir", dir, "--strict");
+    const st = JSON.parse(fs.readFileSync(path.join(dir, "status.json"), "utf8"));
+    return [...want(st.files.every((f) => f.state === "draft"), `states ${st.files.map((f) => `${f.state}: ${f.problems.join(",")}`).join(" | ")}`), ...want(st.totals.confirmed === 0 && st.totals.open > 30, `totals ${JSON.stringify(st.totals)}`)];
+  });
+
+  await ctx("Own texts: LinkedIn export (Shares.csv) and plain text are read and counted", () => {
+    const dir = path.join(tmp, "yk-texts");
+    fs.mkdirSync(dir);
+    const long = "Teimme viime viikolla kolme asennusta Tampereella. Jokainen kesti alle päivän!\n\nMitä opimme? Kartoitus kannattaa tehdä paikan päällä.";
+    fs.writeFileSync(path.join(dir, "Shares.csv"), `Date,ShareLink,ShareCommentary,SharedUrl,MediaUrl,Visibility\n2026-10-02 08:00:00,https://example.com/1,"${long}",,,MEMBER_NETWORK\n2026-10-01 08:00:00,https://example.com/2,"Lyhyt ""lainaus"".",,,MEMBER_NETWORK\n`);
+    fs.writeFileSync(path.join(dir, "kirjeet.md"), "Me autamme teitä valitsemaan oikean pumpun. Hinta kerrotaan aina etukäteen, ja se pitää.\n---\nKysyttekö usein, toimiiko pumppu pakkasella? Vastaus on kyllä, kun mitoitus tehdään oikein.\n");
+    const out = node("texts.mjs", "--dir", dir, path.join(dir, "Shares.csv"), path.join(dir, "kirjeet.md"));
+    const t = JSON.parse(fs.readFileSync(path.join(dir, "raw", "texts.json"), "utf8"));
+    const v = JSON.parse(fs.readFileSync(path.join(dir, "raw", "voice-stats.json"), "utf8"));
+    return [...want(t.found === 4 && t.used === 3, `found ${t.found}, used ${t.used}`), ...want(t.texts[0].source === "Shares.csv" && /Tampereella/.test(t.texts[0].text), "the dated export text comes first"), ...want(v.sentences >= 7 && v.questionShare > 0 && v.exclamationShare > 0, `sentences ${v.sentences}, questions ${v.questionShare}, exclamations ${v.exclamationShare}`), ...want(v.address.we >= 1 && v.address.youFormal >= 1, `address ${JSON.stringify(v.address)}`), ...want(/3 used of 4/.test(out), "summary line")];
+  });
+
+  await ctx("Website: text, key pages, colours and fonts are read into raw/site.json", async () => {
+    const http = await import("node:http");
+    const { spawn } = await import("node:child_process");
+    const css = ":root{--brand:#0F4C5C;--paper:#fff}body{font-family:'Inter',Arial,sans-serif;color:#14262b;background:#ffffff}a{color:#0f4c5c}.btn{background:#e36414;color:#fff}.btn:hover{background:#e36414}.card{background:#f4f1ea;border:1px solid #dfdbd1}";
+    const page = (title, body) => `<!doctype html><html lang="fi"><head><title>${title}</title><meta name="description" content="Kuvaus: ${title}"><link rel="stylesheet" href="/site.css"><script>var hidden = "ei tekstiä";</script></head><body><nav><a href="/hinnasto">Hinnasto</a><a href="/yritys">Yritys</a><a href="/blogi/juttu">Blogi</a><a href="https://other.example/x">Muu</a></nav><h1>${title}</h1>${body}</body></html>`;
+    const server = http.createServer((req, res) => {
+      if (req.url === "/site.css") { res.writeHead(200, { "content-type": "text/css" }); return res.end(css); }
+      if (req.url === "/") { res.writeHead(200, { "content-type": "text/html; charset=utf-8" }); return res.end(page("Testi L&auml;mp&ouml; Oy", "<h2>Asennus ja huolto</h2><p>Asennamme ilmalämpöpumput omakotitaloihin.</p>")); }
+      if (req.url === "/hinnasto") { res.writeHead(200, { "content-type": "text/html; charset=utf-8" }); return res.end(page("Hinnasto", "<p>Huolto 149 € sis. alv.</p>")); }
+      res.writeHead(404); res.end("no");
+    });
+    await new Promise((r) => server.listen(0, "127.0.0.1", r));
+    const dir = path.join(tmp, "yk-site");
+    const out = await new Promise((resolve) => {
+      const p = spawn("node", [path.join(yk, "site.mjs"), "--url", `http://127.0.0.1:${server.address().port}/`, "--dir", dir]);
+      let buf = "";
+      p.stdout.on("data", (d) => (buf += d));
+      p.stderr.on("data", (d) => (buf += d));
+      p.on("close", () => resolve(buf));
+    });
+    server.close();
+    if (!fs.existsSync(path.join(dir, "raw", "site.json"))) return [`no site.json: ${out.trim().slice(0, 200)}`];
+    const s = JSON.parse(fs.readFileSync(path.join(dir, "raw", "site.json"), "utf8"));
+    const urls = s.pages.map((p) => new URL(p.url).pathname);
+    const hex = s.colors.map((c) => c.hex);
+    return [...want(s.pages[0].title === "Testi Lämpö Oy" && s.pages[0].h1.includes("Testi Lämpö Oy"), `title ${s.pages[0].title}`), ...want(/Asennamme ilmalämpöpumput/.test(s.pages[0].text) && !/ei tekstiä/.test(s.pages[0].text), "page text without scripts"), ...want(urls.includes("/hinnasto"), `pricing page read, got ${urls.join()}`), ...want(s.failed.some((f) => /yritys/.test(f.url ?? f)), "a page that fails is listed"), ...want(hex.includes("#0f4c5c") && hex.includes("#e36414") && hex.includes("#ffffff"), `colours ${hex.join()}`), ...want(s.fonts[0]?.family === "Inter", `font ${s.fonts[0]?.family}`), ...want(s.brandSuggestion.colors.accent === "#e36414" && s.brandSuggestion.colors.paper === "#ffffff" && s.brandSuggestion.font === "Inter", `suggestion ${JSON.stringify(s.brandSuggestion.colors)}`)];
+  });
+
+  await ctx("Context report: slides in the company's own colours, Finnish and English, no scripts", () => {
+    const dir = copyExample();
+    node("report.mjs", "--dir", dir, "--today", "2026-11-26", "--note", "Testi <b>");
+    const fi = fs.readFileSync(path.join(dir, "report.html"), "utf8");
+    const md = fs.readFileSync(path.join(dir, "report.md"), "utf8");
+    node("report.mjs", "--dir", dir, "--lang", "en", "--out", path.join(dir, "en.html"));
+    const en = fs.readFileSync(path.join(dir, "en.html"), "utf8");
+    return [...want(/Kuuranta IT Oy/.test(fi) && /#0b1f3a/i.test(fi) && /Inter/.test(fi), "company name, colour and font"), ...want(/Testi &lt;b&gt;/.test(fi), "note escaped"), ...want(/Nämä kysytään seuraavaksi/.test(fi) && /Kuinka kauan toimittajan vaihto kestää/.test(fi), "open questions slide"), ...want(!/Omistaja luki ja hyväksyi/.test(fi), "changelog is left out"), ...want(/Vahvistettu/.test(fi) && /Päätelty/.test(fi) && /Auki/.test(fi), "three marker labels"), ...want(/Confirmed/.test(en) && /Open/.test(en), "English labels"), ...want(md.length > 500 && /Kuuranta/.test(md), "report.md"), ...want(!/<script/i.test(fi + en), "no scripts")];
+  });
+
+  // A PNG that is only its header: enough for the size reader, and every byte after it makes the file unique.
+  const png = (w, h, salt = "") => { const b = Buffer.alloc(33); Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]).copy(b); b.writeUInt32BE(13, 8); b.write("IHDR", 12, "latin1"); b.writeUInt32BE(w, 16); b.writeUInt32BE(h, 20); return Buffer.concat([b, Buffer.from(salt)]); };
+
+  await ctx("Images: size is read from the file header, an unknown file gives nothing", () => {
+    const p = core.imageSize(png(900, 600));
+    const g = core.imageSize(Buffer.concat([Buffer.from("GIF89a", "latin1"), Buffer.from([0x40, 0x01, 0xf0, 0x00]), Buffer.alloc(20)]));
+    const v = core.imageSize(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"></svg>'));
+    return [...want(p?.type === "png" && p.width === 900 && p.height === 600, `png ${JSON.stringify(p)}`), ...want(g?.type === "gif" && g.width === 320 && g.height === 240, `gif ${JSON.stringify(g)}`), ...want(v?.type === "svg", `svg ${JSON.stringify(v)}`), ...want(core.imageSize(Buffer.from("not a picture at all")) === null, "text is not a picture")];
+  });
+
+  await ctx("Images: page pictures with the largest srcset size, the optimiser address unwrapped, and the zone of each", () => {
+    const html = `<head><meta property="og:image" content="/og.png"></head><body><nav><img src="/logo.png" alt="Logo"></nav>
+      <main><img src="/a-small.jpg" srcset="/a-small.jpg 400w, /a-large.jpg 1200w" alt="Tiimi">
+      <img src="/_next/image?url=%2Fkuvat%2Ftoimisto.webp&w=640&q=75" alt="Toimisto">
+      <div style="background-image:url('/tausta.jpg')"></div></main><footer><img src="/footer.png"></footer></body>`;
+    const got = core.htmlImages(html, "https://x.fi/");
+    const by = (re) => got.find((i) => re.test(i.src));
+    return [...want(by(/a-large\.jpg$/)?.alt === "Tiimi" && !by(/a-small/), `largest srcset: ${got.map((i) => i.src).join()}`), ...want(by(/\/kuvat\/toimisto\.webp$/)?.zone === "content", "optimiser address unwrapped"), ...want(by(/tausta\.jpg$/), "background picture"), ...want(by(/logo\.png$/)?.zone === "chrome" && by(/footer\.png$/)?.zone === "chrome", "navigation and footer marked"), ...want(by(/og\.png$/)?.zone === "share", "share picture marked")];
+  });
+
+  await ctx("Images: file names lose sizes, densities and build hashes", () => {
+    const got = ["https://x.fi/kuvat/tiimi-1024x768.jpg", "https://x.fi/tiimi@2x.png", "https://x.fi/tiimi-scaled.webp", "https://x.fi/joonas-hero.d2095dcd.png"].map(core.imageStem);
+    return want(got.join() === "tiimi,tiimi,tiimi,joonas-hero", got.join());
+  });
+
+  await ctx("Images: icons, logos, strips and navigation pictures are left off, a normal photo stays", () => {
+    const I = (o) => ({ src: "https://x.fi/kuvat/tiimi.jpg", alt: "", zone: "content", type: "jpeg", width: 1200, height: 800, ...o });
+    const r = [I({}), I({ type: "svg" }), I({ width: 64, height: 64 }), I({ width: 1600, height: 200 }), I({ src: "https://x.fi/kuvat/kumppani-logo.png" }), I({ alt: "Visa ja Mastercard" }), I({ zone: "chrome" }), I({ width: 0, height: 0 })].map(core.skipReason);
+    return [...want(r[0] === "", `photo kept, got "${r[0]}"`), ...want(r.slice(1).every(Boolean), `every other one has a reason: ${JSON.stringify(r)}`)];
+  });
+
+  await ctx("Images: near-identical versions become one group, different pictures stay apart, the board takes from every page in turn", () => {
+    const I = (src, hash, from, w = 900, h = 600) => ({ src, hash, from, width: w, height: h, stem: core.imageStem(src) });
+    const groups = core.groupImages([I("https://x.fi/tiimi.jpg", "a", "p1"), I("https://x.fi/tiimi-rajattu.jpg", "b", "p1"), I("https://x.fi/kopio.jpg", "a", "p2", 1800, 1200), I("https://x.fi/toimisto.jpg", "c", "p1"), I("https://x.fi/toimisto-2.jpg", "d", "p1"), I("https://x.fi/asentaja.jpg", "e", "p2"), I("https://x.fi/auto.jpg", "f", "p1")]);
+    const team = groups.find((g) => g.items.some((i) => /tiimi\.jpg/.test(i.src)));
+    const { shown, left } = core.sampleGroups(groups, 3);
+    return [...want(groups.length === 5, `5 groups, got ${groups.length}`), ...want(team?.items.length === 3 && /kopio/.test(team.rep.src), `same file and cropped version in one group, largest shown: ${team?.items.length} ${team?.rep.src}`), ...want(shown.length === 3 && left.length === 2 && shown.some((g) => g.rep.from === "p2"), `3 shown from both pages, got ${shown.map((g) => g.rep.src).join()}`)];
+  });
+
+  await ctx("Images: number answers read lists and ranges", () => want(core.parseNumbers("3,5 7-9; 5").join() === "3,5,7,8,9", core.parseNumbers("3,5 7-9; 5").join()));
+
+  await ctx("Image board: a folder becomes a numbered board, the answer is saved, a wrong answer saves nothing, the report shows the choices", () => {
+    const dir = copyExample();
+    const pics = path.join(tmp, `kuvapankki-${n}`);
+    fs.mkdirSync(path.join(pics, "vanhat"), { recursive: true });
+    fs.writeFileSync(path.join(pics, "tiimi.png"), png(900, 600, "1"));
+    fs.writeFileSync(path.join(pics, "tiimi-rajattu.png"), png(900, 600, "2"));
+    fs.writeFileSync(path.join(pics, "toimisto.png"), png(1200, 800, "3"));
+    fs.writeFileSync(path.join(pics, "vanhat", "hakkeri.png"), png(1000, 700, "4"));
+    fs.writeFileSync(path.join(pics, "logo.png"), png(600, 600, "5"));
+    fs.writeFileSync(path.join(pics, "ikoni.png"), png(48, 48, "6"));
+    fs.writeFileSync(path.join(pics, "muistio.txt"), "ei kuva");
+    node("images.mjs", "--dir", dir, "--folder", pics);
+    const file = path.join(dir, "raw", "images.json");
+    const read = () => JSON.parse(fs.readFileSync(file, "utf8"));
+    const d = read();
+    const board = fs.readFileSync(path.join(dir, "kuvataulu.html"), "utf8");
+    const num = (re) => d.groups.find((g) => re.test(g.file))?.n;
+    const p = [...want(d.groups.length === 3 && d.dropped.length === 2, `3 on the board and 2 dropped, got ${d.groups.length} and ${d.dropped.length}`), ...want(d.groups.find((g) => /tiimi/.test(g.file))?.versions.length === 2, "the cropped version is in the same group"), ...want(d.groups.every((g) => fs.existsSync(path.join(dir, g.file))), "picture files copied"), ...want(!fs.readFileSync(file, "utf8").includes(tmp) && !board.includes(tmp), "no full path of this machine in the files"), ...want(/KUURANTA IT/.test(board) && /Inter/.test(board) && /#1f6feb/i.test(board) && !/<script/i.test(board), "board in the company's look, no scripts")];
+    let refused = "";
+    try { node("images.mjs", "--dir", dir, "--good", "1,9", "--no", "1"); } catch (e) { refused = String(e.stderr || e.stdout || e.message); }
+    p.push(...want(refused && read().groups.every((g) => !g.verdict), "an answer with a wrong number or a number in two lists saves nothing"));
+    const out = node("images.mjs", "--dir", dir, "--good", String(num(/tiimi/)), "--no", String(num(/hakkeri/)));
+    const after = read();
+    p.push(...want(after.groups.find((g) => /tiimi/.test(g.file)).verdict === "good" && after.groups.find((g) => /hakkeri/.test(g.file)).verdict === "no" && /^\d{4}-\d\d-\d\d$/.test(after.answered ?? ""), "answer saved with its date"), ...want(new RegExp(`Not in any list: .*${num(/toimisto/)}`).test(out), `the unanswered picture is named: ${out.trim().slice(-120)}`));
+    node("report.mjs", "--dir", dir);
+    const rep = fs.readFileSync(path.join(dir, "report.html"), "utf8");
+    p.push(...want(/Kuvat: omistajan valinnat/.test(rep) && /pic-good/.test(rep) && /pic-no/.test(rep), "report slide with the choices"));
+    node("images.mjs", "--dir", dir, "--board", "--lang", "en");
+    p.push(...want(fs.existsSync(path.join(dir, "image-board.html")), "English board"));
+    return p;
+  });
+
+  await ctx("Example: the image board, its pictures and the picture lines in brandi.md belong together", () => {
+    const d = JSON.parse(fs.readFileSync(path.join(example, "raw", "images.json"), "utf8"));
+    const brand = fs.readFileSync(path.join(example, "brandi.md"), "utf8");
+    const all = ["raw/images.json", "kuvataulu.html", "report.html", "README.md"].map((f) => fs.readFileSync(path.join(example, f), "utf8")).join("\n");
+    return [...want(d.groups.every((g) => g.verdict && fs.existsSync(path.join(example, g.file))), "every picture has an answer and a file"), ...want(d.groups.filter((g) => g.verdict !== "unsure").every((g) => brand.includes(path.basename(g.file))), "brandi.md names an example file for each choice"), ...want(/\[vahvistettu: kuvataulu /.test(brand) && /\[päätelty: kuvataulun valinnat /.test(brand), "choices confirmed by the board, the rule derived from them"), ...want(!/\/Users\/|\/private\/|\/home\//.test(all), "no local paths in the example")];
+  });
+}
+
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(failed ? `\n${failed} of ${n} failed` : `\nall ${n} passed`);
 process.exit(failed ? 1 : 0);

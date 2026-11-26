@@ -1,0 +1,22 @@
+{
+  "_ohje": "Raportin oletusulkoasu. Raportti käyttää yrityksen omaa ilmettä heti, kun työkansiossa on yrityksen brand.json. Tätä tiedostoa käytetään vain, jos sitä ei vielä ole. \"credit\" on alatunnisteen teksti: vaihtakaa se omaan tai jättäkää tyhjäksi.",
+  "_note": "The default look of the report. The report uses the company's own look as soon as the work folder holds the company's brand.json. This file is used only when that does not exist yet. \"credit\" is the footer text: change it to your own or leave it empty.",
+  "name": "RJ DIGITAL",
+  "credit": {
+    "fi": "Tehty RJ Digitalin yrityskonteksti-skillillä · rjdigital.fi",
+    "en": "Built with RJ Digital's company context skill · rjdigital.fi"
+  },
+  "logo": "",
+  "font": "Hanken Grotesk",
+  "fontUrl": "https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&display=swap",
+  "colors": {
+    "paper": "#ffffff",
+    "soft": "#f3f3f3",
+    "ink": "#141414",
+    "muted": "#6b6b6b",
+    "line": "#e2e2e2",
+    "accent": "#ff5a1f",
+    "night": "#000000"
+  },
+  "icons": true
+}
