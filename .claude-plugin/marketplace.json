@@ -1,19 +1,37 @@
 {
   "name": "rjdigital-fi",
-  "owner": { "name": "RJ Digital", "url": "https://rjdigital.fi" },
+  "owner": {
+    "name": "RJ Digital",
+    "url": "https://rjdigital.fi"
+  },
   "description": "Free marketing skills by RJ Digital",
   "plugins": [
     {
       "name": "rjdigital",
       "source": "./",
-      "description": "An AI visibility check with real answers from ChatGPT, Gemini, Google AI Mode and Perplexity, and keyword research with real data from the SEO, SEM or GEO tool you already use: Semrush, Ahrefs, SE Ranking, DataForSEO, Google Ads, SearchApi, SerpApi, HasData, Cloro, any other MCP or API, or a CSV export. Brand, target group and company context: three plain files every other skill reads first, with each fact marked confirmed, derived or open.",
-      "version": "0.5.0",
-      "author": { "name": "RJ Digital", "url": "https://rjdigital.fi" },
+      "description": "Free marketing skills for Finnish service companies, by RJ Digital. Company context first: brand, target group and company facts in plain files every other skill reads, each fact marked confirmed, derived or open. Keyword research with real data from the SEO, SEM or GEO tool you already use (Semrush, Ahrefs, SE Ranking, DataForSEO, Google Ads, SearchApi, SerpApi, HasData, Cloro, any other MCP or API, or a CSV export). An AI visibility check with real answers from ChatGPT, Gemini, Google AI Mode and Perplexity. Every skill first fits the work to the kind of company using it.",
+      "version": "0.6.0",
+      "author": {
+        "name": "RJ Digital",
+        "url": "https://rjdigital.fi"
+      },
       "homepage": "https://rjdigital.fi/skillit",
       "repository": "https://github.com/rjdigital-fi/markkinointi-skillit",
       "license": "MIT",
       "category": "marketing",
-      "keywords": ["seo", "keyword-research", "avainsanatutkimus", "google-ads", "ai-visibility", "tekoalynakyvyys", "geo", "brand", "tone-of-voice", "icp", "yrityskonteksti"]
+      "keywords": [
+        "seo",
+        "keyword-research",
+        "avainsanatutkimus",
+        "google-ads",
+        "ai-visibility",
+        "tekoalynakyvyys",
+        "geo",
+        "brand",
+        "tone-of-voice",
+        "icp",
+        "yrityskonteksti"
+      ]
     }
   ]
 }

@@ -2,7 +2,7 @@
 
 Tältä avainsanatutkimus-skillin raportti näyttää. Raportti on yksi HTML-tiedosto, joka avautuu selaimessa ja tulostuu PDF:ksi dia kerrallaan. Alla ovat sen diat kuvina.
 
-**Kuvitteellinen esimerkki.** Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 1 000–2 000 euron budjettihaarukka kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja osion "Oma sivusto hakutuloksissa" Search Console -luvut on keksitty.
+**Kuvitteellinen esimerkki.** Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 5 000–10 000 euron budjettihaarukka kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja osion "Oma sivusto hakutuloksissa" Search Console -luvut on keksitty.
 
 Tiedostot:
 

@@ -57,6 +57,24 @@ Scripts are in `scripts/` next to this file. They need Node 18 or newer and noth
 - `scripts/report.mjs` builds `report.html` and `report.md`. It makes no network calls.
 - `scripts/core.mjs` is the shared logic: name detection, counting, question templates. `scripts/checks.mjs` is the logic of the site checks.
 
+## Before the brief: fit to this company
+
+Read `sovitus.md` next to this file and do what it says: find out from what you already know what kind of
+company this is, write or read `yrityskonteksti/tilanne.md`, show the user in a few lines how you understood
+their situation, and fit the check to it. The user does not need to make the full company context first.
+If they want only this check, do it.
+
+The fit and the brief of Step 0 go to the user as one message: what you understood, what you change, and
+only the brief questions you could not answer from what you read.
+
+What the fit changes in this skill:
+
+| Situation | What changes |
+| --- | --- |
+| Chain or several towns | Do not multiply every question by every town. Start with the same questions for up to three towns the user picks (you may suggest them from what you read), tell the cost before fetching, and add towns only when the user asks. Say in the summary which towns were checked. |
+| B2B with a long sales cycle | Write the questions by the role of the buyer: the person who decides on money asks differently from the person who will use the service. Mark the role in your notes for each question. |
+| Agency working for a client | Work in the client's folder. The brief is about the client's company. |
+
 ## Step 0: the brief and the data source
 
 Ask only what you cannot see from the conversation or the project:

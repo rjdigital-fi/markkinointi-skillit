@@ -1,10 +1,10 @@
-> Esimerkkiraportti. Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 1 000–2 000 euron budjettihaarukka kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja osion "Oma sivusto hakutuloksissa" Search Console -luvut on keksitty: **Kuvitteellinen esimerkki.**
+> Esimerkkiraportti. Hakumäärät, hinnat, tekoälyn vastaukset ja Googlen tulossivu ovat oikeaa dataa (DataForSEO, haettu 23.11.2026). Ryhmien painot, sivut ja 5 000–10 000 euron budjettihaarukka kuuluvat kuvitteelliselle aurinkopaneelien asennusyritykselle, ja osion "Oma sivusto hakutuloksissa" Search Console -luvut on keksitty: **Kuvitteellinen esimerkki.**
 
 # Avainsanatutkimus: aurinkopaneelit
 
 - Data: DataForSEO (Google Ads), DataForSEO MCP
 - Markkina: Suomi, suomi
-- Raportti tehty: 2026-11-23
+- Raportti tehty: 2026-11-26
 - 1 228 hakusanaa löytyi, 35 valittu ryhmiin
 
 ## Aihekartta
@@ -132,19 +132,19 @@ Hakuaikomus: Vertailu · Sivu: Vertailuartikkeli · Kanava: SEO ja tekoälynäky
 
 ## Budjetin jako
 
-Alustava budjetti: 1 000–2 000 €/kk
+Alustava budjetti: 5 000–10 000 €/kk
 
 | Ryhmä | Hakuaikomus | Paino | Osuus | €/kk |
 | --- | --- | ---: | ---: | ---: |
-| Tarjous ja paketit | Osto | 1 | 25,9 % | 259–517 |
-| Järjestelmät ja akut | Vertailu | 0,5 | 20,5 % | 205–411 |
-| Käyttökohde | Vertailu | 0,5 | 15,6 % | 156–311 |
-| Paikkakunta | Paikallinen osto | 1 | 13,6 % | 136–271 |
-| Hinta | Osto | 0,5 | 13,5 % | 135–269 |
-| Asennus | Osto | 1 | 10,3 % | 103–206 |
-| Vertailu ja valinta | Vertailu | 0,5 | 0,7 % | 7–14 |
+| Tarjous ja paketit | Osto | 1 | 25,9 % | 1 293–2 585 |
+| Järjestelmät ja akut | Vertailu | 0,5 | 20,5 % | 1 027–2 054 |
+| Käyttökohde | Vertailu | 0,5 | 15,6 % | 778–1 555 |
+| Paikkakunta | Paikallinen osto | 1 | 13,6 % | 678–1 357 |
+| Hinta | Osto | 0,5 | 13,5 % | 674–1 347 |
+| Asennus | Osto | 1 | 10,3 % | 515–1 031 |
+| Vertailu ja valinta | Vertailu | 0,5 | 0,7 % | 35–71 |
 | Yleinen | Tiedonhaku | 0 | 0 % | 0 |
-| **Yhteensä** | | | 100 % | **1 000–2 000** |
+| **Yhteensä** | | | 100 % | **5 000–10 000** |
 
 Osuus = ryhmän (haut × klikkaushinta) × hakuaikomuksen paino × liiketoiminnan paino. Jako on lähtökohta, jota oikea mainosdata tarkentaa.
 

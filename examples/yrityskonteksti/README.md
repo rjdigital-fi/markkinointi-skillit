@@ -6,6 +6,7 @@ Tältä yrityskonteksti-skillin tulos näyttää. Varsinainen tulos on kolme tek
 
 Tiedostot:
 
+- [tilanne.md](tilanne.md): millainen yritys on kyseessä ja miten skillit sovitetaan siihen. Agentti kirjoittaa sen ensin siitä, mitä se jo tietää.
 - [yritys.md](yritys.md): mitä yritys myy, kenelle, mihin hintaan, miksi siltä ostetaan ja mitä se ei lupaa.
 - [kohderyhma.md](kohderyhma.md): kenelle ei myydä, asiakasryhmät ja asiakkaan omat sanat.
 - [brandi.md](brandi.md): äänen säännöt esimerkkilauseineen, sanasto, puhuttelu ja ulkoasun käyttö.

@@ -44,6 +44,7 @@ shared drive folder or anywhere the team can open it. Git is not required.
 
 | File (Finnish / English) | Content |
 | --- | --- |
+| `tilanne.md` / `situation.md` | what kind of company this is and how the work is fitted to it. Written first, from what the agent already knows (see `sovitus.md`). Short, same markers. Not checked by `check.mjs` and not in the report. |
 | `yritys.md` / `company.md` | what the company sells, to whom, at what price, why customers buy, what it does not promise or do |
 | `kohderyhma.md` / `audience.md` | who it does not sell to, the customer groups, the customer's own words, best and worst customers |
 | `brandi.md` / `brand.md` | the brand in one sentence, voice rules with real example sentences, vocabulary, form of address, how colours, font and logo are used |
@@ -91,6 +92,21 @@ Start each file from its template. The check reads this format, so keep it:
 - Free sections need no markers and are left out of the report: `Opit` (Learnings), `Muutokset` (Changelog),
   `Kysymykset` (Questions), `Lähteet` (Sources). Add a line to `Muutokset` every time a file changes, and a row
   to `Opit` when the work shows something new about the customers.
+
+## Before anything else: fit to this company
+
+Read `sovitus.md` next to this file and do what it says: find out from what you already know what kind of
+company this is, write `tilanne.md` into the work folder, and show the user in a few lines how you understood
+their situation. `tilanne.md` is the first file of the folder: the other skills of this plugin read it also
+when the three main files do not exist yet.
+
+What the fit changes in this skill:
+
+| Situation | What changes |
+| --- | --- |
+| Chain or several towns | Ask what is the same everywhere and what each location decides itself (prices, offers, tone in local channels). Write the differences down, not one file per town. |
+| B2B with a long sales cycle | In the audience file, write the roles that take part in a purchase and what each one needs to hear. Proof and what may be said in public get more questions. |
+| Agency working for a client | The files are the client's. The owner is a person at the client. The agency's own context lives in the agency's own folder. |
 
 ## Step 0: what exists already
 

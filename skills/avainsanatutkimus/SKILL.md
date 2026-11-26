@@ -57,16 +57,48 @@ Scripts are in `scripts/` next to this file. They need Node 18 or newer and noth
 - `scripts/dataforseo.mjs` is a ready-made fetcher for one source, DataForSEO. Other sources go through their
   own MCP or API and the two importers.
 
+## Before the brief: fit to this company
+
+Read `sovitus.md` next to this file and do what it says: find out from what you already know what kind of
+company this is, write or read `yrityskonteksti/tilanne.md`, show the user in a few lines how you understood
+their situation, and fit the research to it. The user does not need to make the full company context first.
+If they want only this research, do it.
+
+The fit and the brief of Step 0 go to the user as one message: what you understood, what you change, and
+only the brief questions you could not answer from what you read.
+
+What the fit changes in this skill:
+
+| Situation | What changes |
+| --- | --- |
+| Local service in one area | Town and nearby towns are part of the seed phrases. Ask how far the company travels for a job. |
+| Chain or several towns | Ask which towns matter most. Town is its own branch in the topic map, and the groups show which towns have search demand and which do not. |
+| B2B with a long sales cycle | Add the terms the trade uses in English next to the local ones. Volumes are small: say in the summary that a small volume is not the same as small demand when one sale is worth a lot, and ask what a sale is roughly worth so the groups can be put in order by it. |
+| No paid advertising | No budget question after the first one in the brief. The report is built without a budget and your summary starts from the order of pages. |
+| Agency working for a client | Work in the client's folder. The brief is about the client's business, not the agency's. |
+
 ## Step 0: the brief and the data source
 
 Ask only what you cannot see from the conversation or the project:
 
 1. The topic (product or service) and what the business sells: installs, sells online, sells to businesses.
 2. The market: country and language. Local business: which towns.
-3. A preliminary monthly ad budget as a range, for example 1 000 to 2 000 euros a month. Always ask this,
-   also when the user gave no budget or gave one number: with one number, ask for the low and the high end
-   they could consider. The range is a starting point, and the user does not need to commit to it. If the user
-   does not want to give one, build the report without it: the split is then shown as shares only.
+3. Whether the company spends money on Google advertising. Read it first, ask only if you cannot:
+   - the line "Paid advertising" in `yrityskonteksti/tilanne.md`, your own context and the project's documents
+   - a connected Google Ads account or ad tool: are campaigns running now, and what was spent in the last
+     full month. Read only, never change anything in the account.
+   - the data source, when it shows the domain's paid keywords or ads.
+   If you read it, say what you found and where ("Google Ads on päällä, viime kuussa noin 1 400 euroa") and
+   let the user correct it. If you could not read it, ask: "Käytättekö Google-mainontaan rahaa?" Not finding
+   ads is not proof that there are none: then ask. Three answers:
+   - Yes, or it is planned: ask for a preliminary monthly budget as a range, for example 5 000 to 10 000 euros
+     a month. With one number, ask for the low and the high end they could consider. The range is a starting
+     point, and the user does not need to commit to it. If the user does not want to give one, build the
+     report without it: the split is then shown as shares only.
+   - No, and not planned: do not ask for a budget. Build the report without it and put the order of pages
+     first in your summary. Click prices stay in the report as a sign of how much a search is worth.
+   - The user already gave a range: do not ask again. When you read last month's spend from the account,
+     offer a range around it as a suggestion and let the user change it.
 4. The currency of the report. Use euros unless the user asks for another currency.
 
 Then choose the data source with the user. Read `sources/overview.md` first. It lists the five kinds of data
@@ -128,7 +160,7 @@ searches that one page can answer.
   "market": "Suomi, suomi",
   "currency": "USD",
   "report_currency": "EUR",
-  "budget": { "low": 1000, "high": 2000 },
+  "budget": { "low": 5000, "high": 10000 },
   "lang": "fi",
   "groups": [
     { "name": "Hinta", "intent": "Osto", "weight": 0.5, "business": 1,
@@ -220,7 +252,7 @@ node scripts/report.mjs --dir <folder> --lang fi
 node scripts/report-html.mjs --dir <folder> --lang fi
 ```
 
-Always run both. The budget range and the currency come from `groups.json`. `--budget 1000-2000` overrides
+Always run both. The budget range and the currency come from `groups.json`. `--budget 5000-10000` overrides
 the range.
 
 `report.html` is the report the user reads: slides in one file that opens in any browser and prints to PDF

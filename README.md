@@ -1,8 +1,103 @@
 # RJ Digitalin skillit
 
-Ilmaisia skillejä Claude Codeen ja muihin tekoälyagentteihin, jotka osaavat lukea skillejä. Skilli on ohje, jonka mukaan agentti tekee työn vaihe vaiheelta. Tein nämä omaan käyttööni ja jaan ne, koska samalla menetelmällä pääsee alkuun kuka tahansa.
+Ilmaisia markkinoinnin skillejä suomalaisille palveluyrityksille. Ne toimivat Claude Codessa ja muissa tekoälyagenteissa, jotka osaavat lukea skillejä. Skilli on ohje, jonka mukaan agentti tekee työn vaihe vaiheelta. Tein nämä omaan käyttööni ja jaan ne, koska samalla menetelmällä pääsee alkuun kuka tahansa.
 
 In English: [README.en.md](README.en.md)
+
+[![Esimerkin tilannekuva: kolmen tiedoston vahvistetut, päätellyt ja avoimet tiedot](examples/yrityskonteksti/kuvat/dia-2.png)](examples/yrityskonteksti/)
+
+Yllä on dia yrityskontekstin esimerkkiraportista. Jokainen skilli palauttaa tuloksen tällaisina dioina, ja esimerkit ovat kansiossa [examples](examples/).
+
+## Aloita tästä
+
+Skillejä on kolme, ja jokaisen voi ajaa yksinään. Jos tarvitsette vain avainsanatutkimuksen, tehkää vain se.
+
+Jos aloitatte alusta, tehkää ensin [yrityskonteksti](#brändi-kohderyhmä-ja-yrityskonteksti). Se on ilmainen eikä tarvitse rajapinta-avaimia tai maksullista dataa. Agentti lukee verkkosivunne ja tekee ensimmäisen luonnoksen muutamassa minuutissa. Sen jälkeen muut skillit tietävät, mitä myytte ja kenelle, eivätkä kysy samoja asioita uudelleen.
+
+| Järjestys | Skilli | Mitä tarvitaan |
+| --- | --- | --- |
+| 1 | [Yrityskonteksti](#brändi-kohderyhmä-ja-yrityskonteksti) | verkkosivun osoite |
+| 2 | [Avainsanatutkimus](#avainsanatutkimus) | hakudatan lähde: oma SEO-työkalunne, CSV-vienti tai DataForSEO |
+| 3 | [Tekoälynäkyvyys](#tekoälynäkyvyys) | tekoälyn vastausten lähde, esimerkiksi DataForSEO (noin 0,004 dollaria vastaukselta) |
+
+Jokainen skilli katsoo aluksi, millainen yritys teillä on, ja sovittaa työn siihen: [sovitus omaan tilanteeseen](#sovitus-omaan-tilanteeseen).
+
+## Asennus
+
+Claude Codessa:
+
+```
+/plugin marketplace add rjdigital-fi/markkinointi-skillit
+/plugin install rjdigital@rjdigital-fi
+```
+
+Tai ilman pluginia: kopioikaa haluamanne skillin kansio, esimerkiksi `skills/yrityskonteksti`, omaan `~/.claude/skills/`-kansioonne.
+
+Skriptit tarvitsevat Node.js-version 18 tai uudemman. Muita asennuksia ei tarvita.
+
+## Brändi, kohderyhmä ja yrityskonteksti
+
+Skilli kirjoittaa yrityksen perustiedot kolmeen tekstitiedostoon, jotka tekoäly lukee ennen kuin se tekee mitään muuta: mitä yritys myy ja mihin hintaan, kenelle se myy ja kenelle ei, ja miltä se kuulostaa ja näyttää. Sen jälkeen samoja asioita ei tarvitse selittää jokaisessa keskustelussa uudelleen.
+
+Agentti lukee ensin verkkosivunne ja omat tekstinne ja kysyy teiltä vain sen, mitä niistä ei selviä. Jokainen tieto saa merkinnän:
+
+- **vahvistettu**: omistajan oma sana tai päätös
+- **päätelty**: luettu verkkosivulta tai muusta aineistosta, eikä kukaan ole vielä vahvistanut sitä
+- **auki**: tieto puuttuu. Kohta jää tyhjäksi ja se kysytään. Mitään ei täytetä arvaamalla.
+
+Tulos:
+
+| Tiedosto | Sisältö |
+| --- | --- |
+| `tilanne.md` | millainen yritys on kyseessä ja miten työ sovitetaan siihen: kuka skilliä käyttää, miten kauppa syntyy, markkina, mainonta ja käytössä olevat työkalut |
+| `yritys.md` | mitä myydään, kenelle, mihin hintaan, miksi teiltä ostetaan, mitä ette lupaa ettekä tee |
+| `kohderyhma.md` | kenelle ette myy, asiakasryhmät, asiakkaan omat sanat, parhaat ja huonoimmat asiakkaat |
+| `brandi.md` | äänen säännöt oikeine esimerkkilauseineen, sanasto, puhuttelu, värien, fontin ja logon käyttö |
+| `kuvataulu.html` | kuvataulu: agentti kerää kuvanne verkkosivulta tai kansiosta, te vastaatte numeroilla, mitkä ovat teidän näköisiänne ja mitä ei käytetä, ja kuvasääntö kirjoitetaan valinnoistanne |
+| `brand.json` | nimi, logo, fontti ja värit muodossa, jonka muut skillit lukevat |
+| `report.html` | sama diaesityksenä yrityksenne omissa väreissä, omistajan luettavaksi ja hyväksyttäväksi |
+
+Alla on kaksi diaa esimerkistä, koko esimerkki tiedostoineen on kansiossa [examples/yrityskonteksti](examples/yrityskonteksti/).
+
+[![Esimerkin äänen säännöt: mitä sääntö tarkoittaa, mitä ei, ja oikea esimerkkilause](examples/yrityskonteksti/kuvat/dia-13.png)](examples/yrityskonteksti/)
+
+[![Esimerkin kuvavalinnat: kolme hyvää kuvaa, kaksi joita ei käytetä ja yksi, josta omistaja ei osannut sanoa](examples/yrityskonteksti/kuvat/dia-18.png)](examples/yrityskonteksti/)
+
+Esimerkin yritys, hinnat, luvut ja asiakkaiden lauseet ovat keksittyjä: kuvitteellinen esimerkki.
+
+### Mistä tiedot luetaan
+
+| Lähde | Miten |
+| --- | --- |
+| Verkkosivu | Skripti lukee etusivun, enintään seitsemän tärkeintä sivua ja tyylitiedostot. Vain julkiset sivut, ilman kirjautumista. |
+| Omat tekstit (vapaaehtoinen) | Uutiskirjeet, tarjoukset, julkaisut tai sähköpostit tiedostoina. Skripti laskee niistä lauseiden pituuden, puhuttelun ja tavalliset aloitukset. |
+| LinkedIn (vapaaehtoinen) | Vain aineistosta, jonka annatte itse: LinkedInin oma datavienti (`Shares.csv`), profiili PDF:nä, liitetty teksti tai suorat linkit yksittäisiin julkaisuihin. Agentti ei avaa LinkedIniä kirjautuneella selaimellanne. |
+| Te itse | Haastattelu 3–5 kysymyksen erissä. Vastaukset saa sanella, agentti järjestää ne. |
+
+Mitään ei lähetetä muihin palveluihin, eikä skilli tarvitse maksullista dataa.
+
+### Käyttö
+
+```
+Tee yrityskonteksti yritykselle Esimerkki Oy, esimerkki.fi. Minä hyväksyn tiedostot.
+```
+
+Tai kutsukaa suoraan: `/rjdigital:yrityskonteksti`. Asennus on sama kuin yllä, kansio on `skills/yrityskonteksti`.
+
+Tiedostot tallentuvat kansioon `yrityskonteksti/`. Ensimmäinen luonnos syntyy verkkosivusta muutamassa minuutissa, ja suurin osa siitä on vielä pääteltyä tai auki. Haastattelu tekee tiedostoista käyttökelpoiset.
+
+### Hyvä tietää
+
+- Tiedostot ovat tavallista tekstiä. Git ei ole pakollinen: kansio voi olla myös jaetulla levyllä.
+- Verkkosivulta luettu tieto on pääteltyä, kunnes omistaja sanoo sen pitävän yhä paikkansa. Verkkosivut vanhenevat.
+- Äänen sääntö tarvitsee oikean lauseen, jonka olette itse kirjoittaneet. Agentti ei keksi esimerkkejä eikä asiakkaiden lainauksia.
+- Skripti `check.mjs` tarkistaa tiedostojen muodon ja muistuttaa, kun omistaja ei ole lukenut tiedostoa 180 päivään.
+- Muut skillit lukevat kansion ensin: avainsanatutkimus ja tekoälynäkyvyys eivät kysy uudelleen sitä, mikä tiedostoissa jo on, ja niiden raportit saavat saman ilmeen.
+- Raportin ilme tulee omasta `brand.json`-tiedostostanne. Alatunnisteen tekstin voi vaihtaa tai jättää tyhjäksi samassa tiedostossa.
+
+### Mistä ideat ovat
+
+Ajatus yrityksen perustiedoista tiedostoina, jotka tekoäly lukee ennen työtä, on avoimessa [marketingskills](https://github.com/coreyhaines31/marketingskills)-kokoelmassa. Omaa tässä ovat merkinnät vahvistettu, päätelty ja auki, tiedostojen tarkistus, omistaja ja lukupäivä sekä raportti yrityksen omissa väreissä. Koodi ja tekstit ovat omia.
 
 ## Avainsanatutkimus
 
@@ -48,28 +143,15 @@ Search Console ja Bing Webmaster Tools ovat valinnaisia. Agentti kysyy niistä a
 
 Mitä on testattu: DataForSEO kokonaan oikealla ajolla marraskuussa 2026. Muiden työkalujen tuonti on testattu mallitiedostoilla, jotka on rakennettu kunkin työkalun sarakkeiden ja kenttien nimillä. Testit ovat mukana, ja ne voi ajaa komennolla `node tests/run.mjs`. Search Consolen ja Bing Webmaster Toolsin tuonti on testattu samalla tavalla mallitiedostoilla. Jokaista työkalua en ole ajanut oikealla tilillä. Työkalut myös muuttavat vientejään, joten tuonti tulostaa aina, mitkä kentät se löysi ja mitkä jäivät löytymättä. Kertokaa [issuessa](https://github.com/rjdigital-fi/markkinointi-skillit/issues), jos jokin ei toimi.
 
-### Asennus
-
-Claude Codessa:
-
-```
-/plugin marketplace add rjdigital-fi/markkinointi-skillit
-/plugin install rjdigital@rjdigital-fi
-```
-
-Tai ilman pluginia: kopioikaa kansio `skills/avainsanatutkimus` omaan `~/.claude/skills/`-kansioonne.
-
-Skriptit tarvitsevat Node.js-version 18 tai uudemman. Muita asennuksia ei tarvita.
-
 ### Käyttö
 
 Kirjoittakaa Claude Codessa esimerkiksi:
 
 ```
-Tee avainsanatutkimus aiheesta aurinkopaneelit. Asennamme paneeleita omakotitaloihin Tampereella ja Turussa. Budjetti on 1 000–2 000 euroa kuukaudessa.
+Tee avainsanatutkimus aiheesta aurinkopaneelit. Asennamme paneeleita omakotitaloihin Tampereella ja Turussa. Budjetti on 5 000–10 000 euroa kuukaudessa.
 ```
 
-Tai kutsukaa suoraan: `/rjdigital:avainsanatutkimus`.
+Tai kutsukaa suoraan: `/rjdigital:avainsanatutkimus`. Asennus on sama kuin yllä, kansio on `skills/avainsanatutkimus`.
 
 Agentti käy työn läpi vaiheittain: lähteen valinta, aihekartta, hakumäärät ja hinnat, ryhmittely ja hakuaikomus, tekoälyn kysymykset, oman sivuston tilanne ja lopuksi raportti. Se kysyy teiltä ne asiat, jotka vain te tiedätte: mitä myytte, mitä ette myy ja millä alueella.
 
@@ -81,7 +163,7 @@ Tulos tallentuu kansioon `avainsanatutkimus/<aihe>/`: `report.html` on raportti 
 - Maksullisissa lähteissä haut kuluttavat krediittejä tai rahaa. Agentti kertoo arvion ennen ensimmäistä hakua ja toteutuneen kulun lopuksi. Esimerkkiraportin haut maksoivat DataForSEO:ssa yhteensä noin 0,15 dollaria.
 - Rajapinnan avaimet pidetään ympäristömuuttujissa tai MCP-yhteydessä. Niitä ei kirjoiteta keskusteluun eikä tiedostoihin.
 - Budjetin jako on lähtökohta, joka lasketaan hakumääristä, klikkaushinnoista ja hakuaikomuksesta. Oikea mainosdata tarkentaa sen ensimmäisten viikkojen jälkeen.
-- Agentti kysyy aina alustavan budjettihaarukan. Raportti on euroissa: jos lähteen klikkaushinnat ovat dollareissa, ne muunnetaan Euroopan keskuspankin viitekurssilla, ja kurssi päivämäärineen näkyy raportissa.
+- Agentti katsoo ensin itse, onko Google-mainonta päällä, jos se näkyy sen tiedoista tai kytketystä Google Ads -tilistä. Muuten se kysyy, käytättekö Google-mainontaan rahaa. Jos käytätte tai aiotte käyttää, se pyytää alustavan budjettihaarukan. Jos ette, raportti tehdään ilman budjettia. Raportti on euroissa: jos lähteen klikkaushinnat ovat dollareissa, ne muunnetaan Euroopan keskuspankin viitekurssilla, ja kurssi päivämäärineen näkyy raportissa.
 
 ## Tekoälynäkyvyys
 
@@ -142,70 +224,25 @@ Agentti ehdottaa kysymykset, ja te muokkaatte ne sellaisiksi, kuin asiakkaanne n
 
 Menetelmässä on ideoita avoimista projekteista: ostopolun mukainen kysymysjoukko, toistetut ajot ja varoitus pienistä muutoksista ([geo-visibility-skill](https://github.com/thevibegarage/geo-visibility-skill)), maininnan ja pelkän lähdelinkin erottaminen ([oneglanse](https://github.com/oneglanse/oneglanse)) ja kaksivaiheinen nimien tunnistus ([elmo](https://github.com/elmohq/elmo)). Koodi on omaa.
 
-## Brändi, kohderyhmä ja yrityskonteksti
+## Sovitus omaan tilanteeseen
 
-Skilli kirjoittaa yrityksen perustiedot kolmeen tekstitiedostoon, jotka tekoäly lukee ennen kuin se tekee mitään muuta: mitä yritys myy ja mihin hintaan, kenelle se myy ja kenelle ei, ja miltä se kuulostaa ja näyttää. Sen jälkeen samoja asioita ei tarvitse selittää jokaisessa keskustelussa uudelleen.
+Skillit on tehty suomalaisille palveluyrityksille. Palveluyritykset ovat silti keskenään erilaisia: yhden paikkakunnan asentaja, ketju, jolla on kaksikymmentä toimipistettä, B2B-yritys, jonka kauppa syntyy kuukausien päästä, tai toimisto, joka tekee työn asiakkailleen.
 
-Agentti lukee ensin verkkosivunne ja omat tekstinne ja kysyy teiltä vain sen, mitä niistä ei selviä. Jokainen tieto saa merkinnän:
+Siksi jokainen skilli alkaa samalla vaiheella. Agentti katsoo, mitä se tietää yrityksestänne jo: omat ohjetiedostonsa (esimerkiksi `CLAUDE.md`), muistinsa, projektin dokumentit ja kytketyt työkalut. Se kertoo muutamalla rivillä, millaiseksi se tilanteenne ymmärsi ja mitä se sen takia muuttaa. Te korjaatte, jos jokin on väärin. Tulos tallentuu tiedostoon `yrityskonteksti/tilanne.md`, joten sama kysytään vain kerran. Esimerkki: [tilanne.md](examples/yrityskonteksti/tilanne.md).
 
-- **vahvistettu**: omistajan oma sana tai päätös
-- **päätelty**: luettu verkkosivulta tai muusta aineistosta, eikä kukaan ole vielä vahvistanut sitä
-- **auki**: tieto puuttuu. Kohta jää tyhjäksi ja se kysytään. Mitään ei täytetä arvaamalla.
+Esimerkkejä siitä, mikä muuttuu:
 
-Tulos:
+- **Ketju:** paikkakunta on avainsanatutkimuksessa oma haaransa, ja tekoälynäkyvyys tarkistetaan ensin enintään kolmesta kaupungista.
+- **B2B-yritys:** kysymykset tekoälylle kirjoitetaan ostajan roolin mukaan, ja raportti muistuttaa, ettei pieni hakumäärä tarkoita pientä kysyntää.
+- **Toimisto:** jokaisella asiakkaalla on oma kansionsa ja omat tiedostonsa.
 
-| Tiedosto | Sisältö |
-| --- | --- |
-| `yritys.md` | mitä myydään, kenelle, mihin hintaan, miksi teiltä ostetaan, mitä ette lupaa ettekä tee |
-| `kohderyhma.md` | kenelle ette myy, asiakasryhmät, asiakkaan omat sanat, parhaat ja huonoimmat asiakkaat |
-| `brandi.md` | äänen säännöt oikeine esimerkkilauseineen, sanasto, puhuttelu, värien, fontin ja logon käyttö |
-| `kuvataulu.html` | kuvataulu: agentti kerää kuvanne verkkosivulta tai kansiosta, te vastaatte numeroilla, mitkä ovat teidän näköisiänne ja mitä ei käytetä, ja kuvasääntö kirjoitetaan valinnoistanne |
-| `brand.json` | nimi, logo, fontti ja värit muodossa, jonka muut skillit lukevat |
-| `report.html` | sama diaesityksenä yrityksenne omissa väreissä, omistajan luettavaksi ja hyväksyttäväksi |
+Sovitus muuttaa kysymyksiä, sanastoa ja painotuksia. Se ei muuta sitä, että jokainen luku tulee datasta eikä mitään täytetä arvaamalla.
 
-Alla on kolme diaa esimerkistä, koko esimerkki tiedostoineen on kansiossa [examples/yrityskonteksti](examples/yrityskonteksti/).
-
-[![Esimerkin tilannekuva: kolmen tiedoston vahvistetut, päätellyt ja avoimet tiedot](examples/yrityskonteksti/kuvat/dia-2.png)](examples/yrityskonteksti/)
-
-[![Esimerkin äänen säännöt: mitä sääntö tarkoittaa, mitä ei, ja oikea esimerkkilause](examples/yrityskonteksti/kuvat/dia-13.png)](examples/yrityskonteksti/)
-
-[![Esimerkin kuvavalinnat: kolme hyvää kuvaa, kaksi joita ei käytetä ja yksi, josta omistaja ei osannut sanoa](examples/yrityskonteksti/kuvat/dia-18.png)](examples/yrityskonteksti/)
-
-Esimerkin yritys, hinnat, luvut ja asiakkaiden lauseet ovat keksittyjä: kuvitteellinen esimerkki.
-
-### Mistä tiedot luetaan
-
-| Lähde | Miten |
-| --- | --- |
-| Verkkosivu | Skripti lukee etusivun, enintään seitsemän tärkeintä sivua ja tyylitiedostot. Vain julkiset sivut, ilman kirjautumista. |
-| Omat tekstit (vapaaehtoinen) | Uutiskirjeet, tarjoukset, julkaisut tai sähköpostit tiedostoina. Skripti laskee niistä lauseiden pituuden, puhuttelun ja tavalliset aloitukset. |
-| LinkedIn (vapaaehtoinen) | Vain aineistosta, jonka annatte itse: LinkedInin oma datavienti (`Shares.csv`), profiili PDF:nä, liitetty teksti tai suorat linkit yksittäisiin julkaisuihin. Agentti ei avaa LinkedIniä kirjautuneella selaimellanne. |
-| Te itse | Haastattelu 3–5 kysymyksen erissä. Vastaukset saa sanella, agentti järjestää ne. |
-
-Mitään ei lähetetä muihin palveluihin, eikä skilli tarvitse maksullista dataa.
-
-### Käyttö
+Voitte pyytää sovitusta myös erikseen, ennen kuin teette mitään muuta:
 
 ```
-Tee yrityskonteksti yritykselle Esimerkki Oy, esimerkki.fi. Minä hyväksyn tiedostot.
+Lue RJ Digitalin skillit ja kerro, miten sovittaisit ne meidän yrityksellemme.
 ```
-
-Tai kutsukaa suoraan: `/rjdigital:yrityskonteksti`. Asennus on sama kuin yllä, kansio on `skills/yrityskonteksti`.
-
-Tiedostot tallentuvat kansioon `yrityskonteksti/`. Ensimmäinen luonnos syntyy verkkosivusta muutamassa minuutissa, ja suurin osa siitä on vielä pääteltyä tai auki. Haastattelu tekee tiedostoista käyttökelpoiset.
-
-### Hyvä tietää
-
-- Tiedostot ovat tavallista tekstiä. Git ei ole pakollinen: kansio voi olla myös jaetulla levyllä.
-- Verkkosivulta luettu tieto on pääteltyä, kunnes omistaja sanoo sen pitävän yhä paikkansa. Verkkosivut vanhenevat.
-- Äänen sääntö tarvitsee oikean lauseen, jonka olette itse kirjoittaneet. Agentti ei keksi esimerkkejä eikä asiakkaiden lainauksia.
-- Skripti `check.mjs` tarkistaa tiedostojen muodon ja muistuttaa, kun omistaja ei ole lukenut tiedostoa 180 päivään.
-- Muut skillit lukevat kansion ensin: avainsanatutkimus ja tekoälynäkyvyys eivät kysy uudelleen sitä, mikä tiedostoissa jo on, ja niiden raportit saavat saman ilmeen.
-- Raportin ilme tulee omasta `brand.json`-tiedostostanne. Alatunnisteen tekstin voi vaihtaa tai jättää tyhjäksi samassa tiedostossa.
-
-### Mistä ideat ovat
-
-Ajatus yrityksen perustiedoista tiedostoina, jotka tekoäly lukee ennen työtä, on avoimessa [marketingskills](https://github.com/coreyhaines31/marketingskills)-kokoelmassa. Omaa tässä ovat merkinnät vahvistettu, päätelty ja auki, tiedostojen tarkistus, omistaja ja lukupäivä sekä raportti yrityksen omissa väreissä. Koodi ja tekstit ovat omia.
 
 ## Oma ilme
 

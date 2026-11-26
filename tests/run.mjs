@@ -499,6 +499,22 @@ siteCase("Site data: Bing Webmaster API (GetQueryStats)", "bing.json", JSON.stri
   });
 }
 
+{
+  // The fit step is one text shared by every skill: a skill folder can be copied alone, so each has its own copy.
+  const skillsDir = path.join(scripts, "..", "..");
+  const names = fs.readdirSync(skillsDir).filter((d) => fs.existsSync(path.join(skillsDir, d, "SKILL.md")));
+  const texts = names.map((d) => (fs.existsSync(path.join(skillsDir, d, "sovitus.md")) ? fs.readFileSync(path.join(skillsDir, d, "sovitus.md"), "utf8") : null));
+  const problems = [];
+  names.forEach((d, i) => {
+    if (texts[i] === null) problems.push(`${d}: sovitus.md missing`);
+    else if (texts[i] !== texts[0]) problems.push(`${d}: sovitus.md differs from ${names[0]}`);
+    if (!fs.readFileSync(path.join(skillsDir, d, "SKILL.md"), "utf8").includes("sovitus.md")) problems.push(`${d}: SKILL.md does not point to sovitus.md`);
+  });
+  n++;
+  console.log(`${problems.length ? "FAIL" : "ok  "} Fit step: every skill has the same sovitus.md and points to it${problems.length ? `: ${problems.join("; ")}` : ""}`);
+  if (problems.length) failed++;
+}
+
 fs.rmSync(tmp, { recursive: true, force: true });
 console.log(failed ? `\n${failed} of ${n} failed` : `\nall ${n} passed`);
 process.exit(failed ? 1 : 0);
